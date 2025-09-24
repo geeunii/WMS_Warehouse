@@ -1,0 +1,286 @@
+package model.warehouse_service;
+
+import util.DBUtil;
+import vo.Warehouses.Warehouse;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * {@code WarehouseDAO} 클래스는 창고 데이터를 관리하기 위한 데이터 접근 객체(DAO)
+ * 데이터베이스에 연결되어 창고 데이터를 추가, 조회하는 기능을 제공
+ * <p>
+ * 클래스 주요 기능
+ * - 데이터베이스 연결 및 쿼리 실행
+ * - 창고 데이터 세부적 추가, 특정 창고 조회
+ */
+public class WarehouseDAO implements WarehouseDAOImpl {
+
+    // DAO 인스턴스 싱글톤으로 구현
+    private static WarehouseDAO dao;
+
+    // 생성자를 private 설정, 외부 객체 생성 제한
+    private WarehouseDAO() {
+
+    }
+
+    /**
+     * DAO 인스턴스 반환하는 싱글톤 메서드
+     *
+     * @return {@code WarehouseDAO} 인스턴스
+     */
+    public static WarehouseDAO getInstance() {
+        if (dao == null) dao = new WarehouseDAO();
+        return dao;
+    }
+
+    // 창고 데이터 관리 리스트
+    private final List<Warehouse> warehouseList = new ArrayList<>();
+
+    // 데이터베이스 연결 객체
+    private Connection connection;
+
+    /**
+     * ResultSet 의 현재 커서 위치에서 Warehouse 객체를 생성하여 반환하는 헬퍼 메서드
+     * 코드 중복을 감소
+     *
+     * @param rs 데이터가 들어있는 ResultSet
+     * @return 채워진 Warehouse 객체
+     * @throws SQLException
+     */
+    private Warehouse mapWarehouse(ResultSet rs) throws SQLException {
+        Warehouse warehouse = new Warehouse();
+        // warehouse.setWarehouseID(rs.getInt("warehouseID"));
+        warehouse.setWarehouseName(rs.getString("warehouseName"));
+        warehouse.setWarehouseAddress(rs.getString("warehouseAddress"));
+        warehouse.setWarehouseStatus(rs.getString("warehouseStatus"));
+        warehouse.setWarehouseCityName(rs.getString("warehouseCityName"));
+        warehouse.setMaxCapacity(rs.getInt("maxCapacity"));
+        warehouse.setWarehouseArea(rs.getInt("warehouseArea"));
+        warehouse.setRegDate(rs.getDate("regDate"));
+        warehouse.setFloorHeight(rs.getInt("floorHeight"));
+        warehouse.setMid(rs.getInt("mid"));
+
+        return warehouse;
+    }
+
+    // SQL 문 실행을 위한 PreparedStatement 객체
+    // private PreparedStatement preparedStatement;
+
+    // SQL 쿼리 결과를 저장하는 ResultSet 객체
+    // private ResultSet resultSet;
+
+    /**
+     * 데이터베이스 연결 종료 메서드
+     */
+//    private void disConnect() {
+//        if (resultSet != null)
+//            try {
+//                resultSet.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        if (preparedStatement != null)
+//            try {
+//                preparedStatement.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        if (connection != null)
+//            try {
+//                connection.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//    }
+
+    // 창고 등록
+    @Override
+    public Warehouse insertWarehouse(Warehouse wh) {
+        // 프로시저 호출
+        String sql = "{CALL sp_InsertWarehouse(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+
+        try (Connection connection = DBUtil.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(sql)) {
+
+            // IN 파라미터 값 설정
+            callableStatement.setString(1, wh.getWarehouseName());
+            callableStatement.setString(2, wh.getWarehouseAddress());
+            callableStatement.setString(3, wh.getWarehouseStatus());
+            callableStatement.setString(4, wh.getWarehouseCityName());
+            callableStatement.setInt(5, wh.getMaxCapacity());
+            callableStatement.setInt(6, wh.getWarehouseArea());
+            callableStatement.setInt(7, wh.getFloorHeight());
+            callableStatement.setInt(8, wh.getMid());
+
+            // OUT 파라미터 등록
+            callableStatement.registerOutParameter(9, Types.INTEGER);
+
+            // 프로시저 실행
+            callableStatement.executeUpdate();
+
+            // OUT 파라미터 값 가져오기
+            int newWarehouseID = callableStatement.getInt(9);
+
+            // 객체에 ID 설정 후 반환
+            wh.setId(newWarehouseID);
+            return wh;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // 실패 시 null
+    }
+
+    // 창고 이름으로 조회
+    public List<Warehouse> searchByName(String wname) {
+        List<Warehouse> warehouse = new ArrayList<>();
+        String sql = "{CALL sp_searchByName(?)}";
+
+        try (Connection connection = DBUtil.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(sql)) {
+
+            callableStatement.setString(1, wname);
+
+            try (ResultSet resultSet = callableStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    warehouse.add(mapWarehouse(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return warehouse;
+    }
+
+    // 모든 창고 조회
+    @Override
+    public List<Warehouse> searchAllWarehouse() {
+        List<Warehouse> warehouse = new ArrayList<>();
+        String sql = "{CALL sp_searchAllWarehouse()}";
+
+        try (Connection connection = DBUtil.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(sql);
+             ResultSet resultSet = callableStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                // 헬퍼 메서드를 사용해 객체로 변환 후 리스트에 추가
+                warehouse.add(mapWarehouse(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return warehouse;
+    }
+
+    // 창고 소재지로 조회
+    public List<Warehouse> selectByLocation(String waddress) {
+        List<Warehouse> warehouse = new ArrayList<>();
+        String sql = "{CALL sp_selectByLocation(?)}";
+
+        try (Connection connection = DBUtil.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(sql)) {
+
+            callableStatement.setString(1, waddress);
+
+            try (ResultSet resultSet = callableStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    warehouse.add(mapWarehouse(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return warehouse;
+    }
+
+    // 창고 면적조회
+    public List<Warehouse> selectBySize(int wsize) {
+        List<Warehouse> warehouse = new ArrayList<>();
+        String sql = "{Call sp_selectBySize(?)}";
+
+        try (Connection connection = DBUtil.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(sql)) {
+
+            callableStatement.setInt(1, wsize);
+
+            try (ResultSet resultSet = callableStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    warehouse.add(mapWarehouse(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return warehouse;
+    }
+
+    // 창고 상태 조회
+    @Override
+    public String getWarehouseStatus(int wid) {
+        String status = null; // 결과를 담을 변수, 초기값은 null
+
+        String sql = "{CALL sp_getWarehouseStatusById(?)}";
+
+        try (Connection connection = DBUtil.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(sql)) {
+
+            callableStatement.setInt(1, wid);
+
+            try (ResultSet resultSet = callableStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    status = resultSet.getString(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
+
+    // 창고 정보 수정
+    public int updateWarehouse(Warehouse wh) {
+        String sql = "{CALL sp_updateWarehouse(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        int affectedRows = 0;
+
+        try (Connection connection = DBUtil.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(sql)) {
+
+            callableStatement.setInt(1, wh.getId()); // p_warehouseID
+            callableStatement.setString(2, wh.getWarehouseName());
+            callableStatement.setString(3, wh.getWarehouseAddress());
+            callableStatement.setString(4, wh.getWarehouseStatus());
+            callableStatement.setString(5, wh.getWarehouseCityName());
+            callableStatement.setInt(6, wh.getMaxCapacity());
+            callableStatement.setInt(7, wh.getWarehouseArea());
+            callableStatement.setInt(8, wh.getFloorHeight());
+            callableStatement.setInt(9, wh.getMid());
+
+            affectedRows = callableStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return affectedRows;
+    }
+
+    // 창고 삭제
+    public int deleteWarehouse(int warehouseId) {
+        String sql = "{CALL sp_deleteWarehouse(?)}";
+        int affectedRows = 0;
+
+        try (Connection connection = DBUtil.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(sql)) {
+
+            callableStatement.setInt(1, warehouseId);
+
+            affectedRows = callableStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return affectedRows;
+    }
+}
