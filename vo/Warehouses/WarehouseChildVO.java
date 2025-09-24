@@ -3,6 +3,7 @@ package vo.Warehouses;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 /**
  * WarehouseBaseVO를 상속받아 id를 가지면서,
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 public abstract class WarehouseChildVO extends WarehouseBaseVO{
 
     private int warehouseID; // 창고 번호

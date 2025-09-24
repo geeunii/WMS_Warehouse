@@ -37,6 +37,7 @@ public interface Warehouse_Controller {
 
     /**
      * 관리자 창고 선택 메뉴
+     *
      * @param choice 선택된 메뉴 번호
      */
     void choiceWarehouseMenu(int choice);
