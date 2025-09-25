@@ -11,6 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true) // 상속 관계에서 부모 클래스의 필드까지 포함하여 두 객체를 비교
 @SuperBuilder
+@ToString(callSuper = true)
 // VO (Value Object) / DTO (Data Transfer Object)
 // 창고 건물 클래스
 public class Warehouse extends WarehouseBaseVO {

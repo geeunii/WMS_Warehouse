@@ -11,9 +11,10 @@ public class Fee_Controller_Impl implements Fee_Controller {
     private final FeeDAO feeDAO;
     private final WarehouseFeeAdminView feeView;
 
+    // 싱글톤
     private static Fee_Controller_Impl controller;
 
-    public Fee_Controller_Impl() {
+    private Fee_Controller_Impl() {
         this.feeDAO = FeeDAO.getInstance();
         this.feeView = new WarehouseFeeAdminView();
     }
@@ -46,11 +47,12 @@ public class Fee_Controller_Impl implements Fee_Controller {
             case 5: // 뒤로 가기
                 break;
             default:
-                feeView.displayError("메뉴 번호를 잘못 입력하였습니다.");
+                feeView.displayError("메뉴 번호를 잘못 입력하였음");
                 break;
         }
     }
 
+    // 요금 조회 서브 메뉴
     private void handleFeeSearchMenu(int choice) {
         switch (choice) {
             case 1: // 요금 ID 조회
@@ -64,7 +66,7 @@ public class Fee_Controller_Impl implements Fee_Controller {
             case 3: // 뒤로 가기
                 break;
             default:
-                feeView.displayError("조회 메뉴 번호를 잘못 입력하였습니다.");
+                feeView.displayError("조회 메뉴 번호를 잘못 입력하였음");
                 break;
         }
     }
@@ -75,15 +77,19 @@ public class Fee_Controller_Impl implements Fee_Controller {
     // 창고 요금 등록
     @Override
     public WarehouseFee insertFee() {
+        // View 로부터 새로운 요금 정보를 받아옴
         WarehouseFee newFee = feeView.insertWarehouseFee();
+
+        // DAO에 전달하고, 그 결과를 'warehouseFee' 변수에 한 번만 저장
         WarehouseFee warehouseFee = feeDAO.insertFee(newFee);
 
-        if (insertFee() != null) {
-            feeView.displaySuccess("요금 정보가 등록되었습니다.", insertFee());
+        if (warehouseFee != null) {
+            feeView.displaySuccess("요금 정보 등록 성공 ", warehouseFee);
         } else {
-            feeView.displayError("요금 정보 등록에 실패하였습니다.");
+            feeView.displayError("요금 정보 등록 실패");
         }
-        return insertFee();
+
+        return warehouseFee;
     }
 
     // 창고 요금 수정
@@ -94,9 +100,9 @@ public class Fee_Controller_Impl implements Fee_Controller {
         int result = feeDAO.updateFee(feeUpdate);
 
         if (result > 0) {
-            feeView.displaySuccess("요금 정보가 수정되었습니다.", feeUpdate);
+            feeView.displaySuccess("요금 정보 수정 성공 ", feeUpdate);
         } else {
-            feeView.displayError("요금 정보 수정이 실패하였습니다.");
+            feeView.displayError("요금 정보 수정 실패");
         }
         return result;
     }
@@ -109,9 +115,9 @@ public class Fee_Controller_Impl implements Fee_Controller {
         int result = feeDAO.deleteFee(feeDelete);
 
         if (result > 0) {
-            feeView.displayMessage("요금 ID " + feeDelete + "가 삭제되었습니다.");
+            feeView.displayMessage("요금 ID " + feeDelete + " 삭제");
         } else {
-            feeView.displayError("요금 삭제가 실패하였습니다.");
+            feeView.displayError("요금 삭제 실패");
         }
 
         return result;

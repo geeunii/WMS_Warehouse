@@ -15,10 +15,11 @@ import java.util.List;
  */
 public class Warehouse_Controller_Impl implements Warehouse_Controller {
 
-    private final WarehouseDAO warehouseDAO;
+    private final WarehouseDAO warehouseDAO; // DB의 Warehouse 테이블 작업
     private final WarehouseSectionDAO sectionDAO;
-    private final WarehouseAdminView warehouseAdminView;
+    private final WarehouseAdminView warehouseAdminView; // 사용자 입출력
 
+    // 싱글톤
     private static Warehouse_Controller_Impl controller;
 
     private Warehouse_Controller_Impl() {
@@ -38,34 +39,38 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
     @Override
     public void choiceWarehouseMenu(int choice) {
         switch (choice) {
-            case 1:
+            case 1: // 창고 등록
                 insertWarehouse();
                 break;
-            case 2:
+            case 2: // 창고 수정
                 updateWarehouse();
                 break;
-            case 3:
+            case 3: // 창고 삭제
                 deleteWarehouse();
                 break;
-            case 4:
+            case 4: // 창고 조회
                 int searchChoice = warehouseAdminView.selectWarehouseMenu();
                 handleSearchMenu(searchChoice); // 아래에 새로 추가할 헬퍼 메서드 호출
                 break;
             case 5:
                 break; // 뒤로 가기는 main 루프에서 처리
             default:
-                warehouseAdminView.displayError("번호 잘못 입력하였음.");
+                warehouseAdminView.displayError("번호 잘못 입력하였음");
                 break;
         }
     }
 
+    /**
+     * 창고 조회 하위 메뉴
+     * @param choice 사용자가 조회 메뉴에서 선택한 번호
+     */
     private void handleSearchMenu(int choice) {
         switch (choice) {
             case 1: // 전체 조회
                 selectAllWarehouse();
                 break;
             case 2: // 소재지(도시)로 조회
-                String location = warehouseAdminView.getInput("검색할 도시 이름: ");
+                String location = warehouseAdminView.getInput("검색할 소재자(도시) 이름: ");
                 selectByLocation(location);
                 break;
             case 3: // 창고명으로 조회
@@ -85,7 +90,7 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
             case 6: // 뒤로 가기
                 break;
             default:
-                warehouseAdminView.displayError("번호 잘못 입력");
+                warehouseAdminView.displayError("조회 메뉴 번호 오입력");
                 break;
         }
     }
@@ -94,10 +99,10 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
     // 창고 등록
     @Override
     public Warehouse insertWarehouse() {
-        Warehouse newWarehouse = warehouseAdminView.insertWarehouse();
-        Warehouse insertedWh = warehouseDAO.insertWarehouse(newWarehouse);
+        Warehouse newWarehouse = warehouseAdminView.insertWarehouse(); // View 호출 -> 사용자로부터 등록할 창고 정보 받아옴
+        Warehouse insertedWh = warehouseDAO.insertWarehouse(newWarehouse); // DAO 에 정보를 전달 -> DB 저장 요청 -> ID가 부여된 객체 받음
         if (insertedWh != null) {
-            warehouseAdminView.displaySuccess("창고 등록 성공", insertedWh);
+            warehouseAdminView.displaySuccess("창고 등록 성공 ", insertedWh);
         } else {
             warehouseAdminView.displayError("창고 등록 실패");
         }
@@ -110,7 +115,7 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
         List<Warehouse> warehouseNameList = warehouseDAO.searchByName(wname);
 
         if (warehouseNameList != null && !warehouseNameList.isEmpty()) {
-            warehouseAdminView.displaySuccess("창고 이름 조회 성공", warehouseNameList);
+            warehouseAdminView.displaySuccess("'" + wname + "' 이름으로 검색한 결과 ", warehouseNameList);
         } else {
             warehouseAdminView.displayError("창고 이름 조회 실패");
         }
@@ -124,7 +129,7 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
         List<Warehouse> warehouseList = warehouseDAO.searchAllWarehouse();
 
         if (warehouseList != null && !warehouseList.isEmpty()) {
-            warehouseAdminView.displaySuccess("창고 전체 조회 성공", warehouseList);
+            warehouseAdminView.displaySuccess("창고 전체 조회 성공 ", warehouseList);
         } else {
             warehouseAdminView.displayError("창고 전체 조회 실패");
         }
@@ -138,9 +143,9 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
         List<Warehouse> warehouseLocationList = warehouseDAO.selectByLocation(waddress);
 
         if (warehouseLocationList != null && !warehouseLocationList.isEmpty()) {
-            warehouseAdminView.displaySuccess("창고 위치 조회 성공", warehouseLocationList);
+            warehouseAdminView.displaySuccess("'" + waddress + "' 소재지(도시)로 검색한 결과 ", warehouseLocationList);
         } else {
-            warehouseAdminView.displayError("창고 위치 조회 실패");
+            warehouseAdminView.displayError("창고 소재지(도시) 조회 실패");
         }
 
         return warehouseLocationList;
@@ -152,7 +157,7 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
         List<Warehouse> warehouseSizeList = warehouseDAO.selectBySize(wsize);
 
         if (warehouseSizeList != null && !warehouseSizeList.isEmpty()) {
-            warehouseAdminView.displaySuccess("창고 면적 조회 성공", warehouseSizeList);
+            warehouseAdminView.displaySuccess(wsize + " 면적으로 검색한 결과 ", warehouseSizeList);
         } else {
             warehouseAdminView.displayError("창고 면적 조회 실패");
         }
@@ -160,12 +165,10 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
         return warehouseSizeList;
     }
 
-    // 창고 상태 조회
 
     /**
-     * 창고 ID를 받아 해당 창고의 '모든 구역'의 용량을 합산하여 상태를 반환합니다.
+     * 창고 ID를 받아 해당 창고의 '모든 구역'의 용량을 합산하여 상태를 반환합
      * 상태: 가득 참, 보통, 여유, 비어있음, 정보 없음
-     *
      * @param wid 창고 ID
      * @return 창고 상태 문자열
      */
@@ -217,7 +220,7 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
         Warehouse warehouseToUpdate = warehouseAdminView.updateWarehouse();
         int result = warehouseDAO.updateWarehouse(warehouseToUpdate);
         if (result > 0) {
-            warehouseAdminView.displaySuccess("창고 정보 수정 성공", warehouseToUpdate);
+            warehouseAdminView.displaySuccess("창고 정보 수정 성공 ", warehouseToUpdate);
         } else {
             warehouseAdminView.displayError("창고 정보 수정 실패 (ID 확인 필요)");
         }
@@ -230,7 +233,7 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
         int idToDelete = warehouseAdminView.deleteWarehouse();
         int result = warehouseDAO.deleteWarehouse(idToDelete);
         if (result > 0) {
-            warehouseAdminView.displayMessage("\n[처리 성공] 창고 ID " + idToDelete + " 가 삭제되었습니다.");
+            warehouseAdminView.displayMessage("[처리 성공] 창고 ID " + idToDelete + " 삭제");
         } else {
             warehouseAdminView.displayError("창고 삭제 실패 (ID 확인 필요)");
         }

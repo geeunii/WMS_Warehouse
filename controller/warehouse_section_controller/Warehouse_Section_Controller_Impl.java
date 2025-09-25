@@ -11,6 +11,7 @@ public class Warehouse_Section_Controller_Impl implements Warehouse_Section_Cont
     private final WarehouseSectionDAO sectionDAO;
     private final WarehouseSectionAdminView sectionAdminView;
 
+    // 싱글톤
     private static Warehouse_Section_Controller_Impl controller;
 
     private Warehouse_Section_Controller_Impl() {
@@ -18,7 +19,7 @@ public class Warehouse_Section_Controller_Impl implements Warehouse_Section_Cont
         this.sectionAdminView = new WarehouseSectionAdminView();
     }
 
-    private static Warehouse_Section_Controller_Impl getInstance() {
+    public static Warehouse_Section_Controller_Impl getInstance() {
         if (controller == null) {
             controller = new Warehouse_Section_Controller_Impl();
         }
@@ -30,22 +31,22 @@ public class Warehouse_Section_Controller_Impl implements Warehouse_Section_Cont
     @Override
     public void choiceSectionMenu(int choice) {
         switch (choice) {
-            case 1:
+            case 1: // 구역 등록
                 insertSection();
                 break;
-            case 2:
+            case 2: // 구역 수정
                 updateSection();
                 break;
-            case 3:
+            case 3: // 구역 삭제
                 deleteSection();
                 break;
-            case 4:
+            case 4: // 구역 조회
                 selectSectionById();
                 break;
             case 5:
                 break;
             default:
-                sectionAdminView.displayError("메뉴 번호를 잘못 입력하였습니다.");
+                sectionAdminView.displayError("메뉴 번호를 잘못 입력하였음");
                 break;
         }
     }
@@ -53,13 +54,15 @@ public class Warehouse_Section_Controller_Impl implements Warehouse_Section_Cont
     // 구역 등록(입력)
     @Override
     public WarehouseSection insertSection() {
+        // View 호출 -> 사용자로부터 등록할 구역 정보 받아옴
         WarehouseSection newSection = sectionAdminView.insertWarehouseSection();
+        // DAO 에 정보 전달-> DB에 저장 요청 -> ID가 부여된 객체 받음
         WarehouseSection insertSection = sectionDAO.insertSection(newSection);
 
         if (insertSection != null) {
-            sectionAdminView.displaySuccess("구역 정보가 등록되었습니다.", insertSection);
+            sectionAdminView.displaySuccess("구역 정보 등록 성공 ", insertSection);
         } else {
-            sectionAdminView.displayError("구역 정보 등록에 실패하였습니다.");
+            sectionAdminView.displayError("구역 정보 등록 실패");
         }
 
         return insertSection;
@@ -73,9 +76,9 @@ public class Warehouse_Section_Controller_Impl implements Warehouse_Section_Cont
         int result = sectionDAO.updateSection(sectionUpdate);
 
         if (result > 0) {
-            sectionAdminView.displaySuccess("구역 정보가 수정되었습니다.", sectionUpdate);
+            sectionAdminView.displaySuccess("구역 정보 수정 성공 ", sectionUpdate);
         } else {
-            sectionAdminView.displayError("구역 정보 수정에 실패하였습니다.");
+            sectionAdminView.displayError("구역 정보 수정 실패");
         }
 
         return result;
@@ -91,7 +94,7 @@ public class Warehouse_Section_Controller_Impl implements Warehouse_Section_Cont
         if (result > 0) {
             sectionAdminView.displayMessage("구역 ID: " + sectionDelete + "삭제 완료");
         } else {
-            sectionAdminView.displayError("구역 정보 삭제에 실패하였습니다.");
+            sectionAdminView.displayError("구역 정보 삭제 실패");
         }
 
         return result;
@@ -111,12 +114,9 @@ public class Warehouse_Section_Controller_Impl implements Warehouse_Section_Cont
 
     @Override
     public List<WarehouseSection> selectSectionWarehouseID(int warehouseID) {
-        return List.of();
+        List<WarehouseSection> sectionList = sectionDAO.getSections(warehouseID);
+        sectionAdminView.displaySuccess("창고 ID " + warehouseID + "의 전체 구역 조회 결과", sectionList);
+        return sectionList;
     }
-//    // 창고 ID 로 구역 조회
-//    @Override
-//    public List<WarehouseSection> selectSectionWarehouseID(int warehouseID) {
-//        WarehouseSection warehouseSection = sectionDAO.getSections(warehouseID);
-//        return List.of();
-//    }
+
 }

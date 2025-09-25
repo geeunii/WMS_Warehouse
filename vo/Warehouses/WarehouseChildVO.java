@@ -16,6 +16,7 @@ import lombok.experimental.SuperBuilder;
 public abstract class WarehouseChildVO extends WarehouseBaseVO{
 
     private int warehouseID; // 창고 번호
+    // 요금과 구역은 창고 ID가 필요함.
 
     public WarehouseChildVO(int id, int warehouseID) {
         super(id);

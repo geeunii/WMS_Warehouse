@@ -25,7 +25,8 @@ public class WarehouseSectionDAO implements WarehouseSectionDAOImpl {
     private WarehouseSection mapSection(ResultSet resultSet) throws SQLException {
         WarehouseSection warehouseSection = new WarehouseSection();
 
-        warehouseSection.setSectionName(resultSet.getString("warehouseSectionName"));
+        warehouseSection.setId(resultSet.getInt("sectionID"));
+        warehouseSection.setSectionName(resultSet.getString("sectionName"));
         warehouseSection.setMaxVol(resultSet.getInt("maxVol"));
         warehouseSection.setCurrentVol(resultSet.getInt("currentVol"));
         warehouseSection.setWarehouseID(resultSet.getInt("warehouseID"));
@@ -63,10 +64,9 @@ public class WarehouseSectionDAO implements WarehouseSectionDAOImpl {
     }
 
     /**
-     * 특정 창고 구역 정보 출력
-     *
+     * 특정 창고 ID 소속된 모든 구역 정보 조회
      * @param warehouseID 구역 정보를 조회할 창고의 ID
-     * @return list
+     * @return 해당 창고의 모든 구역 정보 리스트
      */
     @Override
     public List<WarehouseSection> getSections(int warehouseID) {
@@ -92,9 +92,9 @@ public class WarehouseSectionDAO implements WarehouseSectionDAOImpl {
     }
 
     /**
-     * 구역 ID(PK)를 이용하여 특정 창고 구역 정보 하나를 조회합니다.
+     * 구역 ID를 이용하여 특정 창고 구역 정보 하나를 조회합
      * @param sectionId 조회할 구역의 ID
-     * @return 조회된 WarehouseSection 객체. 결과가 없으면 null을 반환합니다.
+     * @return 조회된 WarehouseSection 객체. 결과가 없으면 null
      */
     public WarehouseSection selectById(int sectionId) {
         WarehouseSection section = null; // 결과를 담을 객체, 초기값은 null
@@ -119,10 +119,9 @@ public class WarehouseSectionDAO implements WarehouseSectionDAOImpl {
 
 
     /**
-     * 구역 정보 수정
-     *
-     * @param ws 수정할 정보가 담긴 WarehouseSection 객체
-     * @return affectedRows
+     * 기존 구역 정보 수정
+     * @param ws 수정할 정보가 담긴 WarehouseSection 객체 (id 포함)
+     * @return 수정 된 행의 수. 성공 1, 실패 0
      */
     @Override
     public int updateSection(WarehouseSection ws) {
@@ -152,10 +151,9 @@ public class WarehouseSectionDAO implements WarehouseSectionDAOImpl {
 
 
     /**
-     * 구역 삭제
-     *
+     * secID 구역 삭제
      * @param secID 삭제할 구역 정보의 ID
-     * @return affectedRows
+     * @return 삭제된 행의 수. 성공 1, 실패 0
      */
     @Override
     public int deleteSection(int secID) {
