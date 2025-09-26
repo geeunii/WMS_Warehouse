@@ -17,14 +17,14 @@ public class UserView {
         while (true) {
             System.out.println("""
                 ========== [ 내 정보 관리 메뉴 ] ==========
-                ============= [ 메뉴 선택 ] ==============
+                =============== [ 메뉴 ] ================
                 
                   1. 내 정보 조회          2. 내 정보 수정
                 
                   3. 회원 탈퇴             4. 종료
                 
                 =========================================
-                """);
+                [메뉴 선택]: """);
 
             int choice = Integer.parseInt(br.readLine());
             switch (choice) {
@@ -52,13 +52,13 @@ public class UserView {
         User me = meOpt.get();
 
         System.out.println("""
-            ========== [ 내 정보 ] ==========
+            ============ [ 내 정보 ] ============
             """);
-        System.out.println("이름       : " + me.getName());
-        System.out.println("아이디     : " + me.getUserID());
-        System.out.println("전화번호   : " + me.getPhone());
-        System.out.println("계좌번호   : " + me.getAccount());
-        System.out.println("가입일     : " + me.getCreateAt());
+        System.out.println("[이름]       : " + me.getName());
+        System.out.println("[아이디]     : " + me.getUserID());
+        System.out.println("[전화번호]   : " + me.getPhone());
+        System.out.println("[계좌번호]   : " + me.getAccount());
+        System.out.println("[가입일]     : " + me.getCreateAt());
     }
 
     public void updateUserInfo() throws IOException {

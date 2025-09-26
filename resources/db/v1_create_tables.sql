@@ -1,9 +1,13 @@
 -- Admin Table
 create table if not exists Admins
 (
-    mID        int auto_increment
-        primary key,
-    role       varchar(50) not null,
+    mID
+               int
+        auto_increment
+        primary
+            key,
+    role
+               varchar(50) not null,
     adminID    varchar(50) not null,
     adminPW    varchar(50) not null,
     adminName  varchar(50) not null,
@@ -13,9 +17,13 @@ create table if not exists Admins
 -- User Table 
 create table if not exists Users
 (
-    uID        int auto_increment
-        primary key,
-    name       varchar(50) not null,
+    uID
+               int
+        auto_increment
+        primary
+            key,
+    name
+               varchar(50) not null,
     userID     varchar(50) not null,
     userPW     varchar(50) not null,
     phone      varchar(50) not null,
@@ -25,27 +33,44 @@ create table if not exists Users
 );
 
 
-
-
 -- 문의 Table
 CREATE TABLE IF NOT EXISTS Request
 (
-    requestID   INT AUTO_INCREMENT PRIMARY KEY,
-    uid         INT                       NOT NULL,
-    r_title     VARCHAR(255)              NOT NULL,
-    r_content   TEXT                      NOT NULL,
+    requestID
+                INT
+        AUTO_INCREMENT
+        PRIMARY
+            KEY,
+    uid
+                INT
+                             NOT
+                                 NULL,
+    r_title
+                VARCHAR(255) NOT NULL,
+    r_content   TEXT         NOT NULL,
     r_response  TEXT,
     r_createdAt DATETIME    DEFAULT CURRENT_TIMESTAMP,
     r_updatedAt DATETIME    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     r_status    VARCHAR(50) DEFAULT '대기',
-    r_type      ENUM ('board','onetoone') NOT NULL
+    r_type      ENUM
+                    (
+                        'board',
+                        'onetoone'
+                        )    NOT NULL
 );
 
 -- 공지 Table
 CREATE TABLE IF NOT EXISTS Notice
 (
-    noticeID   INT          NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    n_title    VARCHAR(100) NOT NULL,
+    noticeID
+               INT
+                            NOT
+                                NULL
+        PRIMARY
+            KEY
+        AUTO_INCREMENT,
+    n_title
+               VARCHAR(100) NOT NULL,
     n_content  VARCHAR(255) NOT NULL,
     n_createAt DATETIME     NOT NULL,
     n_updateAt DATETIME     NOT NULL,
@@ -54,25 +79,40 @@ CREATE TABLE IF NOT EXISTS Notice
 );
 
 
-
-
-
 -- 창고 Table
 DROP TABLE Warehouse;
 CREATE TABLE IF NOT EXISTS Warehouse
 (
-    warehouseID       INT                                               NOT NULL AUTO_INCREMENT,
-    warehouseName     VARCHAR(50)                                       NOT NULL,
-    warehouseAddress  VARCHAR(255)                                      NOT NULL,
-    warehouseStatus   VARCHAR(20)                                       NOT NULL,
-    warehouseCityName VARCHAR(50)                                       NOT NULL,
+    warehouseID
+                      INT
+                                   NOT
+                                       NULL
+        AUTO_INCREMENT,
+    warehouseName
+                      VARCHAR(50)  NOT NULL,
+    warehouseAddress  VARCHAR(255) NOT NULL,
+    warehouseStatus   VARCHAR(20)  NOT NULL,
+    warehouseCityName VARCHAR(50)  NOT NULL,
     -- maxCapacity       INT          NOT NULL,
-    maxCapacity       INT AS (warehouseArea * floorHeight * 0.9) STORED NOT NULL COMMENT '창고 최대 수용량',
-    warehouseArea     INT                                               NOT NULL,
-    regDate           DATE                                              NOT NULL DEFAULT (CURRENT_DATE),
-    floorHeight       INT                                               NOT NULL,
-    mid               INT                                               NOT NULL,
-    PRIMARY KEY (warehouseID)
+    maxCapacity       INT AS
+        (
+        warehouseArea
+            *
+        floorHeight
+            *
+        0.9
+        ) STORED                   NOT NULL COMMENT '창고 최대 수용량',
+    warehouseArea     INT          NOT NULL,
+    regDate           DATE         NOT NULL DEFAULT
+                                                (
+                                                    CURRENT_DATE
+                                                    ),
+    floorHeight       INT          NOT NULL,
+    mid               INT          NOT NULL,
+    PRIMARY KEY
+        (
+         warehouseID
+            )
 );
 
 
@@ -80,16 +120,40 @@ CREATE TABLE IF NOT EXISTS Warehouse
 DROP TABLE WarehouseSection;
 CREATE TABLE IF NOT EXISTS WarehouseSection
 (
-    sectionID   INT         NOT NULL AUTO_INCREMENT,
-    sectionName VARCHAR(50) NOT NULL,
+    sectionID
+                INT
+                            NOT
+                                NULL
+        AUTO_INCREMENT,
+    sectionName
+                VARCHAR(50) NOT NULL,
     maxVol      INT         NOT NULL,
     currentVol  INT         NOT NULL,
     warehouseID INT         NOT NULL,
-    PRIMARY KEY (sectionID)
+    PRIMARY KEY
+        (
+         sectionID
+            )
 );
 
 
-
+CREATE TABLE `Item`
+(
+    `itemID`      INT auto_increment                                            NOT NULL,
+    `itemName`    VARCHAR(100)                                                  NOT NULL,
+    `itemPrice`   INT                                                           NOT NULL,
+    `weight`      INT                                                           NOT NULL,
+    `assemble`    VARCHAR(50)                                                   NOT NULL,
+    `brandName`   VARCHAR(50)                                                   NOT NULL,
+    `material`    VARCHAR(50)                                                   NOT NULL,
+    `volume`      DECIMAL(10, 3) AS (`width` * `height` * `levelHeight`) STORED NOT NULL, -- stored 를 사용한 이유는 조회할때 빠르게 하기 위함입니다. stored 를 사용하지 않으면 기본값인 VIRTUAL을 사용하는데
+    `width`       DECIMAL(10, 2)                                                NOT NULL, -- VIRTUAL을 사용하게 되면 조회 할때마다 부피값 계산을 해서 출력 해주기 때문에 데이터가 엄청 많다는 가정하에 속도가 느릴거 같아 stored를 사용했습니다.
+    `height`      DECIMAL(10, 2)                                                NOT NULL COMMENT '부피를 구하기 위한 세로',
+    `levelHeight` DECIMAL(10, 2)                                                NOT NULL COMMENT '부피를 구하기 위한 높이',
+    `spaceName`   VARCHAR(50)                                                   NOT NULL,
+    `category`    VARCHAR(50)                                                   NOT NULL,
+    primary key (itemID)
+);
 
 
 -- 재고 관리 Table
