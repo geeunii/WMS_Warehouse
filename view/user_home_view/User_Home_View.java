@@ -1,5 +1,9 @@
 package view.user_home_view;
 
+import controller.notice_controller.NoticeControllerImpl;
+import controller.notice_controller.Notice_Controller;
+import controller.request_controller.Request_Controller;
+import util.AppSession;
 import view.inventory_view.InventoryAdminView;
 import view.inventory_view.InventoryUserVIew;
 import view.member_view.AdminView;
@@ -38,8 +42,19 @@ public class User_Home_View {
 
 
     public void userHome() throws IOException {
-        while(true){
+        while (true) {
             System.out.println("""
+<<<<<<< HEAD
+                    ===========[ 사용자 홈 화면 ] ==========
+                    ============ [ 메뉴 선택 ] ============
+                    
+                    1. 내 정보 관리          4. 입고 관리
+                    2. 게시판               5. 출고 관리
+                    3. 내 재고 관리          6. 로그아웃
+                    
+                    ======================================
+                    """);
+=======
                 ===========[ 사용자 홈 화면 ] ==========
                 ============== [ 메뉴 ] ==============
                 
@@ -50,6 +65,7 @@ public class User_Home_View {
                 ======================================
                 ======================================
                 [메뉴 선택]: """);
+>>>>>>> develop
 
             int choice = Integer.parseInt(br.readLine());
 
@@ -58,14 +74,22 @@ public class User_Home_View {
                     boolean goHome = userView.memberMenu();
                     if (goHome) return;   // 메서드 종료 → 호출자(메인 메뉴)로 복귀
                 }
-                // case 2 -> requestUserView.화면
-                //case 3 -> inventoryUserVIew.메서드
-                // case 4 -> stockUserView
-                //case 5 -> shipmentUserView.메서드
-                case 6 -> {
-                    return;
+                case 2 -> {
+                    int userId = 0;
+                    boolean isAdmin = AppSession.get().isAdmin();
+
+                    new Request_Controller(userId, isAdmin).run();
                 }
+
             }
+
+
         }
     }
 }
+
+
+
+
+
+
