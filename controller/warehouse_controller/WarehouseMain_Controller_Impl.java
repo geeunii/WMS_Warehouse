@@ -35,7 +35,7 @@ public class WarehouseMain_Controller_Impl implements WarehouseMain_Controller{
 
 
     @Override
-    public void start() {
+    public void start() throws IOException {
         while (true) {
             // int choice = adminHomeView.adminHome();
             int choice = warehouseMainView.warehouseManagerMainMenu();

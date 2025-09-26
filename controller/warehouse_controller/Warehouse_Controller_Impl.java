@@ -9,6 +9,7 @@ import vo.Members.Role;
 import vo.Warehouses.Warehouse;
 import vo.Warehouses.WarehouseSection;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +42,7 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
 
 
     @Override
-    public void choiceWarehouseMenu(int choice) {
+    public void choiceWarehouseMenu(int choice) throws IOException {
         switch (choice) {
             case 1: // 창고 등록
                 insertWarehouse();
@@ -68,7 +69,7 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
      * 창고 조회 하위 메뉴
      * @param choice 사용자가 조회 메뉴에서 선택한 번호
      */
-    private void handleSearchMenu(int choice) {
+    private void handleSearchMenu(int choice) throws IOException {
         switch (choice) {
             case 1: // 전체 조회
                 selectAllWarehouse();
@@ -102,7 +103,7 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
 
     // 창고 등록
     @Override
-    public Warehouse insertWarehouse() {
+    public Warehouse insertWarehouse() throws IOException {
         Optional<Admin> currentAdminOpt = AppSession.get().currentAdmin();
 
         if (currentAdminOpt.isEmpty() || currentAdminOpt.get().getRole() != Role.Master) {
@@ -227,7 +228,7 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
 
     // 창고 정보 수정
     @Override
-    public int updateWarehouse() {
+    public int updateWarehouse() throws IOException {
 
         Optional<Admin> currentAdminOpt = AppSession.get().currentAdmin();
 
@@ -248,7 +249,7 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
 
     // 창고 삭제
     @Override
-    public int deleteWarehouse() {
+    public int deleteWarehouse() throws IOException {
 
         Optional<Admin> currentAdminOpt = AppSession.get().currentAdmin();
 

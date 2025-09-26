@@ -1,9 +1,13 @@
 package view.warehouse_view;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class WarehouseMainView {
-    private final Scanner sc = new Scanner(System.in);
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    // private final Scanner sc = new Scanner(System.in);
 
     public int warehouseManagerMainMenu() {
         System.out.println("""
@@ -27,9 +31,9 @@ public class WarehouseMainView {
         while (true) {
             try {
                 System.out.print("> " + prompt);
-                String inputLine = sc.nextLine();
+                String inputLine = br.readLine();
                 return Integer.parseInt(inputLine);
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException | IOException e) {
                 System.out.println("숫자로만 입력해주세요.");
             }
         }

@@ -3,6 +3,9 @@ package view.warehouse_view;
 import vo.Warehouses.Warehouse;
 import vo.Warehouses.WarehouseFee;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,8 +16,8 @@ import java.util.Scanner;
  * 창고 금액 관리 기능 사용자 인터페이스 담당
  */
 public class WarehouseFeeAdminView {
-
-    private final Scanner sc = new Scanner(System.in);
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    // private final Scanner sc = new Scanner(System.in);
 
     /**
      * 창고 금액 관리 메인 메뉴
@@ -150,9 +153,9 @@ public class WarehouseFeeAdminView {
      * @param prompt 관리자에게 보여줄 메시지
      * @return 관리자가 입력한 문자열
      */
-    public String getInput(String prompt) {
+    public String getInput(String prompt) throws IOException {
         System.out.print("> " + prompt);
-        return sc.nextLine();
+        return br.readLine();
     }
 
     /**
@@ -165,9 +168,9 @@ public class WarehouseFeeAdminView {
         while (true) {
             try {
                 System.out.print("> " + prompt);
-                String inputLine = sc.nextLine();
+                String inputLine = br.readLine();
                 return Integer.parseInt(inputLine);
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException | IOException e) {
                 System.out.println("숫자로만 입력해주세요.");
             }
         }
@@ -228,10 +231,10 @@ public class WarehouseFeeAdminView {
         while (true) {
             try {
                 System.out.print("> " + prompt);
-                String inputLine = sc.nextLine();
+                String inputLine = br.readLine();
                 java.util.Date utilDate = format.parse(inputLine);
                 return new java.sql.Date(utilDate.getTime());
-            } catch (ParseException e) {
+            } catch (ParseException | IOException e) {
                 System.out.println("날짜 형식이 잘못되었습니다. YYYY-MM-DD 형식으로 다시 입력해주세요.");
             }
         }

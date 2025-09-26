@@ -2,6 +2,9 @@ package view.warehouse_view;
 
 import vo.Warehouses.Warehouse;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,13 +14,14 @@ import java.util.Scanner;
  */
 public class WarehouseAdminView {
 
-    private final Scanner sc = new Scanner(System.in);
+    // private final Scanner sc = new Scanner(System.in);
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     /**
      * 창고 관리 메인 메뉴
      * @return 관리자가 선택한 메뉴 번호
      */
-    public int warehouseMainMenu() {
+    public int warehouseMainMenu() throws IOException {
         System.out.println("""
                 ============ [ 창고 관리 ] ============
                 ============ [ 메뉴 선택 ] ============
@@ -42,7 +46,7 @@ public class WarehouseAdminView {
      * warehouseID -> INT AUTO INCREMENT
      * @return 입력받은 정보가 모두 담긴 새로운 Warehouse 객체
      */
-    public Warehouse insertWarehouse() {
+    public Warehouse insertWarehouse() throws IOException {
         System.out.println("\n============ [ 창고 등록 ] ============");
 
         String wname = getInput("창고 이름: ");
@@ -72,7 +76,7 @@ public class WarehouseAdminView {
      * 수정에 필요한 정보를 관리자로부터 순서대로 입력 받음
      * @return 수정할 창고의 ID 와 새로운 정보가 모두 담긴 Warehouse 객체
      */
-    public Warehouse updateWarehouse() {
+    public Warehouse updateWarehouse() throws IOException {
         System.out.println("\n============ [ 창고 수정 ] ============");
         // 먼저 창고 ID로 구분
         int wid = getIntInput("수정할 창고의 ID: ");
@@ -105,7 +109,7 @@ public class WarehouseAdminView {
      * 창고 ID를 관리자로부터 입력 받아 삭제
      * @return 관리자가 입력한 삭제할 창고 ID
      */
-    public int deleteWarehouse() {
+    public int deleteWarehouse() throws IOException {
         System.out.println("\n============ [ 창고 삭제 ] ============");
         return getIntInput("삭제할 창고의 ID: ");
     }
@@ -115,7 +119,7 @@ public class WarehouseAdminView {
      * 창고 조회의 하위 메뉴
      * @return 관리자가 선택한 조회 번호
      */
-    public int selectWarehouseMenu() {
+    public int selectWarehouseMenu() throws IOException {
         System.out.println("""
                 ===========[ 창고 조회 메뉴 ] ==========
                 
@@ -150,9 +154,9 @@ public class WarehouseAdminView {
      * @param prompt 관리자에게 보여줄 메시지
      * @return 관리자가 입력한 문자열
      */
-    public String getInput(String prompt) {
+    public String getInput(String prompt) throws IOException {
         System.out.print("> " + prompt);
-        return sc.nextLine();
+        return br.readLine();
     }
 
     /**
@@ -161,11 +165,11 @@ public class WarehouseAdminView {
      * @param prompt 관리자에게 보여줄 메시지
      * @return 관리자가 입력한 정수
      */
-    public int getIntInput(String prompt) {
+    public int getIntInput(String prompt) throws IOException {
         while (true) {
             try {
                 System.out.print("> " + prompt);
-                String inputLine = sc.nextLine();
+                String inputLine = br.readLine();
                 return Integer.parseInt(inputLine);
             } catch (NumberFormatException e) {
                 System.out.println("숫자로만 입력해주세요.");

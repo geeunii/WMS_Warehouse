@@ -1,6 +1,10 @@
 package view.warehouse_view; // 또는 view.section_view
 
 import vo.Warehouses.WarehouseSection;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Scanner;
 
@@ -9,7 +13,8 @@ import java.util.Scanner;
  */
 public class WarehouseSectionAdminView {
 
-    private final Scanner sc = new Scanner(System.in);
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    // private final Scanner sc = new Scanner(System.in);
 
     /**
      * 창고 구역 관리 메인 메뉴
@@ -45,7 +50,7 @@ public class WarehouseSectionAdminView {
      * 필요한 정보를 관리자로부터 순서대로 입력 받음
      * @return 입력받은 정보가 모두 담긴 새로운 WarehouseSection 객체
      */
-    public WarehouseSection insertWarehouseSection() {
+    public WarehouseSection insertWarehouseSection() throws IOException {
         System.out.println("\n============ [ 구역 등록 ] ============");
         int wid = getIntInput("구역 등록 창고 ID: ");
         String sectionName = getInput("구역 이름 (예: A구역): ");
@@ -64,7 +69,7 @@ public class WarehouseSectionAdminView {
      * 수정에 필요한 정보를 관리자로부터 순서대로 입력 받음
      * @return 수정할 창고 구역의 ID 와 창고 ID, 새로운 정보가 담긴 WarehouseSection 객체
      */
-    public WarehouseSection updateWarehouseSection() {
+    public WarehouseSection updateWarehouseSection() throws IOException {
         System.out.println("\n============ [ 구역 수정 ] ============");
         int sectionID = getIntInput("구역 수정 ID: ");
         int wid = getIntInput("구역 수정 창고 ID: ");
@@ -109,9 +114,9 @@ public class WarehouseSectionAdminView {
      * @param prompt 관리자에게 보여줄 메시지
      * @return 관리자가 입력한 문자열
      */
-    public String getInput(String prompt) {
+    public String getInput(String prompt) throws IOException {
         System.out.print("> " + prompt);
-        return sc.nextLine();
+        return br.readLine();
     }
 
     /**
@@ -124,8 +129,8 @@ public class WarehouseSectionAdminView {
         while (true) {
             try {
                 System.out.print("> " + prompt);
-                return Integer.parseInt(sc.nextLine());
-            } catch (NumberFormatException e) {
+                return Integer.parseInt(br.readLine());
+            } catch (NumberFormatException | IOException e) {
                 System.out.println("숫자로만 입력해주세요.");
             }
         }

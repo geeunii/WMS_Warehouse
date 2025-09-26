@@ -7,6 +7,7 @@ import vo.Members.Admin;
 import vo.Members.Role;
 import vo.Warehouses.WarehouseSection;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class Warehouse_Section_Controller_Impl implements Warehouse_Section_Cont
 
     // 구역 선택 메뉴
     @Override
-    public void choiceSectionMenu(int choice) {
+    public void choiceSectionMenu(int choice) throws IOException {
         switch (choice) {
             case 1: // 구역 등록
                 insertSection();
@@ -57,7 +58,7 @@ public class Warehouse_Section_Controller_Impl implements Warehouse_Section_Cont
 
     // 구역 등록(입력)
     @Override
-    public WarehouseSection insertSection() {
+    public WarehouseSection insertSection() throws IOException {
 
         Optional<Admin> currentAdminOpt = AppSession.get().currentAdmin();
 
@@ -82,7 +83,7 @@ public class Warehouse_Section_Controller_Impl implements Warehouse_Section_Cont
 
     // 구역 수정
     @Override
-    public int updateSection() {
+    public int updateSection() throws IOException {
 
         Optional<Admin> currentAdminOpt = AppSession.get().currentAdmin();
 
