@@ -1,11 +1,13 @@
 package view.admin_home_view;
 
+import controller.warehouse_controller.WarehouseMain_Controller_Impl;
 import view.inventory_view.InventoryAdminView;
 import view.member_view.AdminView;
 import view.request_view.RequestAdminView;
 import view.shipment_view.ShipmentAdminView;
 import view.stock_view.StockAdminView;
 import view.warehouse_view.WarehouseAdminView;
+import view.warehouse_view.WarehouseMainView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +20,7 @@ public class Admin_Home_View {
     InventoryAdminView inventoryAdminView = new InventoryAdminView();
     StockAdminView stockAdminView = new StockAdminView();
     ShipmentAdminView shipmentAdminView = new ShipmentAdminView();
-    WarehouseAdminView warehouseAdminView = new WarehouseAdminView();
+    WarehouseMainView warehouseMainView = new WarehouseMainView();
 
     public void adminHome() throws IOException {
         System.out.println("""
@@ -42,7 +44,8 @@ public class Admin_Home_View {
             //case 3 -> inventoryAdminView
             // case 4 -> stockAdminView
             //case 5 -> shipmentAdminView
-            // case 6 -> warehouseAdminView
+            case 6 -> // warehouseMainView.warehouseManagerMainMenu();
+                    new WarehouseMain_Controller_Impl().start();
             case 7 -> {
                 break;
             }

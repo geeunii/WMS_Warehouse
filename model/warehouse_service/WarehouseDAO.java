@@ -26,7 +26,7 @@ public class WarehouseDAO implements WarehouseDAOImpl {
     }
 
     /**
-     * DAO 인스턴스 반환하는 싱글톤 메서드
+     * DAO 인스턴스 반환하는 싱글톤 정적 메서드
      *
      * @return {@code WarehouseDAO} 인스턴스
      */
@@ -41,26 +41,26 @@ public class WarehouseDAO implements WarehouseDAOImpl {
     // 데이터베이스 연결 객체
     private Connection connection;
 
+
     /**
-     * ResultSet 의 현재 커서 위치에서 Warehouse 객체를 생성하여 반환하는 헬퍼 메서드
-     * 코드 중복을 감소
-     *
-     * @param rs 데이터가 들어있는 ResultSet
-     * @return 채워진 Warehouse 객체
-     * @throws SQLException
+     * 헬퍼 메서드
+     * ResultSet 의 현재 행 데이터를 Warehouse 객채로 변환(매핑)
+     * @param resultSet 데이터베이스 조회 결과Set
+     * @return 데이터가 채워진 Warehouse 객체
+     * @throws SQLException DB 관련 예외
      */
-    private Warehouse mapWarehouse(ResultSet rs) throws SQLException {
+    private Warehouse mapWarehouse(ResultSet resultSet) throws SQLException {
         Warehouse warehouse = new Warehouse();
-        // warehouse.setWarehouseID(rs.getInt("warehouseID"));
-        warehouse.setWarehouseName(rs.getString("warehouseName"));
-        warehouse.setWarehouseAddress(rs.getString("warehouseAddress"));
-        warehouse.setWarehouseStatus(rs.getString("warehouseStatus"));
-        warehouse.setWarehouseCityName(rs.getString("warehouseCityName"));
-        warehouse.setMaxCapacity(rs.getInt("maxCapacity"));
-        warehouse.setWarehouseArea(rs.getInt("warehouseArea"));
-        warehouse.setRegDate(rs.getDate("regDate"));
-        warehouse.setFloorHeight(rs.getInt("floorHeight"));
-        warehouse.setMid(rs.getInt("mid"));
+        warehouse.setId(resultSet.getInt("warehouseID"));
+        warehouse.setWarehouseName(resultSet.getString("warehouseName"));
+        warehouse.setWarehouseAddress(resultSet.getString("warehouseAddress"));
+        warehouse.setWarehouseStatus(resultSet.getString("warehouseStatus"));
+        warehouse.setWarehouseCityName(resultSet.getString("warehouseCityName"));
+        warehouse.setMaxCapacity(resultSet.getInt("maxCapacity"));
+        warehouse.setWarehouseArea(resultSet.getInt("warehouseArea"));
+        warehouse.setRegDate(resultSet.getDate("regDate"));
+        warehouse.setFloorHeight(resultSet.getInt("floorHeight"));
+        warehouse.setMid(resultSet.getInt("mid"));
 
         return warehouse;
     }
@@ -95,7 +95,11 @@ public class WarehouseDAO implements WarehouseDAOImpl {
 //            }
 //    }
 
-    // 창고 등록
+    /**
+     * 새로운 창고 정보 데이터베이스에 등록
+     * @param wh 등록할 창고 정보가 담긴 Warehouse 객체 (id는 auto increment)
+     * @return DB에 등록, 자동 생성된 warehouseID 가 포함된 객체
+     */
     @Override
     public Warehouse insertWarehouse(Warehouse wh) {
         // 프로시저 호출
@@ -133,9 +137,13 @@ public class WarehouseDAO implements WarehouseDAOImpl {
         return null; // 실패 시 null
     }
 
-    // 창고 이름으로 조회
+    /**
+     * 창고 이름으로 창고 목록 검색
+     * @param wname 검색할 창고 이름
+     * @return 검색 조건에 맞는 Warehouse 객체 리스트
+     */
     public List<Warehouse> searchByName(String wname) {
-        List<Warehouse> warehouse = new ArrayList<>();
+        List<Warehouse> warehouseList = new ArrayList<>();
         String sql = "{CALL sp_searchByName(?)}";
 
         try (Connection connection = DBUtil.getConnection();
@@ -144,20 +152,23 @@ public class WarehouseDAO implements WarehouseDAOImpl {
             callableStatement.setString(1, wname);
 
             try (ResultSet resultSet = callableStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    warehouse.add(mapWarehouse(resultSet));
+                while (resultSet.next()) { // 여러 개일수도 있으니 while 문
+                    warehouseList.add(mapWarehouse(resultSet));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return warehouse;
+        return warehouseList;
     }
 
-    // 모든 창고 조회
+    /**
+     * 모든 창고 목록 조회
+     * @return 모든 Warehouse 객체가 담긴 리스트
+     */
     @Override
     public List<Warehouse> searchAllWarehouse() {
-        List<Warehouse> warehouse = new ArrayList<>();
+        List<Warehouse> warehouseList = new ArrayList<>();
         String sql = "{CALL sp_searchAllWarehouse()}";
 
         try (Connection connection = DBUtil.getConnection();
@@ -166,18 +177,22 @@ public class WarehouseDAO implements WarehouseDAOImpl {
 
             while (resultSet.next()) {
                 // 헬퍼 메서드를 사용해 객체로 변환 후 리스트에 추가
-                warehouse.add(mapWarehouse(resultSet));
+                warehouseList.add(mapWarehouse(resultSet));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return warehouse;
+        return warehouseList;
     }
 
-    // 창고 소재지로 조회
+    /**
+     * 창고 소재지(주소) 로 창고 목록 검색
+     * @param waddress 검색할 창고 주소
+     * @return 검색 조건에 맞는 Warehouse 객체 리스트
+     */
     public List<Warehouse> selectByLocation(String waddress) {
-        List<Warehouse> warehouse = new ArrayList<>();
+        List<Warehouse> warehouseList = new ArrayList<>();
         String sql = "{CALL sp_selectByLocation(?)}";
 
         try (Connection connection = DBUtil.getConnection();
@@ -187,18 +202,22 @@ public class WarehouseDAO implements WarehouseDAOImpl {
 
             try (ResultSet resultSet = callableStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    warehouse.add(mapWarehouse(resultSet));
+                    warehouseList.add(mapWarehouse(resultSet));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return warehouse;
+        return warehouseList;
     }
 
-    // 창고 면적조회
+    /**
+     * 창고 면적으로 창고 목록 검색
+     * @param wsize 검색할 창고 면적
+     * @return 검색 조건에 맞는 Warehouse 객체 리스트
+     */
     public List<Warehouse> selectBySize(int wsize) {
-        List<Warehouse> warehouse = new ArrayList<>();
+        List<Warehouse> warehouseList = new ArrayList<>();
         String sql = "{Call sp_selectBySize(?)}";
 
         try (Connection connection = DBUtil.getConnection();
@@ -208,16 +227,20 @@ public class WarehouseDAO implements WarehouseDAOImpl {
 
             try (ResultSet resultSet = callableStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    warehouse.add(mapWarehouse(resultSet));
+                    warehouseList.add(mapWarehouse(resultSet));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return warehouse;
+        return warehouseList;
     }
 
-    // 창고 상태 조회
+    /**
+     * 창고 ID 로 해당 창고 운영 상태 조회
+     * @param wid 조회할 창고의 ID
+     * @return 창고의 운영 상태
+     */
     @Override
     public String getWarehouseStatus(int wid) {
         String status = null; // 결과를 담을 변수, 초기값은 null
@@ -230,7 +253,7 @@ public class WarehouseDAO implements WarehouseDAOImpl {
             callableStatement.setInt(1, wid);
 
             try (ResultSet resultSet = callableStatement.executeQuery()) {
-                if (resultSet.next()) {
+                if (resultSet.next()) { // ID 로 조회하므로 결과는 최대 1개 -> if 사용
                     status = resultSet.getString(1);
                 }
             }
@@ -240,7 +263,11 @@ public class WarehouseDAO implements WarehouseDAOImpl {
         return status;
     }
 
-    // 창고 정보 수정
+    /**
+     * 기존 창고 정보 수정
+     * @param wh 수정할 정보가 담긴 Warehouse 객체 (id 포함)
+     * @return 수정 행의 수. 성공 1, 실패 0
+     */
     public int updateWarehouse(Warehouse wh) {
         String sql = "{CALL sp_updateWarehouse(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
         int affectedRows = 0;
@@ -266,7 +293,11 @@ public class WarehouseDAO implements WarehouseDAOImpl {
         return affectedRows;
     }
 
-    // 창고 삭제
+    /**
+     * 특정 ID 창고 삭제
+     * @param warehouseId 삭제할 창고 ID
+     * @return 삭제 행 수. 성공 1, 실패 0
+     */
     public int deleteWarehouse(int warehouseId) {
         String sql = "{CALL sp_deleteWarehouse(?)}";
         int affectedRows = 0;
