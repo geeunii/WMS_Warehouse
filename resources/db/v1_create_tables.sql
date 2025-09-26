@@ -1,4 +1,3 @@
-
 -- Admin Table
 create table if not exists Admins
 (
@@ -24,15 +23,17 @@ create table if not exists Users
     createAt   date        not null,
     adminCheck varchar(50) not null
 );
-truncate Users;
+
+
+
 
 -- 문의 Table
 CREATE TABLE IF NOT EXISTS Request
 (
     requestID   INT AUTO_INCREMENT PRIMARY KEY,
     uid         INT                       NOT NULL,
-    r_title       VARCHAR(255)              NOT NULL,
-    r_content     TEXT                      NOT NULL,
+    r_title     VARCHAR(255)              NOT NULL,
+    r_content   TEXT                      NOT NULL,
     r_response  TEXT,
     r_createdAt DATETIME    DEFAULT CURRENT_TIMESTAMP,
     r_updatedAt DATETIME    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -52,6 +53,10 @@ CREATE TABLE IF NOT EXISTS Notice
     mid        INT          NOT NULL
 );
 
+
+
+
+
 -- 창고 Table
 DROP TABLE Warehouse;
 CREATE TABLE IF NOT EXISTS Warehouse
@@ -70,17 +75,6 @@ CREATE TABLE IF NOT EXISTS Warehouse
     PRIMARY KEY (warehouseID)
 );
 
--- 창고 요금 Table 
-DROP TABLE WarehouseFee;
-CREATE TABLE IF NOT EXISTS WarehouseFee
-(
-    feeID       INT  NOT NULL AUTO_INCREMENT,
-    startDate   DATE NOT NULL,
-    endDate     DATE NOT NULL,
-    price       INT  NOT NULL,
-    warehouseID INT  NOT NULL,
-    PRIMARY KEY (feeID)
-);
 
 -- 창고 구역 Table 
 DROP TABLE WarehouseSection;
@@ -92,6 +86,39 @@ CREATE TABLE IF NOT EXISTS WarehouseSection
     currentVol  INT         NOT NULL,
     warehouseID INT         NOT NULL,
     PRIMARY KEY (sectionID)
+);
+
+
+
+
+
+-- 재고 관리 Table
+CREATE TABLE `Inventory`
+(
+    `eID`         INT auto_increment NOT NULL,
+    `quantity`    INT                NOT NULL,
+    `warehouseID` INT                NOT NULL,
+    sectionID     INT                NOT NULL,
+    `itemID`      INT                NOT NULL,
+    `stockDate`   DATE,
+    `shipDate`    DATE default null,
+    primary key (eID)
+);
+
+-- 재고 실사 Table
+CREATE TABLE `InvenLog`
+(
+    `logID`            INT  NOT NULL,
+    `eID`              INT  NOT NULL,
+    `log_quantity`     INT  NOT NULL,
+    `warehouseID`      INT  NOT NULL,
+    `itemID`           INT  NOT NULL,
+    `stockingQuantity` INT  NOT NULL,
+    `stockingDate`     DATE NOT NULL,
+    `shippingQuantity` INT  NOT NULL,
+    `shippingDate`     DATE NOT NULL,
+    `logTime`          DATE NOT NULL,
+    primary key (logID)
 );
 
 
