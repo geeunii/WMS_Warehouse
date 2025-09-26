@@ -1,4 +1,4 @@
-INSERT INTO Request(uid, title, content, r_type, r_status)
+INSERT INTO Request(uid, r_title, r_content, r_type, r_status)
 VALUES (1, '게시판 글쓰기 테스트', '게시판 글 내용을 작성합니다.', 'board', '대기'),
        (2, '1:1 문의 테스트', '개인 문의 내용입니다.', 'onetoone', '대기'),
        (1, '게시판 두 번째 글', '두 번째 게시판 글 내용.', 'board', '대기'),

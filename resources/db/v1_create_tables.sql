@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS Request
 (
     requestID   INT AUTO_INCREMENT PRIMARY KEY,
     uid         INT                       NOT NULL,
-    title       VARCHAR(255)              NOT NULL,
-    content     TEXT                      NOT NULL,
+    r_title       VARCHAR(255)              NOT NULL,
+    r_content     TEXT                      NOT NULL,
     r_response  TEXT,
     r_createdAt DATETIME    DEFAULT CURRENT_TIMESTAMP,
     r_updatedAt DATETIME    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
