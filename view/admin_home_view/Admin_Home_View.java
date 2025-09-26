@@ -66,7 +66,7 @@ public class Admin_Home_View {
             case 3 -> inventoryAdminView.Inventory_Management_Menu();
             // case 4 -> stockAdminView
             //case 5 -> shipmentAdminView
-            case 6 -> new WarehouseMain_Controller_Impl().start();
+            case 6 -> WarehouseMain_Controller_Impl.getInstance().start();
             case 7 -> {
                 break;
             }
