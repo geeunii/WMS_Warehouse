@@ -4,56 +4,56 @@ DELIMITER &&
 CREATE PROCEDURE createRequest(IN p_uid INT, IN p_title VARCHAR(255), IN p_content TEXT,
                                IN p_type ENUM ('board','onetoone'))
 BEGIN
-    INSERT INTO Request(uid, title, content, r_type, r_status, r_createdAt, r_updatedAt)
-    VALUES (p_uid, p_title, p_content, p_type, '대기', NOW(), NOW());
+INSERT INTO Request(uid, r_title, r_content, r_type, r_status, r_createdAt, r_updatedAt)
+VALUES (p_uid, p_title, p_content, p_type, '대기', NOW(), NOW());
 END &&
 
 -- 답변 등록/수정
 CREATE PROCEDURE updateResponse(IN p_requestID INT, IN p_response TEXT)
 BEGIN
-    UPDATE Request
-    SET r_response  = p_response,
-        r_status    = '답변완료',
-        r_updatedAt = NOW()
-    WHERE requestID = p_requestID;
+UPDATE Request
+SET r_response  = p_response,
+    r_status    = '답변완료',
+    r_updatedAt = NOW()
+WHERE requestID = p_requestID;
 END &&
 
 -- 사용자 글 수정
 CREATE PROCEDURE updateRequest(IN p_requestID INT, IN p_uid INT, IN p_title VARCHAR(255), IN p_content TEXT)
 BEGIN
-    UPDATE Request
-    SET title       = p_title,
-        content     = p_content,
-        r_updatedAt = NOW()
-    WHERE requestID = p_requestID
-      AND uid = p_uid;
+UPDATE Request
+SET r_title       = p_title,
+    r_content     = p_content,
+    r_updatedAt = NOW()
+WHERE requestID = p_requestID
+  AND uid = p_uid;
 END &&
 
 -- 글 삭제
 CREATE PROCEDURE deleteRequest(IN p_requestID INT, IN p_uid INT)
 BEGIN
-    DELETE
-    FROM Request
-    WHERE requestID = p_requestID
-      AND uid = p_uid;
+DELETE
+FROM Request
+WHERE requestID = p_requestID
+  AND uid = p_uid;
 END &&
 
 -- 타입별 전체 조회
 CREATE PROCEDURE selectAllRequests(IN p_type ENUM ('board','onetoone'))
 BEGIN
-    SELECT *
-    FROM Request
-    WHERE r_type = p_type
-    ORDER BY r_createdAt DESC;
+SELECT *
+FROM Request
+WHERE r_type = p_type
+ORDER BY r_createdAt DESC;
 END &&
 
 -- 사용자 본인 글 조회
 CREATE PROCEDURE selectMyRequest(IN p_uid INT)
 BEGIN
-    SELECT *
-    FROM Request
-    WHERE uid = p_uid
-    ORDER BY r_createdAt DESC;
+SELECT *
+FROM Request
+WHERE uid = p_uid
+ORDER BY r_createdAt DESC;
 END &&
 
 DELIMITER ;
