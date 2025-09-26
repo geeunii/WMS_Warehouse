@@ -69,6 +69,8 @@ public class User_Home_View {
                     new Request_Controller(userId, isAdmin).run();
                 }
 
+                case 4 -> stockUserView.stockUserMenu();
+
             }
 
 
