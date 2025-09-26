@@ -18,10 +18,10 @@ public class Main {
 
 
         while (true) {
-            System.out.println("""
+            System.out.print("""
                     =========================================
                     ========== [ 창고 관리 프로그램 ] ==========
-                    ============== [ 메뉴 선택 ] ==============
+                    ================ [ 메뉴 ] ================
                     
                                    1. 사용자
                                    2. 관리자
@@ -29,8 +29,7 @@ public class Main {
                     
                     ==========================================
                     ==========================================
-                    
-                    """);
+                    [메뉴 선택]: """);
 
             int choice = Integer.parseInt(br.readLine());
 
@@ -44,12 +43,12 @@ public class Main {
         }
     }
 
-    public static void user() throws IOException {
-        while (true) {
-            System.out.println("""
+    public static void user() throws IOException{
+       while (true) {
+           System.out.print("""
                     =========================================
                     ========== [ 창고 관리 프로그램 ] ==========
-                    =========== [ 사용자 메뉴 선택 ] ===========
+                    ============= [ 사용자 메뉴 ] =============
                     
                                    1. 로그인
                                    2. 회원가입
@@ -59,30 +58,29 @@ public class Main {
                     
                     ==========================================
                     ==========================================
-                    
-                    """);
+                    [메뉴 선택]: """);
 
-            int choice = Integer.parseInt(br.readLine());
+           int choice = Integer.parseInt(br.readLine());
 
-            switch (choice) {
-                case 1 -> login_register.userLogin();
-                case 2 -> login_register.userRegister();
-                case 3 -> login_register.findUserID();
-                case 4 -> login_register.changeUserPW();
-                case 5 -> {
-                    return;
-                }
+           switch (choice) {
+               case 1 -> login_register.userLogin();
+               case 2 -> login_register.userRegister();
+               case 3 -> login_register.findUserID();
+               case 4 -> login_register.changeUserPW();
+               case 5 -> {
+                   return;
+               }
 
-            }
-        }
+           }
+       }
     }
 
-    public static void admin() throws IOException {
+    public static void admin() throws IOException{
         while (true) {
-            System.out.println("""
+            System.out.print("""
                     =========================================
                     ========== [ 창고 관리 프로그램 ] ==========
-                    =========== [ 관리자 메뉴 선택 ] ===========
+                    ============= [ 관리자 메뉴 ] =============
                     
                                    1. 로그인
                                    2. 회원가입
@@ -92,8 +90,7 @@ public class Main {
                     
                     ==========================================
                     ==========================================
-                    
-                    """);
+                    [메뉴 선택]: """);
 
             int choice = Integer.parseInt(br.readLine());
 
@@ -102,11 +99,9 @@ public class Main {
                 case 2 -> login_register.adminRegister();
                 case 3 -> login_register.findAdminID();
                 case 4 -> login_register.changeAdminPW();
-                case 5 -> {
-                    return;
-                }
+                case 5 -> {return ;}
 
             }
         }
-    }
+        }
 }
