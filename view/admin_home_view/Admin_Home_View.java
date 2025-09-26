@@ -36,7 +36,7 @@ public class Admin_Home_View {
         switch (choice) {
             case 1 -> adminView.adminMenu();
             // case 2 -> requestAdminView
-            //case 3 -> inventoryAdminView
+            case 3 -> inventoryAdminView.Inventory_Management_Menu();
             // case 4 -> stockAdminView
             //case 5 -> shipmentAdminView
             // case 6 -> warehouseAdminView
