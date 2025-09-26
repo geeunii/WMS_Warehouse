@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS Notice
 
 
 -- 창고 Table
-DROP TABLE Warehouse;
+DROP TABLE if exists Warehouse;
 CREATE TABLE IF NOT EXISTS Warehouse
 (
     warehouseID
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS Warehouse
 
 
 -- 창고 구역 Table 
-DROP TABLE WarehouseSection;
+DROP TABLE if exists WarehouseSection;
 CREATE TABLE IF NOT EXISTS WarehouseSection
 (
     sectionID
@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS WarehouseSection
     sectionName
                 VARCHAR(50) NOT NULL,
     maxVol      INT         NOT NULL,
-    currentVol  INT         NOT NULL,
+    currentVol  INT         NULL,
     warehouseID INT         NOT NULL,
     PRIMARY KEY
         (
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS WarehouseSection
             )
 );
 
-drop table Item;
+drop table if exists Item;
 CREATE TABLE `Item`
 (
     `itemID`      INT auto_increment                                            NOT NULL,

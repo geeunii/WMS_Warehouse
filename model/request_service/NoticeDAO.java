@@ -10,7 +10,7 @@ public class NoticeDAO {
 
     // 공지 작성
     public int createNotice(Notice notice) {
-        String sql = "INSERT INTO notice(n_title, n_content, n_createAt, n_updateAt, n_priority, mid) VALUES (?, ?, NOW(), NOW(), ?, ?)";
+        String sql = "INSERT INTO Notice(n_title, n_content, n_createAt, n_updateAt, n_priority, mid) VALUES (?, ?, NOW(), NOW(), ?, ?)";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -67,7 +67,7 @@ public class NoticeDAO {
     // 전체 공지 조회
     public List<Notice> selectAll() {
         List<Notice> list = new ArrayList<>();
-        String sql = "SELECT * FROM notice ORDER BY n_priority DESC, n_createAt DESC";
+        String sql = "SELECT * FROM Notice ORDER BY n_priority DESC, n_createAt DESC";
 
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -85,7 +85,7 @@ public class NoticeDAO {
 
     // 공지 상세 조회
     public Notice selectNotice(int noticeID) {
-        String sql = "SELECT * FROM notice WHERE noticeID = ?";
+        String sql = "SELECT * FROM Notice WHERE noticeID = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
