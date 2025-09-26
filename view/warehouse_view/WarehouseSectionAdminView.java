@@ -16,12 +16,26 @@ public class WarehouseSectionAdminView {
      * @return 관리자가 선택한 메뉴 번호
      */
     public int warehouseSectionMainMenu() {
-        System.out.println("\n[본사 관리자 > 창고 통합 관리 > 창고 구역 관리]");
-        System.out.println("1. 창고 구역 등록");
-        System.out.println("2. 창고 구역 수정");
-        System.out.println("3. 창고 구역 삭제");
-        System.out.println("4. 창고 구역 조회 (ID)");
-        System.out.println("5. 뒤로 가기");
+        System.out.println("""
+                ===========[ 창고 구역 관리 ] ==========
+                ============ [ 메뉴 선택 ] ============
+                
+                   1. 구역 등록
+                   2. 구역 수정
+                   3. 구역 삭제
+                   4. 구역 조회
+                   5. 뒤로 가기
+                
+                ======================================
+                ======================================
+                """);
+
+//        System.out.println("\n[본사 관리자 > 창고 통합 관리 > 창고 구역 관리]");
+//        System.out.println("1. 창고 구역 등록");
+//        System.out.println("2. 창고 구역 수정");
+//        System.out.println("3. 창고 구역 삭제");
+//        System.out.println("4. 창고 구역 조회 (ID)");
+//        System.out.println("5. 뒤로 가기");
 
         return getIntInput("메뉴를 선택하세요: ");
     }
@@ -32,7 +46,7 @@ public class WarehouseSectionAdminView {
      * @return 입력받은 정보가 모두 담긴 새로운 WarehouseSection 객체
      */
     public WarehouseSection insertWarehouseSection() {
-        System.out.println("\n[본사 관리자 > 창고 통합 관리 > 창고 구역 관리 > 창고 구역 등록]");
+        System.out.println("\n============ [ 구역 등록 ] ============");
         int wid = getIntInput("구역 등록 창고 ID: ");
         String sectionName = getInput("구역 이름 (예: A구역): ");
         int maxVol = getIntInput("최대 허용 부피: ");
@@ -51,7 +65,7 @@ public class WarehouseSectionAdminView {
      * @return 수정할 창고 구역의 ID 와 창고 ID, 새로운 정보가 담긴 WarehouseSection 객체
      */
     public WarehouseSection updateWarehouseSection() {
-        System.out.println("\n[본사 관리자 > 창고 통합 관리 > 창고 구역 관리 > 창고 구역 수정]");
+        System.out.println("\n============ [ 구역 수정 ] ============");
         int sectionID = getIntInput("구역 수정 ID: ");
         int wid = getIntInput("구역 수정 창고 ID: ");
         String sectionName = getInput("구역 수정 이름: ");
@@ -72,7 +86,7 @@ public class WarehouseSectionAdminView {
      * @return 관리자가 입력한 삭제 창고 구역 ID
      */
     public int deleteWarehouseSection() {
-        System.out.println("\n[본사 관리자 > 창고 통합 관리 > 창고 구역 관리 > 창고 구역 삭제]");
+        System.out.println("\n============ [ 구역 삭제 ] ============");
         return getIntInput("삭제할 구역 ID: ");
     }
 
@@ -83,7 +97,7 @@ public class WarehouseSectionAdminView {
      * @return 관리자가 입력한 조회 창고 구역 ID
      */
     public int searchWarehouseSection() {
-        System.out.println("\n[본사 관리자 > 창고 통합 관리 > 창고 구역 관리 > 창고 구역 조회]");
+        System.out.println("\n============ [ 구역 조회 ] ============");
         return getIntInput("조회할 창고 구역 ID: ");
     }
 

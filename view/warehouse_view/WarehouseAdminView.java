@@ -18,12 +18,19 @@ public class WarehouseAdminView {
      * @return 관리자가 선택한 메뉴 번호
      */
     public int warehouseMainMenu() {
-        System.out.println("\n[본사 관리자 > 창고 통합 관리 > 창고 관리]");
-        System.out.println("1. 창고 등록");
-        System.out.println("2. 창고 수정");
-        System.out.println("3. 창고 삭제");
-        System.out.println("4. 창고 조회");
-        System.out.println("5. 뒤로 가기");
+        System.out.println("""
+                ============ [ 창고 관리 ] ============
+                ============ [ 메뉴 선택 ] ============
+                
+                   1. 창고 등록
+                   2. 창고 수정
+                   3. 창고 삭제
+                   4. 창고 조회
+                   5. 뒤로 가기
+                
+                ======================================
+                ======================================
+                """);
 
         return getIntInput("메뉴를 선택하세요: ");
     }
@@ -36,14 +43,14 @@ public class WarehouseAdminView {
      * @return 입력받은 정보가 모두 담긴 새로운 Warehouse 객체
      */
     public Warehouse insertWarehouse() {
-        System.out.println("\n[본사 관리자 > 창고 통합 관리 > 창고 관리 > 창고 등록]");
+        System.out.println("\n============ [ 창고 등록 ] ============");
 
         String wname = getInput("창고 이름: ");
         String waddress = getInput("창고 주소: ");
         String wcity = getInput("창고 도시: ");
 
         String wstatus = getInput("창고 상태: ");
-        int wcapacity = getIntInput("창고 최대 수용량: ");
+        // int wcapacity = getIntInput("창고 최대 수용량: ");
         int warea = getIntInput("창고 면적: ");
         int wheight = getIntInput("층고: ");
         int mid = getIntInput("담당 관리자 ID: ");
@@ -53,7 +60,7 @@ public class WarehouseAdminView {
                 .warehouseAddress(waddress)
                 .warehouseCityName(wcity)
                 .warehouseStatus(wstatus)
-                .maxCapacity(wcapacity)
+                // .maxCapacity(wcapacity)
                 .warehouseArea(warea)
                 .floorHeight(wheight)
                 .mid(mid)
@@ -66,7 +73,7 @@ public class WarehouseAdminView {
      * @return 수정할 창고의 ID 와 새로운 정보가 모두 담긴 Warehouse 객체
      */
     public Warehouse updateWarehouse() {
-        System.out.println("\n[본사 관리자 > 창고 통합 관리 > 창고 관리 > 창고 수정]");
+        System.out.println("\n============ [ 창고 수정 ] ============");
         // 먼저 창고 ID로 구분
         int wid = getIntInput("수정할 창고의 ID: ");
         // System.out.println("----------------------------");
@@ -75,7 +82,7 @@ public class WarehouseAdminView {
         String wcity = getInput("수정 창고 도시: ");
         String wstatus = getInput("수정 창고 상태: ");
 
-        int wcapacity = getIntInput("수정 창고 최대 수용량: ");
+        // int wcapacity = getIntInput("수정 창고 최대 수용량: ");
         int warea = getIntInput("수정 창고 면적: ");
         int wheight = getIntInput("수정 층고: ");
         int newMid = getIntInput("수정 담당 관리자 ID: ");
@@ -86,7 +93,7 @@ public class WarehouseAdminView {
                 .warehouseAddress(waddress)
                 .warehouseCityName(wcity)
                 .warehouseStatus(wstatus)
-                .maxCapacity(wcapacity)
+                // .maxCapacity(wcapacity)
                 .warehouseArea(warea)
                 .floorHeight(wheight)
                 .mid(newMid) // 새로운 관리자 ID를 mid 필드에 설정
@@ -99,7 +106,7 @@ public class WarehouseAdminView {
      * @return 관리자가 입력한 삭제할 창고 ID
      */
     public int deleteWarehouse() {
-        System.out.println("\n[본사 관리자 > 창고 통합 관리 > 창고 관리 > 창고 삭제]");
+        System.out.println("\n============ [ 창고 삭제 ] ============");
         return getIntInput("삭제할 창고의 ID: ");
     }
 
@@ -109,13 +116,28 @@ public class WarehouseAdminView {
      * @return 관리자가 선택한 조회 번호
      */
     public int selectWarehouseMenu() {
-        System.out.println("\n[본사 관리자 > 창고 통합 관리 > 창고 관리 > 창고 조회]");
-        System.out.println("1. 전체 창고 조회");
-        System.out.println("2. 소재지별 창고 조회");
-        System.out.println("3. 창고명으로 조회");
-        System.out.println("4. 창고 면적 조회");
-        System.out.println("5. 창고 상태 조회");
-        System.out.println("6. 뒤로 가기");
+        System.out.println("""
+                ===========[ 창고 조회 메뉴 ] ==========
+                
+                   1. 전체 창고 조회
+                   2. 소재지별 창고 조회
+                   3. 창고명으로 조회
+                   4. 창고 면적 조회
+                   5. 창고 상태 조회
+                   6. 뒤로 가기
+                
+                ======================================
+                """);
+
+//
+//        System.out.println("\n============ [ 창고 조회 ] ============");
+//        System.out.println("1. 전체 창고 조회");
+//        System.out.println("2. 소재지별 창고 조회");
+//        System.out.println("3. 창고명으로 조회");
+//        System.out.println("4. 창고 면적 조회");
+//        System.out.println("5. 창고 상태 조회");
+//        System.out.println("6. 뒤로 가기");
+//        System.out.println("=======================================");
 
         return getIntInput("메뉴를 선택하세요: ");
     }

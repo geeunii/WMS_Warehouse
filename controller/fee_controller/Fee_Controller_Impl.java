@@ -1,10 +1,14 @@
 package controller.fee_controller;
 
 import model.warehouse_service.FeeDAO;
+import util.AppSession;
 import view.warehouse_view.WarehouseFeeAdminView;
+import vo.Members.Admin;
+import vo.Members.Role;
 import vo.Warehouses.WarehouseFee;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Fee_Controller_Impl implements Fee_Controller {
 
@@ -77,6 +81,14 @@ public class Fee_Controller_Impl implements Fee_Controller {
     // 창고 요금 등록
     @Override
     public WarehouseFee insertFee() {
+
+        Optional<Admin> currentAdminOpt = AppSession.get().currentAdmin();
+
+        if (currentAdminOpt.isEmpty() || currentAdminOpt.get().getRole() != Role.Master) {
+            feeView.displayError("총관리자(Master) 권한이 필요합니다.");
+            return null;
+        }
+
         // View 로부터 새로운 요금 정보를 받아옴
         WarehouseFee newFee = feeView.insertWarehouseFee();
 
@@ -95,6 +107,14 @@ public class Fee_Controller_Impl implements Fee_Controller {
     // 창고 요금 수정
     @Override
     public int updateFee() {
+
+        Optional<Admin> currentAdminOpt = AppSession.get().currentAdmin();
+
+        if (currentAdminOpt.isEmpty() || currentAdminOpt.get().getRole() != Role.Master) {
+            feeView.displayError("총관리자(Master) 권한이 필요합니다.");
+            return 0;
+        }
+
         WarehouseFee feeUpdate = feeView.updateWarehouseFee();
 
         int result = feeDAO.updateFee(feeUpdate);
@@ -110,6 +130,13 @@ public class Fee_Controller_Impl implements Fee_Controller {
     // 창고 요금 삭제
     @Override
     public int deleteFee() {
+        Optional<Admin> currentAdminOpt = AppSession.get().currentAdmin();
+
+        if (currentAdminOpt.isEmpty() || currentAdminOpt.get().getRole() != Role.Master) {
+            feeView.displayError("총관리자(Master) 권한이 필요합니다.");
+            return 0;
+        }
+
         int feeDelete = feeView.deleteWarehouseFee();
 
         int result = feeDAO.deleteFee(feeDelete);

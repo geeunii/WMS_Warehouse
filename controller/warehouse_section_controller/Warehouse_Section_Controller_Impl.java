@@ -1,10 +1,14 @@
 package controller.warehouse_section_controller;
 
 import model.warehouse_service.WarehouseSectionDAO;
+import util.AppSession;
 import view.warehouse_view.WarehouseSectionAdminView;
+import vo.Members.Admin;
+import vo.Members.Role;
 import vo.Warehouses.WarehouseSection;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Warehouse_Section_Controller_Impl implements Warehouse_Section_Controller {
 
@@ -54,6 +58,14 @@ public class Warehouse_Section_Controller_Impl implements Warehouse_Section_Cont
     // 구역 등록(입력)
     @Override
     public WarehouseSection insertSection() {
+
+        Optional<Admin> currentAdminOpt = AppSession.get().currentAdmin();
+
+        if (currentAdminOpt.isEmpty() || currentAdminOpt.get().getRole() != Role.Master) {
+            sectionAdminView.displayError("총관리자(Master) 권한이 필요합니다.");
+            return null;
+        }
+
         // View 호출 -> 사용자로부터 등록할 구역 정보 받아옴
         WarehouseSection newSection = sectionAdminView.insertWarehouseSection();
         // DAO 에 정보 전달-> DB에 저장 요청 -> ID가 부여된 객체 받음
@@ -71,6 +83,14 @@ public class Warehouse_Section_Controller_Impl implements Warehouse_Section_Cont
     // 구역 수정
     @Override
     public int updateSection() {
+
+        Optional<Admin> currentAdminOpt = AppSession.get().currentAdmin();
+
+        if (currentAdminOpt.isEmpty() || currentAdminOpt.get().getRole() != Role.Master) {
+            sectionAdminView.displayError("총관리자(Master) 권한이 필요합니다.");
+            return 0;
+        }
+
         WarehouseSection sectionUpdate = sectionAdminView.updateWarehouseSection();
 
         int result = sectionDAO.updateSection(sectionUpdate);
@@ -87,6 +107,14 @@ public class Warehouse_Section_Controller_Impl implements Warehouse_Section_Cont
     // 구역 삭제
     @Override
     public int deleteSection() {
+
+        Optional<Admin> currentAdminOpt = AppSession.get().currentAdmin();
+
+        if (currentAdminOpt.isEmpty() || currentAdminOpt.get().getRole() != Role.Master) {
+            sectionAdminView.displayError("총관리자(Master) 권한이 필요합니다.");
+            return 0;
+        }
+
         int sectionDelete = sectionAdminView.deleteWarehouseSection();
 
         int result = sectionDAO.deleteSection(sectionDelete);

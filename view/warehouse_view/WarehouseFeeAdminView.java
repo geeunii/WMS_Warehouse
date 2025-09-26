@@ -21,12 +21,25 @@ public class WarehouseFeeAdminView {
      * @return 관리자가 선택한 메뉴 번호
      */
     public int warehouseFeeMainMenu() {
-        System.out.println("\n[본사 관리자 > 창고 통합 관리 > 창고 요금 관리]");
-        System.out.println("1. 창고 요금 등록");
-        System.out.println("2. 창고 요금 수정");
-        System.out.println("3. 창고 요금 삭제");
-        System.out.println("4. 창고 요금 조회");
-        System.out.println("5. 뒤로 가기");
+        System.out.println("""
+                ===========[ 창고 요금 관리 ] ==========
+                ============ [ 메뉴 선택 ] ============
+                
+                   1. 요금 등록
+                   2. 요금 수정
+                   3. 요금 삭제
+                   4. 요금 조회
+                   5. 뒤로 가기
+                
+                ======================================
+                ======================================
+                """);
+//        System.out.println("\n[본사 관리자 > 창고 통합 관리 > 창고 요금 관리]");
+//        System.out.println("1. 창고 요금 등록");
+//        System.out.println("2. 창고 요금 수정");
+//        System.out.println("3. 창고 요금 삭제");
+//        System.out.println("4. 창고 요금 조회");
+//        System.out.println("5. 뒤로 가기");
 
         return getIntInput("메뉴를 선택하세요: ");
     }
@@ -39,9 +52,9 @@ public class WarehouseFeeAdminView {
      * @return 입력받은 정보가 모두 담긴 새로운 WarehouseFee 객체
      */
     public WarehouseFee insertWarehouseFee() {
-        System.out.println("\n[본사 관리자 > 창고 통합 관리 > 창고 요금 관리 > 창고 요금 등록]");
+        System.out.println("\n============ [ 요금 등록 ] ============");
 
-        int wid = getIntInput("요금 적용 창고 번호: ");
+        int wid = getIntInput("등록할 창고 번호: ");
         int wprice = getIntInput("창고 요금: ");
         Date wstartDate = getInDate("계약 시작일(YYYY-MM-DD): ");
         Date wendDate = getInDate("계약 종료일(YYYY-MM-DD): ");
@@ -62,9 +75,9 @@ public class WarehouseFeeAdminView {
      * startDate 는 고정. endDate 만 수정
      */
     public WarehouseFee updateWarehouseFee() {
-        System.out.println("\n[본사 관리자 > 창고 통합 관리 > 창고 요금 관리 > 창고 요금 수정]");
+        System.out.println("\n============ [ 요금 수정 ] ============");
         int feeID = getIntInput("수정할 요금 번호: ");
-        int wid = getIntInput("수정 창고 번호: ");
+        int wid = getIntInput("수정할 창고 번호: ");
         int wprice = getIntInput("수정 금액: ");
         Date wendDate = getInDate("수정 계약 종료일(YYYY-MM-DD): "); // 계약 시작일은 고정
 
@@ -82,7 +95,7 @@ public class WarehouseFeeAdminView {
      * @return 관리자가 입력한 삭제할 창고 요금 ID
      */
     public int deleteWarehouseFee() {
-        System.out.println("\n[본사 관리자 > 창고 통합 관리 > 창고 요금 관리 > 창고 요금 삭제]");
+        System.out.println("\n============ [ 요금 삭제 ] ============");
         return getIntInput("삭제할 창고 요금의 ID: ");
     }
 
@@ -92,10 +105,20 @@ public class WarehouseFeeAdminView {
      * @return 관리자가 선택한 조회 번호
      */
     public int selectWarehouseFeeMenu() {
-        System.out.println("\n[본사 관리자 > 창고 통합 관리 > 창고 요금 관리 > 창고 요금 조회]");
-        System.out.println("1. 요금 ID로 창고 요금 조회");
-        System.out.println("2. 창고 ID로 창고 요금 조회");
-        System.out.println("3. 뒤로 가기");
+        System.out.println("""
+                ===========[ 요금 조회 메뉴 ] ==========
+                
+                   1. 요금 ID로 창고 요금 조회
+                   2. 창고 ID로 창고 요금 조회
+                   3. 뒤로 가기
+                
+                ======================================
+                """);
+
+//        System.out.println("\n[본사 관리자 > 창고 통합 관리 > 창고 요금 관리 > 창고 요금 조회]");
+//        System.out.println("1. 요금 ID로 창고 요금 조회");
+//        System.out.println("2. 창고 ID로 창고 요금 조회");
+//        System.out.println("3. 뒤로 가기");
 
         return getIntInput("메뉴를 선택하세요: ");
     }

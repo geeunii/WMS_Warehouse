@@ -1,5 +1,6 @@
 package controller.warehouse_controller;
 
+import vo.Members.Admin;
 import vo.Warehouses.Warehouse;
 
 import java.util.List;
@@ -43,7 +44,7 @@ public interface Warehouse_Controller {
     void choiceWarehouseMenu(int choice);
 
     // 창고 등록(입력) 기능
-    Warehouse insertWarehouse();
+    // Warehouse insertWarehouse();
 
     // 창고 ID 로 조회 후 현재 창고 정보 수정
     int updateWarehouse();
@@ -51,6 +52,9 @@ public interface Warehouse_Controller {
     // 창고 ID 로 조회 후 창고 삭제
     int deleteWarehouse();
 
+
+    // 창고 등록 - 총관리자만 가능
+    Warehouse insertWarehouse();
 
     /**
      * 창고 정보 이름으로 조회 후 화면에 표시하도록 요청
