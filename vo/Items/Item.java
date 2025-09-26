@@ -16,7 +16,7 @@ public class Item {
     private int itemPrice;
     private int weight;
     private assemble assembleType;
-    private String brandName;
+    private String registrantName ;
     private String material;
     private int volume;
     private int width;
