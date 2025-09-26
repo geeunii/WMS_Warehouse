@@ -45,6 +45,7 @@ public class WarehouseDAO implements WarehouseDAOImpl {
     /**
      * 헬퍼 메서드
      * ResultSet 의 현재 행 데이터를 Warehouse 객채로 변환(매핑)
+     *
      * @param resultSet 데이터베이스 조회 결과Set
      * @return 데이터가 채워진 Warehouse 객체
      * @throws SQLException DB 관련 예외
@@ -97,13 +98,14 @@ public class WarehouseDAO implements WarehouseDAOImpl {
 
     /**
      * 새로운 창고 정보 데이터베이스에 등록
+     *
      * @param wh 등록할 창고 정보가 담긴 Warehouse 객체 (id는 auto increment)
      * @return DB에 등록, 자동 생성된 warehouseID 가 포함된 객체
      */
     @Override
     public Warehouse insertWarehouse(Warehouse wh) {
         // 프로시저 호출
-        String sql = "{CALL sp_InsertWarehouse(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL sp_InsertWarehouse(?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try (Connection connection = DBUtil.getConnection();
              CallableStatement callableStatement = connection.prepareCall(sql)) {
@@ -113,23 +115,24 @@ public class WarehouseDAO implements WarehouseDAOImpl {
             callableStatement.setString(2, wh.getWarehouseAddress());
             callableStatement.setString(3, wh.getWarehouseStatus());
             callableStatement.setString(4, wh.getWarehouseCityName());
-            callableStatement.setInt(5, wh.getMaxCapacity());
-            callableStatement.setInt(6, wh.getWarehouseArea());
-            callableStatement.setInt(7, wh.getFloorHeight());
-            callableStatement.setInt(8, wh.getMid());
+            // callableStatement.setInt(5, wh.getMaxCapacity());
+            callableStatement.setInt(5, wh.getWarehouseArea());
+            callableStatement.setInt(6, wh.getFloorHeight());
+            callableStatement.setInt(7, wh.getMid());
 
             // OUT 파라미터 등록
-            callableStatement.registerOutParameter(9, Types.INTEGER);
+            callableStatement.registerOutParameter(8, Types.INTEGER);
 
             // 프로시저 실행
             callableStatement.executeUpdate();
 
             // OUT 파라미터 값 가져오기
-            int newWarehouseID = callableStatement.getInt(9);
+            int newWarehouseID = callableStatement.getInt(8);
 
             // 객체에 ID 설정 후 반환
-            wh.setId(newWarehouseID);
-            return wh;
+//            wh.setId(newWarehouseID);
+//            return wh;
+            return this.selectId(newWarehouseID);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -139,6 +142,7 @@ public class WarehouseDAO implements WarehouseDAOImpl {
 
     /**
      * 창고 이름으로 창고 목록 검색
+     *
      * @param wname 검색할 창고 이름
      * @return 검색 조건에 맞는 Warehouse 객체 리스트
      */
@@ -164,6 +168,7 @@ public class WarehouseDAO implements WarehouseDAOImpl {
 
     /**
      * 모든 창고 목록 조회
+     *
      * @return 모든 Warehouse 객체가 담긴 리스트
      */
     @Override
@@ -188,6 +193,7 @@ public class WarehouseDAO implements WarehouseDAOImpl {
 
     /**
      * 창고 소재지(주소) 로 창고 목록 검색
+     *
      * @param waddress 검색할 창고 주소
      * @return 검색 조건에 맞는 Warehouse 객체 리스트
      */
@@ -213,6 +219,7 @@ public class WarehouseDAO implements WarehouseDAOImpl {
 
     /**
      * 창고 면적으로 창고 목록 검색
+     *
      * @param wsize 검색할 창고 면적
      * @return 검색 조건에 맞는 Warehouse 객체 리스트
      */
@@ -238,6 +245,7 @@ public class WarehouseDAO implements WarehouseDAOImpl {
 
     /**
      * 창고 ID 로 해당 창고 운영 상태 조회
+     *
      * @param wid 조회할 창고의 ID
      * @return 창고의 운영 상태
      */
@@ -265,11 +273,12 @@ public class WarehouseDAO implements WarehouseDAOImpl {
 
     /**
      * 기존 창고 정보 수정
+     *
      * @param wh 수정할 정보가 담긴 Warehouse 객체 (id 포함)
      * @return 수정 행의 수. 성공 1, 실패 0
      */
     public int updateWarehouse(Warehouse wh) {
-        String sql = "{CALL sp_updateWarehouse(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL sp_updateWarehouse(?, ?, ?, ?, ?, ?, ?, ?)}";
         int affectedRows = 0;
 
         try (Connection connection = DBUtil.getConnection();
@@ -277,13 +286,31 @@ public class WarehouseDAO implements WarehouseDAOImpl {
 
             callableStatement.setInt(1, wh.getId()); // p_warehouseID
             callableStatement.setString(2, wh.getWarehouseName());
-            callableStatement.setString(3, wh.getWarehouseAddress());
+             callableStatement.setString(3, wh.getWarehouseAddress());
             callableStatement.setString(4, wh.getWarehouseStatus());
-            callableStatement.setString(5, wh.getWarehouseCityName());
-            callableStatement.setInt(6, wh.getMaxCapacity());
-            callableStatement.setInt(7, wh.getWarehouseArea());
-            callableStatement.setInt(8, wh.getFloorHeight());
-            callableStatement.setInt(9, wh.getMid());
+             callableStatement.setString(5, wh.getWarehouseCityName());
+             // callableStatement.setInt(6, wh.getMaxCapacity());
+//             callableStatement.setInt(6, wh.getWarehouseArea());
+//             callableStatement.setInt(7, wh.getFloorHeight());
+//            callableStatement.setInt(8, wh.getMid());
+
+            if (wh.getWarehouseArea() == null) {
+                callableStatement.setNull(6, Types.INTEGER);
+            } else {
+                callableStatement.setInt(6, wh.getWarehouseArea());
+            }
+
+            if (wh.getFloorHeight() == null) {
+                callableStatement.setNull(7, Types.INTEGER);
+            } else {
+                callableStatement.setInt(7, wh.getFloorHeight());
+            }
+
+            if (wh.getMid() == null) {
+                callableStatement.setNull(8, Types.INTEGER);
+            } else {
+                callableStatement.setInt(8, wh.getMid());
+            }
 
             affectedRows = callableStatement.executeUpdate();
 
@@ -295,6 +322,7 @@ public class WarehouseDAO implements WarehouseDAOImpl {
 
     /**
      * 특정 ID 창고 삭제
+     *
      * @param warehouseId 삭제할 창고 ID
      * @return 삭제 행 수. 성공 1, 실패 0
      */
@@ -313,5 +341,29 @@ public class WarehouseDAO implements WarehouseDAOImpl {
             e.printStackTrace();
         }
         return affectedRows;
+    }
+
+    /**
+     * ID 단일 조회
+     * @param warehouseId 창고 ID
+     * @return 창고 ID 를 통해 DB 등록된 창고 불러옴.
+     */
+    public Warehouse selectId(int warehouseId) {
+        Warehouse warehouse = null;
+        String sql = "{CALL sp_GetWarehouseId(?)}";
+
+        try (Connection connection = DBUtil.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(sql)) {
+
+            callableStatement.setInt(1, warehouseId);
+            try (ResultSet rs = callableStatement.executeQuery()) {
+                if (rs.next()) {
+                    warehouse = mapWarehouse(rs);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return warehouse;
     }
 }
