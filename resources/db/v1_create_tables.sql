@@ -52,4 +52,48 @@ CREATE TABLE IF NOT EXISTS Notice
     mid        INT          NOT NULL
 );
 
+-- 창고 Table
+DROP TABLE Warehouse;
+CREATE TABLE IF NOT EXISTS Warehouse
+(
+    warehouseID       INT                                               NOT NULL AUTO_INCREMENT,
+    warehouseName     VARCHAR(50)                                       NOT NULL,
+    warehouseAddress  VARCHAR(255)                                      NOT NULL,
+    warehouseStatus   VARCHAR(20)                                       NOT NULL,
+    warehouseCityName VARCHAR(50)                                       NOT NULL,
+    -- maxCapacity       INT          NOT NULL,
+    maxCapacity       INT AS (warehouseArea * floorHeight * 0.9) STORED NOT NULL COMMENT '창고 최대 수용량',
+    warehouseArea     INT                                               NOT NULL,
+    regDate           DATE                                              NOT NULL DEFAULT (CURRENT_DATE),
+    floorHeight       INT                                               NOT NULL,
+    mid               INT                                               NOT NULL,
+    PRIMARY KEY (warehouseID)
+);
+
+-- 창고 요금 Table 
+DROP TABLE WarehouseFee;
+CREATE TABLE IF NOT EXISTS WarehouseFee
+(
+    feeID       INT  NOT NULL AUTO_INCREMENT,
+    startDate   DATE NOT NULL,
+    endDate     DATE NOT NULL,
+    price       INT  NOT NULL,
+    warehouseID INT  NOT NULL,
+    PRIMARY KEY (feeID)
+);
+
+-- 창고 구역 Table 
+DROP TABLE WarehouseSection;
+CREATE TABLE IF NOT EXISTS WarehouseSection
+(
+    sectionID   INT         NOT NULL AUTO_INCREMENT,
+    sectionName VARCHAR(50) NOT NULL,
+    maxVol      INT         NOT NULL,
+    currentVol  INT         NOT NULL,
+    warehouseID INT         NOT NULL,
+    PRIMARY KEY (sectionID)
+);
+
+
+
 
