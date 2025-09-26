@@ -32,4 +32,20 @@ public class Warehouse extends WarehouseBaseVO {
     private int floorHeight;
     private int mid; // 관리자 ID (FK)
 
+    // 창고 정보 출력
+    @Override
+    public String toString() {
+        return "============ [ 창고 정보 ] ============" + "\n" +
+                "창고 ID : " + getId() + "\n" +
+                "창고 이름 : " + warehouseName + "\n" +
+                "창고 주소 : " + warehouseAddress + "\n" +
+                "창고 상태 : " + warehouseStatus + "\n" +
+                "창고 소재지 : " + warehouseCityName + "\n" +
+                "창고 최대 수용량 : " + maxCapacity + "\n" +
+                "창고 등록일 : " + regDate + "\n" +
+                "창고 면적 : " + warehouseArea + "\n" +
+                "층고 : " + floorHeight + "\n" +
+                "창고 관리자 ID : " + mid + "\n" +
+                "====================================";
+    }
 }

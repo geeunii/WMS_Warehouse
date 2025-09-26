@@ -167,7 +167,7 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
 
 
     /**
-     * 창고 ID를 받아 해당 창고의 '모든 구역'의 용량을 합산하여 상태를 반환합
+     * 창고 ID를 받아 해당 창고의 '모든 구역'의 용량을 합산하여 상태를 반환
      * 상태: 가득 참, 보통, 여유, 비어있음, 정보 없음
      * @param wid 창고 ID
      * @return 창고 상태 문자열
@@ -204,11 +204,11 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
 
         // 점유율에 따라 상태를 결정하여 반환
         if (occupancyRate >= 95) {
-            return "포화";
+            return String.format("포화 (현재 사용량: %.2f%%)", occupancyRate);
         } else if (occupancyRate >= 60) {
-            return "보통";
+            return String.format("보통 (현재 사용량: %.2f%%)", occupancyRate);
         } else if (occupancyRate > 0) {
-            return "여유";
+            return String.format("여유 (현재 사용량: %.2f%%)", occupancyRate);
         } else { // totalCurrentStock 이 0인 경우
             return "비어있음";
         }
