@@ -24,9 +24,9 @@ public class Admin_Home_View {
     WarehouseMainView warehouseMainView = new WarehouseMainView();
 
     public void adminHome() throws IOException {
-        System.out.println("""
+        System.out.print("""
                 ===========[ 관리자 홈 화면 ] ==========
-                ============ [ 메뉴 선택 ] ============
+                ============== [ 메뉴 ] ==============
                 
                    1. 회원 관리         4. 입고 관리
                    2. 게시판 관리        5. 출고 관리
@@ -35,7 +35,7 @@ public class Admin_Home_View {
                 
                 ======================================
                 ======================================
-                """);
+                [메뉴 선택]: """);
 
         int choice = Integer.parseInt(br.readLine());
 
