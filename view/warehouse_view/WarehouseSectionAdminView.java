@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * 창고 구역 관리 기능 사용자 인터페이스 담당
@@ -20,7 +19,7 @@ public class WarehouseSectionAdminView {
      * 창고 구역 관리 메인 메뉴
      * @return 관리자가 선택한 메뉴 번호
      */
-    public int warehouseSectionMainMenu() {
+    public int warehouseSectionMainMenu() throws IOException {
         System.out.println("""
                 ===========[ 창고 구역 관리 ] ==========
                 ============ [ 메뉴 선택 ] ============
@@ -50,38 +49,89 @@ public class WarehouseSectionAdminView {
      * 필요한 정보를 관리자로부터 순서대로 입력 받음
      * @return 입력받은 정보가 모두 담긴 새로운 WarehouseSection 객체
      */
-    public WarehouseSection insertWarehouseSection() throws IOException {
+//    public WarehouseSection insertWarehouseSection() throws IOException {
+//        System.out.println("\n============ [ 구역 등록 ] ============");
+//        int wid = getIntInput("구역 등록 창고 ID: ");
+//        String sectionName = getInput("구역 이름 (예: A구역): ");
+//        int maxVol = getIntInput("최대 허용 부피: ");
+//        int currentVol = getIntInput("현재 적재 부피: ");
+//        return WarehouseSection.builder()
+//                .warehouseID(wid)
+//                .sectionName(sectionName)
+//                .maxVol(maxVol)
+//                .currentVol(currentVol)
+//                .build();
+//    }
+
+    // 창고 등록 V2
+    /**
+     * [추가] 사용자로부터 1개의 구역 정보를 입력받는 메서드
+     */
+    public WarehouseSection insertWarehouseSectionV2() throws IOException {
         System.out.println("\n============ [ 구역 등록 ] ============");
-        int wid = getIntInput("구역 등록 창고 ID: ");
-        String sectionName = getInput("구역 이름 (예: A구역): ");
+        String sectionName = getInput("구역 이름: ");
         int maxVol = getIntInput("최대 허용 부피: ");
-        int currentVol = getIntInput("현재 적재 부피: ");
         return WarehouseSection.builder()
-                .warehouseID(wid)
                 .sectionName(sectionName)
                 .maxVol(maxVol)
-                .currentVol(currentVol)
                 .build();
     }
+
+    /**
+     * [추가] 구역을 계속 추가할지 사용자에게 물어보는 메서드
+     */
+    public boolean askToAddAnother() throws IOException {
+        String answer = getInput("구역을 계속 추가하시겠습니까? (y/n): ");
+        return answer.equalsIgnoreCase("y");
+    }
+
+    /**
+     * [추가] 컨트롤러가 사용할 창고 ID 입력 메서드
+     */
+    public int getWarehouseIdInput() throws IOException {
+        return getIntInput("구역을 조회할 창고 ID를 입력하세요: ");
+    }
+
+
 
     /**
      * 2. 창고 구역 수정
      * 수정에 필요한 정보를 관리자로부터 순서대로 입력 받음
      * @return 수정할 창고 구역의 ID 와 창고 ID, 새로운 정보가 담긴 WarehouseSection 객체
      */
+//    public WarehouseSection updateWarehouseSection() throws IOException {
+//        System.out.println("\n============ [ 구역 수정 ] ============");
+//        int sectionID = getIntInput("구역 수정 ID: ");
+//        int wid = getIntInput("구역 수정 창고 ID: ");
+//        String sectionName = getInput("구역 수정 이름: ");
+//        int maxVol = getIntInput("구역 수정 최대 허용 부피: ");
+//        int currentVol = getIntInput("구역 수정 현재 적재 부피: ");
+//        return WarehouseSection.builder()
+//                .id(sectionID)
+//                .warehouseID(wid)
+//                .sectionName(sectionName)
+//                .maxVol(maxVol)
+//                .currentVol(currentVol)
+//                .build();
+//    }
+
     public WarehouseSection updateWarehouseSection() throws IOException {
         System.out.println("\n============ [ 구역 수정 ] ============");
-        int sectionID = getIntInput("구역 수정 ID: ");
-        int wid = getIntInput("구역 수정 창고 ID: ");
-        String sectionName = getInput("구역 수정 이름: ");
-        int maxVol = getIntInput("구역 수정 최대 허용 부피: ");
-        int currentVol = getIntInput("구역 수정 현재 적재 부피: ");
+        int sectionID = getIntInput("수정할 구역 ID: ");
+
+        // int wid = getIntInput("구역 수정 창고 ID: ");
+
+        String sectionName = getInput("새 구역 이름: ");
+        int maxVol = getIntInput("새 최대 허용 부피: ");
+        // int currentVol = getIntInput("새 현재 적재 부피: ");
+
         return WarehouseSection.builder()
                 .id(sectionID)
-                .warehouseID(wid)
+                // [삭제] warehouseID 설정 부분을 삭제합니다.
+                // .warehouseID(wid)
                 .sectionName(sectionName)
                 .maxVol(maxVol)
-                .currentVol(currentVol)
+                // .currentVol(currentVol)
                 .build();
     }
 
@@ -90,7 +140,7 @@ public class WarehouseSectionAdminView {
      * 창고 구역 ID 관리자로부터 입력 받아 삭제
      * @return 관리자가 입력한 삭제 창고 구역 ID
      */
-    public int deleteWarehouseSection() {
+    public int deleteWarehouseSection() throws IOException {
         System.out.println("\n============ [ 구역 삭제 ] ============");
         return getIntInput("삭제할 구역 ID: ");
     }
@@ -101,9 +151,14 @@ public class WarehouseSectionAdminView {
      * 창고 구역 ID 관리자로부터 입력 받아 조회
      * @return 관리자가 입력한 조회 창고 구역 ID
      */
-    public int searchWarehouseSection() {
+    public int searchWarehouseSection() throws IOException {
         System.out.println("\n============ [ 구역 조회 ] ============");
-        return getIntInput("조회할 창고 구역 ID: ");
+        return getIntInput("조회할 창고 ID: ");
+    }
+
+    public int searchWarehouseIDSection() throws IOException {
+        System.out.println("\n============ [ 구역 조회 ] ============");
+        return getIntInput("조회할 창고 ID: ");
     }
 
 
@@ -125,12 +180,12 @@ public class WarehouseSectionAdminView {
      * @param prompt 관리자에게 보여줄 메시지
      * @return 관리자가 입력한 정수
      */
-    public int getIntInput(String prompt) {
+    public int getIntInput(String prompt) throws IOException {
         while (true) {
             try {
                 System.out.print("> " + prompt);
                 return Integer.parseInt(br.readLine());
-            } catch (NumberFormatException | IOException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("숫자로만 입력해주세요.");
             }
         }

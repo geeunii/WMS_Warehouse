@@ -286,13 +286,31 @@ public class WarehouseDAO implements WarehouseDAOImpl {
 
             callableStatement.setInt(1, wh.getId()); // p_warehouseID
             callableStatement.setString(2, wh.getWarehouseName());
-            callableStatement.setString(3, wh.getWarehouseAddress());
+             callableStatement.setString(3, wh.getWarehouseAddress());
             callableStatement.setString(4, wh.getWarehouseStatus());
-            callableStatement.setString(5, wh.getWarehouseCityName());
-            // callableStatement.setInt(6, wh.getMaxCapacity());
-            callableStatement.setInt(6, wh.getWarehouseArea());
-            callableStatement.setInt(7, wh.getFloorHeight());
-            callableStatement.setInt(8, wh.getMid());
+             callableStatement.setString(5, wh.getWarehouseCityName());
+             // callableStatement.setInt(6, wh.getMaxCapacity());
+//             callableStatement.setInt(6, wh.getWarehouseArea());
+//             callableStatement.setInt(7, wh.getFloorHeight());
+//            callableStatement.setInt(8, wh.getMid());
+
+            if (wh.getWarehouseArea() == null) {
+                callableStatement.setNull(6, Types.INTEGER);
+            } else {
+                callableStatement.setInt(6, wh.getWarehouseArea());
+            }
+
+            if (wh.getFloorHeight() == null) {
+                callableStatement.setNull(7, Types.INTEGER);
+            } else {
+                callableStatement.setInt(7, wh.getFloorHeight());
+            }
+
+            if (wh.getMid() == null) {
+                callableStatement.setNull(8, Types.INTEGER);
+            } else {
+                callableStatement.setInt(8, wh.getMid());
+            }
 
             affectedRows = callableStatement.executeUpdate();
 

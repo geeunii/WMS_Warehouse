@@ -5,7 +5,9 @@ import vo.Warehouses.Warehouse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -24,7 +26,7 @@ public class WarehouseAdminView {
     public int warehouseMainMenu() throws IOException {
         System.out.println("""
                 ============ [ 창고 관리 ] ============
-                ============ [ 메뉴 선택 ] ============
+                ============== [ 메뉴 ] ==============
                 
                    1. 창고 등록
                    2. 창고 수정
@@ -82,27 +84,29 @@ public class WarehouseAdminView {
         int wid = getIntInput("수정할 창고의 ID: ");
         // System.out.println("----------------------------");
         String wname = getInput("수정 창고 이름: ");
-        String waddress = getInput("수정 창고 주소: ");
-        String wcity = getInput("수정 창고 도시: ");
+        // String waddress = getInput("수정 창고 주소: ");
+        // String wcity = getInput("수정 창고 도시: ");
         String wstatus = getInput("수정 창고 상태: ");
 
         // int wcapacity = getIntInput("수정 창고 최대 수용량: ");
-        int warea = getIntInput("수정 창고 면적: ");
-        int wheight = getIntInput("수정 층고: ");
+        // int warea = getIntInput("수정 창고 면적: ");
+        // int wheight = getIntInput("수정 층고: ");
         int newMid = getIntInput("수정 담당 관리자 ID: ");
 
         return Warehouse.builder()
                 .id(wid) // 수정할 대상의 ID
                 .warehouseName(wname)
-                .warehouseAddress(waddress)
-                .warehouseCityName(wcity)
+                // .warehouseAddress(waddress)
+                // .warehouseCityName(wcity)
                 .warehouseStatus(wstatus)
                 // .maxCapacity(wcapacity)
-                .warehouseArea(warea)
-                .floorHeight(wheight)
+                // .warehouseArea(warea)
+                // .floorHeight(wheight)
                 .mid(newMid) // 새로운 관리자 ID를 mid 필드에 설정
                 .build();
     }
+
+
 
     /**
      * 3. 창고 삭제
@@ -121,7 +125,8 @@ public class WarehouseAdminView {
      */
     public int selectWarehouseMenu() throws IOException {
         System.out.println("""
-                ===========[ 창고 조회 메뉴 ] ==========
+                ======================================
+                ===========[ 창고 조회 메뉴 ] ===========
                 
                    1. 전체 창고 조회
                    2. 소재지별 창고 조회
@@ -130,6 +135,7 @@ public class WarehouseAdminView {
                    5. 창고 상태 조회
                    6. 뒤로 가기
                 
+                ======================================
                 ======================================
                 """);
 

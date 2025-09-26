@@ -26,11 +26,11 @@ public class Warehouse extends WarehouseBaseVO {
     private String warehouseAddress;
     private String warehouseStatus;
     private String warehouseCityName;
-    private int maxCapacity;
+    private Integer maxCapacity;
     private Date regDate;
-    private int warehouseArea;
-    private int floorHeight;
-    private int mid; // 관리자 ID (FK)
+    private Integer warehouseArea;
+    private Integer floorHeight;
+    private Integer mid; // 관리자 ID (FK)
 
     // 창고 정보 출력
     @Override

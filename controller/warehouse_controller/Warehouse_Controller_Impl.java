@@ -11,6 +11,7 @@ import vo.Warehouses.WarehouseSection;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -193,7 +194,7 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
 
         // 창고 정보가 없거나, 구역이 하나도 등록되지 않은 경우
         if (sections == null || sections.isEmpty()) {
-            return "창고 또는 구역 정보 없음";
+            return "창고 또는 구역 정보 없음\n비어있음 (현재 사용량: 0.00%)";
         }
 
         // 창고의 총 용량과 현재 총 재고를 계산할 변수를 준비
@@ -237,10 +238,13 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
             return 0;
         }
 
-        Warehouse warehouseToUpdate = warehouseAdminView.updateWarehouse();
-        int result = warehouseDAO.updateWarehouse(warehouseToUpdate);
+        Warehouse warehouse = warehouseAdminView.updateWarehouse();
+
+        int result = warehouseDAO.updateWarehouse(warehouse);
+
         if (result > 0) {
-            warehouseAdminView.displaySuccess("창고 정보 수정 성공 ", warehouseToUpdate);
+            Warehouse updatedWarehouse = warehouseDAO.selectId(warehouse.getId());
+            warehouseAdminView.displaySuccess("창고 정보 수정 성공", updatedWarehouse);
         } else {
             warehouseAdminView.displayError("창고 정보 수정 실패 (ID 확인 필요)");
         }

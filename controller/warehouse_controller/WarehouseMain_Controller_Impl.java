@@ -11,7 +11,7 @@ import vo.Members.Admin;
 
 import java.io.IOException;
 
-public class WarehouseMain_Controller_Impl implements WarehouseMain_Controller{
+public class WarehouseMain_Controller_Impl implements WarehouseMain_Controller {
 
     private final WarehouseMainView warehouseMainView = new WarehouseMainView();
     private final Admin_Home_View adminHomeView = new Admin_Home_View();
@@ -33,7 +33,33 @@ public class WarehouseMain_Controller_Impl implements WarehouseMain_Controller{
         return controller;
     }
 
+    @Override
+    public void start() throws IOException {
+        while (true) {
+            // int choice = adminHomeView.adminHome();
+            int choice = warehouseMainView.warehouseManagerMainMenu();
+            if (choice == 3) {
+                return;
+            }
 
+            switch (choice) {
+                case 1: { // 창고 관리
+                    WarehouseAdminView view = new WarehouseAdminView();
+                    int adminChoice = view.warehouseMainMenu();
+                    warehouseController.choiceWarehouseMenu(adminChoice);
+                    break;
+                }
+                case 2: { // 창고 구역 관리
+                    WarehouseSectionAdminView view = new WarehouseSectionAdminView();
+                    int sectionChoice = view.warehouseSectionMainMenu();
+                    sectionController.choiceSectionMenu(sectionChoice);
+                    break;
+                }
+            }
+        }
+    }
+
+    /*
     @Override
     public void start() throws IOException {
         while (true) {
@@ -65,4 +91,5 @@ public class WarehouseMain_Controller_Impl implements WarehouseMain_Controller{
             }
         }
     }
+    */
 }

@@ -7,6 +7,7 @@ import vo.Members.Admin;
 import vo.Members.Role;
 import vo.Warehouses.WarehouseFee;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class Fee_Controller_Impl implements Fee_Controller {
 
     // 요금 메뉴 선택
     @Override
-    public void choiceFeeMenu(int choice) {
+    public void choiceFeeMenu(int choice) throws IOException {
         switch (choice) {
             case 1: // 창고 요금 등록
                 insertFee();
@@ -57,7 +58,7 @@ public class Fee_Controller_Impl implements Fee_Controller {
     }
 
     // 요금 조회 서브 메뉴
-    private void handleFeeSearchMenu(int choice) {
+    private void handleFeeSearchMenu(int choice) throws IOException {
         switch (choice) {
             case 1: // 요금 ID 조회
                 int feeID = feeView.getFeeIdInput();
@@ -80,7 +81,7 @@ public class Fee_Controller_Impl implements Fee_Controller {
 
     // 창고 요금 등록
     @Override
-    public WarehouseFee insertFee() {
+    public WarehouseFee insertFee() throws IOException {
 
         Optional<Admin> currentAdminOpt = AppSession.get().currentAdmin();
 
@@ -106,7 +107,7 @@ public class Fee_Controller_Impl implements Fee_Controller {
 
     // 창고 요금 수정
     @Override
-    public int updateFee() {
+    public int updateFee() throws IOException {
 
         Optional<Admin> currentAdminOpt = AppSession.get().currentAdmin();
 
@@ -129,7 +130,7 @@ public class Fee_Controller_Impl implements Fee_Controller {
 
     // 창고 요금 삭제
     @Override
-    public int deleteFee() {
+    public int deleteFee() throws IOException {
         Optional<Admin> currentAdminOpt = AppSession.get().currentAdmin();
 
         if (currentAdminOpt.isEmpty() || currentAdminOpt.get().getRole() != Role.Master) {

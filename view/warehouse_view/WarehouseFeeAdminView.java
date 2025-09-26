@@ -23,7 +23,7 @@ public class WarehouseFeeAdminView {
      * 창고 금액 관리 메인 메뉴
      * @return 관리자가 선택한 메뉴 번호
      */
-    public int warehouseFeeMainMenu() {
+    public int warehouseFeeMainMenu() throws IOException {
         System.out.println("""
                 ===========[ 창고 요금 관리 ] ==========
                 ============ [ 메뉴 선택 ] ============
@@ -54,7 +54,7 @@ public class WarehouseFeeAdminView {
      * WarehouseFee 객체 생성하여 반환
      * @return 입력받은 정보가 모두 담긴 새로운 WarehouseFee 객체
      */
-    public WarehouseFee insertWarehouseFee() {
+    public WarehouseFee insertWarehouseFee() throws IOException {
         System.out.println("\n============ [ 요금 등록 ] ============");
 
         int wid = getIntInput("등록할 창고 번호: ");
@@ -77,7 +77,7 @@ public class WarehouseFeeAdminView {
      * @return 수정할 창고 금액 ID, 창고 ID 와 새로운 정보가 모두 담긴 WarehouseFee 객체
      * startDate 는 고정. endDate 만 수정
      */
-    public WarehouseFee updateWarehouseFee() {
+    public WarehouseFee updateWarehouseFee() throws IOException {
         System.out.println("\n============ [ 요금 수정 ] ============");
         int feeID = getIntInput("수정할 요금 번호: ");
         int wid = getIntInput("수정할 창고 번호: ");
@@ -97,7 +97,7 @@ public class WarehouseFeeAdminView {
      * 창고 금액 ID를 관리자로부터 입력 받아 삭제
      * @return 관리자가 입력한 삭제할 창고 요금 ID
      */
-    public int deleteWarehouseFee() {
+    public int deleteWarehouseFee() throws IOException {
         System.out.println("\n============ [ 요금 삭제 ] ============");
         return getIntInput("삭제할 창고 요금의 ID: ");
     }
@@ -107,7 +107,7 @@ public class WarehouseFeeAdminView {
      * 창고 요금 조회의 하위 메뉴
      * @return 관리자가 선택한 조회 번호
      */
-    public int selectWarehouseFeeMenu() {
+    public int selectWarehouseFeeMenu() throws IOException {
         System.out.println("""
                 ===========[ 요금 조회 메뉴 ] ==========
                 
@@ -131,7 +131,7 @@ public class WarehouseFeeAdminView {
      * 창고 요금 ID (feeID) 필요
      * @return feeID
      */
-    public int getFeeIdInput() {
+    public int getFeeIdInput() throws IOException {
         return getIntInput("조회할 요금 ID를 입력하세요: ");
     }
 
@@ -140,7 +140,7 @@ public class WarehouseFeeAdminView {
      * 창고 ID (warehouseID) 필요
      * @return warehouseID
      */
-    public int getWarehouseIdInput() {
+    public int getWarehouseIdInput() throws IOException {
         return getIntInput("조회할 창고 ID를 입력하세요: ");
     }
 
@@ -164,13 +164,13 @@ public class WarehouseFeeAdminView {
      * @param prompt 관리자에게 보여줄 메시지
      * @return 관리자가 입력한 정수
      */
-    public int getIntInput(String prompt) {
+    public int getIntInput(String prompt) throws IOException {
         while (true) {
             try {
                 System.out.print("> " + prompt);
                 String inputLine = br.readLine();
                 return Integer.parseInt(inputLine);
-            } catch (NumberFormatException | IOException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("숫자로만 입력해주세요.");
             }
         }

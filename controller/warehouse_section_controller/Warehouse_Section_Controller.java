@@ -18,7 +18,11 @@ public interface Warehouse_Section_Controller {
      * 새로운 구역 등록
      * @return DB에 등록 완료된 WarehouseSection 객체 (ID 포함. auto increment)
      */
-    WarehouseSection insertSection() throws IOException;
+    //WarehouseSection insertSection() throws IOException;
+
+    // 구역 등록 V2
+    WarehouseSection insertSectionV2() throws IOException;
+
 
     /**
      * 특정 구역 수정
@@ -30,18 +34,18 @@ public interface Warehouse_Section_Controller {
      * 특정 구역 삭제
      * @return 삭제된 행의 수. 성공 1, 실패 0
      */
-    int deleteSection();
+    int deleteSection() throws IOException;
 
     /**
      * 특정 구역 ID로 정보 조회
      * @return 조회된 WarehouseSection 객체
      */
-    WarehouseSection selectSectionById();
+    WarehouseSection selectSectionById() throws IOException;
 
     /**
      * 특정 창고 ID에 소속된 모든 구역 목록 조회
      * @param warehouseID 조회할 창고 ID
      * @return 해당 창고의 모든 구역 정보 리스트
      */
-    List<WarehouseSection> selectSectionWarehouseID(int warehouseID);
+    List<WarehouseSection> selectSectionWarehouseID(int warehouseID) throws IOException;
 }
