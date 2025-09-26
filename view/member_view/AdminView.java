@@ -22,7 +22,7 @@ public class AdminView {
         while (true) {
             System.out.println("""
                     ========== [ 내 정보 관리 메뉴 ] ==========
-                    ============= [ 메뉴 선택 ] ==============
+                    =============== [ 메뉴 ] ================
                     
                       1. 내 정보 조회          2. 내 정보 수정
                     
@@ -33,7 +33,7 @@ public class AdminView {
                       7. 내 정보 삭제         8. 종료  
                     
                     =========================================
-                    """);
+                    [메뉴 선택]: """);
 
             int choice = Integer.parseInt(br.readLine());
             switch (choice) {
@@ -127,9 +127,15 @@ public class AdminView {
             System.out.println("회원 정보를 불러오지 못했습니다.");
         } else {
             for (User user : userList) {
-                System.out.println("회원 번호 : " + user.getUid() + " 회원 이름 : " + user.getName() + " 회원 아이디 : " + user.getUserID()
-                + " 회원 전화번호 : " + user.getPhone() + " 회원 계좌번호 : " + user.getAccount() + " 회원 승인 여부 : " + user.getAdminCheck()
-                + " 회원 계성 생성 일자 : " + user.getCreateAt());
+                System.out.println("=======================================");
+                System.out.println("[회원 번호] : " + user.getUid());
+                System.out.println("[회원 이름] : " + user.getName());
+                System.out.println("[회원 아이디] : " + user.getUserID());
+                System.out.println("[회원 전화번호] : " + user.getPhone());
+                System.out.println("[회원 계좌번호] : " + user.getAccount());
+                System.out.println("[회원 승인 여부] : " + user.getAdminCheck());
+                System.out.println("[회원 계성 생성 일자] : " + user.getCreateAt());
+                System.out.println("=======================================");
             }
         }
     }
@@ -145,13 +151,15 @@ public class AdminView {
         if (user == null) {
             System.out.println("회원 정보를 불러오지 못했습니다. ");
         } else {
-            System.out.println("회원 번호 : " + user.getUid());
-            System.out.println("회원 이름 : " + user.getName());
-            System.out.println("회원 아이디 : " + user.getUserID());
-            System.out.println("회원 전화번호 : " + user.getPhone());
-            System.out.println("회원 계좌번호 : " + user.getAccount());
-            System.out.println("회원 승인 여부 : " + user.getAdminCheck());
-            System.out.println("회원 계성 생성 일자 : " + user.getCreateAt());
+            System.out.println("=======================================");
+            System.out.println("[회원 번호] : " + user.getUid());
+            System.out.println("[회원 이름] : " + user.getName());
+            System.out.println("[회원 아이디] : " + user.getUserID());
+            System.out.println("[회원 전화번호] : " + user.getPhone());
+            System.out.println("[회원 계좌번호] : " + user.getAccount());
+            System.out.println("[회원 승인 여부] : " + user.getAdminCheck());
+            System.out.println("[회원 계성 생성 일자] : " + user.getCreateAt());
+            System.out.println("=======================================");
         }
     }
 
@@ -167,9 +175,15 @@ public class AdminView {
             System.out.println("회원 리스트가 비어있습니다.");
         } else {
             for (User user : userList) {
-                System.out.println("회원 번호 : " + user.getUid() + " 회원 이름 : " + user.getName() + " 회원 아이디 : " + user.getUserID()
-                        + " 회원 전화번호 : " + user.getPhone() + " 회원 계좌번호 : " + user.getAccount() + " 회원 승인 여부 : " + user.getAdminCheck()
-                        + " 회원 계성 생성 일자 : " + user.getCreateAt());
+                System.out.println("=======================================");
+                System.out.println("[회원 번호] : " + user.getUid());
+                System.out.println("[회원 이름] : " + user.getName());
+                System.out.println("[회원 아이디] : " + user.getUserID());
+                System.out.println("[회원 전화번호] : " + user.getPhone());
+                System.out.println("[회원 계좌번호] : " + user.getAccount());
+                System.out.println("[회원 승인 여부] : " + user.getAdminCheck());
+                System.out.println("[회원 계성 생성 일자] : " + user.getCreateAt());
+                System.out.println("=======================================");
             }
         }
     }
