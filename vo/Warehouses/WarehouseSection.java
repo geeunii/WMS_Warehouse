@@ -3,10 +3,12 @@ package vo.Warehouses;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 // 창고 내부 구역
 public class WarehouseSection extends WarehouseChildVO {
 
