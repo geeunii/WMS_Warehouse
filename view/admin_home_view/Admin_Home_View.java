@@ -1,6 +1,12 @@
 package view.admin_home_view;
 
+<<<<<<< HEAD
+import controller.notice_controller.NoticeControllerImpl;
+import controller.request_controller.Request_Controller;
+import util.AppSession;
+=======
 import controller.warehouse_controller.WarehouseMain_Controller_Impl;
+>>>>>>> develop
 import view.inventory_view.InventoryAdminView;
 import view.member_view.AdminView;
 import view.request_view.RequestAdminView;
@@ -40,6 +46,23 @@ public class Admin_Home_View {
 
         switch (choice) {
             case 1 -> adminView.adminMenu();
+<<<<<<< HEAD
+
+            case 2 -> {
+                boolean runMenu = true;
+                while (runMenu) {
+                    int menuChoice = requestAdminView.mainMenu();
+                    switch (menuChoice) {
+                        case 1 -> new Request_Controller(0, true).run();
+                        case 2 -> new NoticeControllerImpl(true).run();
+                        case 3 -> {
+                            System.out.println("뒤로갑니다.");
+                            runMenu = false; // while 종료
+                        }
+                    }
+                }
+
+=======
             // case 2 -> requestAdminView
             //case 3 -> inventoryAdminView
             // case 4 -> stockAdminView
@@ -48,7 +71,15 @@ public class Admin_Home_View {
                     new WarehouseMain_Controller_Impl().start();
             case 7 -> {
                 break;
+>>>>>>> develop
             }
         }
     }
+
 }
+
+
+
+
+
+
