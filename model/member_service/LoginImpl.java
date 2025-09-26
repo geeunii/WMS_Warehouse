@@ -27,8 +27,8 @@ public class LoginImpl implements Login_Interface{
 
             try (ResultSet rs = cal.executeQuery()) { // ← SELECT면 이걸로!
                 if (rs.next()) {
-                    String adminCheck = rs.getString(8); // WAITING/APPROVAL/CANCEL
-                    if (!"Approval".equals(adminCheck)) return null;
+//                    String adminCheck = rs.getString(8); // WAITING/APPROVAL/CANCEL
+//                    if (!"Approval".equals(adminCheck)) return null;
 
                     user.setUid(rs.getInt(1));
                     user.setName(rs.getString(2));
