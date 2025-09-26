@@ -29,7 +29,6 @@ public class Main {
                     
                     ==========================================
                     ==========================================
-                    
                     """);
 
             int choice = Integer.parseInt(br.readLine());
@@ -59,7 +58,6 @@ public class Main {
                     
                     ==========================================
                     ==========================================
-                    
                     """);
 
            int choice = Integer.parseInt(br.readLine());
@@ -92,7 +90,6 @@ public class Main {
                     
                     ==========================================
                     ==========================================
-                    
                     """);
 
             int choice = Integer.parseInt(br.readLine());
