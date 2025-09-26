@@ -1,7 +1,9 @@
 package controller.warehouse_controller;
 
+import vo.Members.Admin;
 import vo.Warehouses.Warehouse;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -40,17 +42,20 @@ public interface Warehouse_Controller {
      *
      * @param choice 선택된 메뉴 번호
      */
-    void choiceWarehouseMenu(int choice);
+    void choiceWarehouseMenu(int choice) throws IOException;
 
     // 창고 등록(입력) 기능
-    Warehouse insertWarehouse();
+    // Warehouse insertWarehouse();
 
     // 창고 ID 로 조회 후 현재 창고 정보 수정
-    int updateWarehouse();
+    int updateWarehouse() throws IOException;
 
     // 창고 ID 로 조회 후 창고 삭제
-    int deleteWarehouse();
+    int deleteWarehouse() throws IOException;
 
+
+    // 창고 등록 - 총관리자만 가능
+    Warehouse insertWarehouse() throws IOException;
 
     /**
      * 창고 정보 이름으로 조회 후 화면에 표시하도록 요청

@@ -12,6 +12,7 @@ import view.shipment_view.ShipmentAdminView;
 import view.stock_view.StockAdminView;
 import view.warehouse_view.WarehouseAdminView;
 import view.warehouse_view.WarehouseMainView;
+import vo.Members.Admin;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -62,10 +63,10 @@ public class Admin_Home_View {
             }
 
             // case 2 -> requestAdminView
-            //case 3 -> inventoryAdminView
+            case 3 -> inventoryAdminView.Inventory_Management_Menu();
             // case 4 -> stockAdminView
             //case 5 -> shipmentAdminView
-            case 6 -> new WarehouseMain_Controller_Impl().start();
+            case 6 -> WarehouseMain_Controller_Impl.getInstance().start();
             case 7 -> {
                 break;
             }

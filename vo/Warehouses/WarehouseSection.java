@@ -26,4 +26,15 @@ public class WarehouseSection extends WarehouseChildVO {
     public WarehouseSection() {
 
     }
+
+    @Override
+    public String toString() {
+        return "============ [ 창고 구역 ] ============" + "\n" +
+                "구역 ID : " + getId() + "\n" +
+                "창고 ID : " + getWarehouseID() + "\n" +
+                "구역 이름 : " + sectionName + "\n" +
+                "최대 허용 부피 : " + maxVol + "\n" +
+                "현재 적재 부피 : " + currentVol + "\n" +
+                "====================================";
+    }
 }
