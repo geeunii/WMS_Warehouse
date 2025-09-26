@@ -1,10 +1,12 @@
-package controller.stock_controller;
+package model.stock_service;
 
 import vo.Items.Item;
 import vo.Stocks.Stock;
 
-public interface Stock_Controller {
+public interface StockDAO_Interface {
 
     public int insertStock(Stock stock, Item item);
     public int deleteStock(int stockID);
+
+
 }

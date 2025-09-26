@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS WarehouseSection
             )
 );
 
-
+drop table Item;
 CREATE TABLE `Item`
 (
     `itemID`      INT auto_increment                                            NOT NULL,
@@ -144,7 +144,7 @@ CREATE TABLE `Item`
     `itemPrice`   INT                                                           NOT NULL,
     `weight`      INT                                                           NOT NULL,
     `assemble`    VARCHAR(50)                                                   NOT NULL,
-    `brandName`   VARCHAR(50)                                                   NOT NULL,
+    `customerName`   VARCHAR(50)                                                   NOT NULL,
     `material`    VARCHAR(50)                                                   NOT NULL,
     `volume`      DECIMAL(10, 3) AS (`width` * `height` * `levelHeight`) STORED NOT NULL, -- stored 를 사용한 이유는 조회할때 빠르게 하기 위함입니다. stored 를 사용하지 않으면 기본값인 VIRTUAL을 사용하는데
     `width`       DECIMAL(10, 2)                                                NOT NULL, -- VIRTUAL을 사용하게 되면 조회 할때마다 부피값 계산을 해서 출력 해주기 때문에 데이터가 엄청 많다는 가정하에 속도가 느릴거 같아 stored를 사용했습니다.
@@ -185,27 +185,37 @@ CREATE TABLE `InvenLog`
     primary key (logID)
 );
 
-CREATE TABLE `Shippment` (
-                             `shipmentID`	INT auto_increment	NOT NULL,
-                             `shippingDate`	DATE	NOT NULL,
-                             `shipping_p_quantity`	INT	NOT NULL,
-                             `shipppingProcess`	VARCHAR(20)	NOT NULL,
-                             `waybill`	VARCHAR(50)	NOT NULL,
-                             itemId  int not null,
-                             `uid`	INT	NOT NULL,
-                             primary key(shipmentID)
+drop table if exists Shippment;
+create table if not exists shipment
+(
+    shipmentID          int auto_increment
+        primary key,
+    shippingDate        date        null,
+    Shipping_p_quantity int         null,
+    shippingProcess     varchar(20) null,
+    waybill             varchar(50) null,
+    uid                 int         null,
+    itemID              int         null,
+    constraint shipment_ibfk_1
+        foreign key (uid) references Users (uid),
+    constraint shipment_ibfk_2
+        foreign key (itemID) references Item (itemID)
 );
 
+drop table if exists Stock;
 CREATE TABLE `Stock` (
                          `stockID`	INT auto_increment	NOT NULL,
-                         `stockingDate`	DATE	NOT NULL,
+                         `stockingDate`	DATE	NULL,
                          `stockingProcess`	VARCHAR(20)	NOT NULL,
                          `stock_p_quantity`	INT	NOT NULL,
                          `itemID`	INT	NOT NULL,
-                         `warehouseID`	INT	NOT NULL,
+                         `warehouseID`	INT	NULL,
                          sectionID INT NOT NULL,
-                         `uid`	INT	NOT NULL,
-                         primary key (stockID)
+                         `uID`	INT	NOT NULL,
+                         primary key (stockID),
+                         constraint FK_stock_item
+                             foreign key (itemID) references Item (itemID)
+                                 on delete cascade
 );
 
 
