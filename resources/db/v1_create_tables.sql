@@ -185,6 +185,29 @@ CREATE TABLE `InvenLog`
     primary key (logID)
 );
 
+CREATE TABLE `Shippment` (
+                             `shipmentID`	INT auto_increment	NOT NULL,
+                             `shippingDate`	DATE	NOT NULL,
+                             `shipping_p_quantity`	INT	NOT NULL,
+                             `shipppingProcess`	VARCHAR(20)	NOT NULL,
+                             `waybill`	VARCHAR(50)	NOT NULL,
+                             itemId  int not null,
+                             `uid`	INT	NOT NULL,
+                             primary key(shipmentID)
+);
+
+CREATE TABLE `Stock` (
+                         `stockID`	INT auto_increment	NOT NULL,
+                         `stockingDate`	DATE	NOT NULL,
+                         `stockingProcess`	VARCHAR(20)	NOT NULL,
+                         `stock_p_quantity`	INT	NOT NULL,
+                         `itemID`	INT	NOT NULL,
+                         `warehouseID`	INT	NOT NULL,
+                         sectionID INT NOT NULL,
+                         `uid`	INT	NOT NULL,
+                         primary key (stockID)
+);
+
 
 
 
