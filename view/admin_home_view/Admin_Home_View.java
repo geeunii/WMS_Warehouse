@@ -1,12 +1,12 @@
 package view.admin_home_view;
 
-<<<<<<< HEAD
+
 import controller.notice_controller.NoticeControllerImpl;
 import controller.request_controller.Request_Controller;
 import util.AppSession;
-=======
+
 import controller.warehouse_controller.WarehouseMain_Controller_Impl;
->>>>>>> develop
+
 import view.inventory_view.InventoryAdminView;
 import view.member_view.AdminView;
 import view.request_view.RequestAdminView;
@@ -46,7 +46,7 @@ public class Admin_Home_View {
 
         switch (choice) {
             case 1 -> adminView.adminMenu();
-<<<<<<< HEAD
+
 
             case 2 -> {
                 boolean runMenu = true;
@@ -61,8 +61,9 @@ public class Admin_Home_View {
                         }
                     }
                 }
+            }
 
-=======
+
             // case 2 -> requestAdminView
             //case 3 -> inventoryAdminView
             // case 4 -> stockAdminView
@@ -71,7 +72,7 @@ public class Admin_Home_View {
                     new WarehouseMain_Controller_Impl().start();
             case 7 -> {
                 break;
->>>>>>> develop
+
             }
         }
     }
