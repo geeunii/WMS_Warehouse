@@ -44,9 +44,9 @@ public class Main {
         }
     }
 
-    public static void user() throws IOException{
-       while (true) {
-           System.out.println("""
+    public static void user() throws IOException {
+        while (true) {
+            System.out.println("""
                     =========================================
                     ========== [ 창고 관리 프로그램 ] ==========
                     =========== [ 사용자 메뉴 선택 ] ===========
@@ -62,22 +62,22 @@ public class Main {
                     
                     """);
 
-           int choice = Integer.parseInt(br.readLine());
+            int choice = Integer.parseInt(br.readLine());
 
-           switch (choice) {
-               case 1 -> login_register.userLogin();
-               case 2 -> login_register.userRegister();
-               case 3 -> login_register.findUserID();
-               case 4 -> login_register.changeUserPW();
-               case 5 -> {
-                   return;
-               }
+            switch (choice) {
+                case 1 -> login_register.userLogin();
+                case 2 -> login_register.userRegister();
+                case 3 -> login_register.findUserID();
+                case 4 -> login_register.changeUserPW();
+                case 5 -> {
+                    return;
+                }
 
-           }
-       }
+            }
+        }
     }
 
-    public static void admin() throws IOException{
+    public static void admin() throws IOException {
         while (true) {
             System.out.println("""
                     =========================================
@@ -102,9 +102,11 @@ public class Main {
                 case 2 -> login_register.adminRegister();
                 case 3 -> login_register.findAdminID();
                 case 4 -> login_register.changeAdminPW();
-                case 5 -> {return ;}
+                case 5 -> {
+                    return;
+                }
 
             }
         }
-        }
+    }
 }
