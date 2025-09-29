@@ -26,6 +26,7 @@ public class NoticeControllerImpl implements Notice_Controller {
         else userMenuLoop();
     }
 
+    // --- 관리자 메뉴 루프 ---
     private void adminMenuLoop() {
         while (true) {
             int choice = adminView.noticeAdminMenu();
@@ -35,18 +36,27 @@ public class NoticeControllerImpl implements Notice_Controller {
                 case 3 -> deleteNotice();
                 case 4 -> selectAll();
                 case 5 -> selectNotice();
-                case 6 -> { System.out.println("뒤로갑니다."); return; }
+                case 6 -> {
+                    System.out.println("공지사항 메뉴에서 뒤로갑니다.");
+                    return; // 여기서 Request_Controller로 돌아감
+                }
+                default -> System.out.println("잘못된 입력입니다.");
             }
         }
     }
 
+    // --- 사용자 메뉴 루프 ---
     private void userMenuLoop() {
         while (true) {
             int choice = userView.noticeUserMenu();
             switch (choice) {
                 case 1 -> selectAll();
                 case 2 -> selectNotice();
-                case 3 -> { System.out.println("뒤로갑니다."); return; }
+                case 3 -> {
+                    System.out.println("공지사항 메뉴에서 뒤로갑니다.");
+                    return; // Request_Controller로 돌아감
+                }
+                default -> System.out.println("잘못된 입력입니다.");
             }
         }
     }
