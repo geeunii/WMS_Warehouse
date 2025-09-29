@@ -10,11 +10,11 @@ public class Main {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static Login_Register_View login_register = new Login_Register_View();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         mainMenu();
     }
 
-    public static void mainMenu() throws IOException {
+    public static void mainMenu() throws Exception {
 
 
         while (true) {
@@ -75,7 +75,7 @@ public class Main {
        }
     }
 
-    public static void admin() throws IOException{
+    public static void admin() throws Exception {
         while (true) {
             System.out.print("""
                     =========================================

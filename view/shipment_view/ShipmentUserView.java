@@ -13,14 +13,8 @@ public class ShipmentUserView {
     private final static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private final static Shipment_User_Controller user_controller = new Shipment_User_Controller();
 
-    public static void main(String[] args) {
-        shipmentUserMenu();
 
-
-    }
-
-
-    public static void shipmentUserMenu() {
+    public void shipmentUserMenu() {
         // 출고 메뉴
         while (true) {
             System.out.println();
@@ -52,7 +46,7 @@ public class ShipmentUserView {
 
 
     // 출고 요청
-    public static void shippingRequest() {
+    public void shippingRequest() {
         try {
             System.out.println("============== [출고 요청] ===============");
 

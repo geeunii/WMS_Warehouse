@@ -16,17 +16,9 @@ public class StockUserView {
     private static final Stock_User_Controller su = new Stock_User_Controller();
 
 
-    public static void main(String[] args) {
-        try{
-            stockUserMenu();
-        } catch (Exception e) {
-            System.out.println("입고 메뉴 실행중 오류 발생 " + e.getMessage());
-        }
-    }
-
 
     // 입고 메뉴
-    public static void stockUserMenu() throws IOException {
+    public void stockUserMenu() throws IOException {
         while (true) {
             System.out.println();
             System.out.print("""
@@ -60,7 +52,7 @@ public class StockUserView {
 
 
     // 1. 입고 요청 (Item 테이블 전체 컬럼 입력)
-    public static void stockRequest() {
+    public void stockRequest() {
         try {
             System.out.println("============== [입고 요청] ===============");
             System.out.println("===========[ 아이템 정보 입력 ] =============");
@@ -141,9 +133,10 @@ public class StockUserView {
         }
     }
 
-    // 2. 입고 고지서 출력
-    public static void selectStockNotice() {
 
+
+    // 2. 입고 고지서 조회 (승인 된것만)
+    public void stockPrint() {
         try {
             System.out.println("============== [입고 고지서 출력] ===============");
             System.out.print("출력할 입고 고지서 번호(stockID)를 입력하세요: ");
@@ -174,7 +167,7 @@ public class StockUserView {
 
 
     // 4. 입고 현황 조회
-    public static void stockCurrentSearch() {
+    public void stockCurrentSearch() {
         System.out.println("============== [입고 현황 조회] ===============");
         try {
             System.out.print("유저번호를 입력해주세요 : ");
@@ -211,7 +204,7 @@ public class StockUserView {
 
 
     // 3. 입고 요청 삭제
-    public static void deleteStock () {
+    public void deleteStock () {
         System.out.println("============== [입고 요청 삭제] ===============");
         try {
             System.out.print("삭제할 입고 번호(stockID) 입력: ");

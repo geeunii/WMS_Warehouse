@@ -16,17 +16,9 @@ public class StockAdminView {
     private static final Stock_Controller_Impl sc = new Stock_Controller_Impl(); // 컨트롤러
     private static final Stock_User_Controller su = new Stock_User_Controller();
 
-    public static void main(String[] args) {
-        try {
-            stockAdminMenu();
-        } catch (Exception e) {
-            System.out.println("입고 메뉴 실행중 오류 발생 " + e.getMessage());
-        }
-    }
-
 
     // 입고 메뉴
-    public static void stockAdminMenu() throws Exception {
+    public void stockAdminMenu() throws Exception {
         while (true) {
             System.out.println();
             System.out.print("""
@@ -56,7 +48,7 @@ public class StockAdminView {
     }
 
 
-    public static void updateStockProcess() {
+    public void updateStockProcess() {
         try {
             System.out.println("============== [입고 승인 / 취소] ===============");
             System.out.print("입고 번호(stockID) 입력: ");
@@ -84,7 +76,7 @@ public class StockAdminView {
     }
 
 
-    public static void stockRequestInformation() {
+    public void stockRequestInformation() {
         try {
             System.out.println("============== [입고 요청 현황 조회] ===============");
 
@@ -116,7 +108,7 @@ public class StockAdminView {
     }
 
 
-    public static void stockMonthlyReport() {
+    public void stockMonthlyReport() {
         try {
             System.out.println("============== [월별 입고현황 조회] ===============");
             System.out.print("조회할 연도 입력: ");
@@ -153,7 +145,7 @@ public class StockAdminView {
 
 
     // 4. 입고 현황 조회
-    public static void stockCurrentSearch() {
+    public void stockCurrentSearch() {
         System.out.println("============== [입고 현황 조회] ===============");
         try {
             System.out.print("유저번호를 입력해주세요 : ");
