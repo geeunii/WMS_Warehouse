@@ -15,18 +15,13 @@ public class Item {
     private String itemName;
     private int itemPrice;
     private int weight;
-    private assemble assembleType;
-    private String registrantName ;
+    private String assemble;
+    private String customerName ;
     private String material;
     private int volume;
-    private int width;
-    private int height;
-    private int levelHeight;
+    private float width;
+    private float height;
+    private float levelHeight;
     private String spaceName;
     private String category;
 }
-
-enum assemble{
-    Module,not_Module
-}
-

@@ -10,11 +10,11 @@ public class Main {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static Login_Register_View login_register = new Login_Register_View();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         mainMenu();
     }
 
-    public static void mainMenu() throws IOException {
+    public static void mainMenu() throws Exception {
 
 
         while (true) {
@@ -22,11 +22,11 @@ public class Main {
                     =========================================
                     ========== [ 창고 관리 프로그램 ] ==========
                     ================ [ 메뉴 ] ================
-                    
+
                                    1. 사용자
                                    2. 관리자
                                    3. 종료
-                    
+
                     ==========================================
                     ==========================================
                     [메뉴 선택]: """);
@@ -49,13 +49,13 @@ public class Main {
                     =========================================
                     ========== [ 창고 관리 프로그램 ] ==========
                     ============= [ 사용자 메뉴 ] =============
-                    
+
                                    1. 로그인
                                    2. 회원가입
                                    3. 아이디 찾기
                                    4. 비밀번호 변경
                                    5. 종료
-                    
+
                     ==========================================
                     ==========================================
                     [메뉴 선택]: """);
@@ -75,19 +75,19 @@ public class Main {
        }
     }
 
-    public static void admin() throws IOException{
+    public static void admin() throws Exception {
         while (true) {
             System.out.print("""
                     =========================================
                     ========== [ 창고 관리 프로그램 ] ==========
                     ============= [ 관리자 메뉴 ] =============
-                    
+
                                    1. 로그인
                                    2. 회원가입
                                    3. 아이디 찾기
                                    4. 비밀번호 변경
                                    5. 종료
-                    
+
                     ==========================================
                     ==========================================
                     [메뉴 선택]: """);

@@ -120,7 +120,7 @@ public class Login_Register_View {
     // ====================== 관리자 부분 =============================
 
 
-    public void adminLogin() throws IOException {
+    public void adminLogin() throws Exception {
         System.out.println("""
                 ============ [ 관리자 로그인 ] ===========
                 """);
