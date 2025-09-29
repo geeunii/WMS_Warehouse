@@ -10,7 +10,7 @@ public interface Shipment_DAO_Interface {
 
     public int updateShipment(Shipment shipment);
     public List<Shipment>  selectCurrentShipment();
-    public List<Shipment> selectShipmentByID(int shipmentID);
+    public List<Shipment> selectShipmentByID(int userID);
     List<Shipment> selectPendingShipment();
 
 }

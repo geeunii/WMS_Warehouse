@@ -26,9 +26,11 @@ public class Shipment {
     private String shipLocation;    // 출고 위치 (창고 위치)
 
     // 운송장 관련
-    private int waybillNumber;      // 운송장 번호
+    private String waybillNumber;     // 운송장 번호
     private String waybillDate;     // 운송장 등록 날짜
 
     // Item VO 포함 (조합)
     private Item item;
+
+
 }

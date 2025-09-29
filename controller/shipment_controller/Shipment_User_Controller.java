@@ -21,7 +21,13 @@ public class Shipment_User_Controller implements Shipment_User_Controller_Interf
 
 
     @Override
-    public List<Shipment> selectCurrentShipment(int shipmentID) {
-        return shipUser.selectCurrentShipmentUser(shipmentID);
+    public List<Shipment> selectCurrentShipmentUser(int userID) {
+        return shipUser.selectCurrentShipmentUser(userID);
+    }
+
+
+    @Override
+    public List<Shipment> shippingProductSearch(int itemID) {
+        return shipUser.shippingProductSearch(itemID);
     }
 }

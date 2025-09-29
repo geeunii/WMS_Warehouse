@@ -18,12 +18,13 @@ public class StockDAO_User implements StockDAO_User_Interface {
 
     // 사용자 입고 고지서 조회 (승인 된것만)
     @Override
-    public Stock stockPrint(int stockID) {
+    public Stock stockPrint(int stockID, int userID) {
         Stock s = new Stock();
-        String sql = "{CALL sp_stockPrint(?)}";
+        String sql = "{CALL sp_stockPrint(?, ?)}";
 
         try(CallableStatement cal = conn.prepareCall(sql)) {
             cal.setInt(1, stockID);
+            cal.setInt(2, userID);
 
             try (ResultSet rs = cal.executeQuery()) {
                 if (rs.next()) {
@@ -114,13 +115,13 @@ public class StockDAO_User implements StockDAO_User_Interface {
 
     // 입고 현황 조회
     @Override
-    public List<Stock> stockCurrentSearch(int userID) {
+    public List<Stock> stockCurrentSearch(int uID) {
         List<Stock> stockList = new ArrayList<>();
 
         String sql = "{CALL sp_stockCurrentSearch(?)}";
 
         try (CallableStatement cal = conn.prepareCall(sql)) {
-            cal.setInt(1, userID);
+            cal.setInt(1, uID);
 
             try (ResultSet rs = cal.executeQuery()) {
                 while (rs.next()) {
@@ -150,7 +151,6 @@ public class StockDAO_User implements StockDAO_User_Interface {
                     item.setCategory(rs.getString("category"));
 
                     s.setItem(item);
-
                     stockList.add(s);
                 }
             }
