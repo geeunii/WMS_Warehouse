@@ -21,7 +21,7 @@ public class AdminView {
     public void adminMenu() throws IOException {
         while (true) {
             System.out.println("""
-                    ========== [ 내 정보 관리 메뉴 ] ==========
+                    ========== [ 관리자 관리 메뉴 ] ==========
                     =============== [ 메뉴 ] ================
                     
                       1. 내 정보 조회          2. 내 정보 수정
