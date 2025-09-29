@@ -22,4 +22,5 @@ public abstract class WarehouseChildVO extends WarehouseBaseVO{
         super(id);
         this.warehouseID = warehouseID;
     }
+
 }

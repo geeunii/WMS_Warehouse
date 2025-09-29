@@ -1,6 +1,7 @@
 package view.shipment_view;
 
 import controller.shipment_controller.Shipment_Controller;
+import vo.Shippments.Shipment;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,19 +27,19 @@ public class ShipmentAdminView {
             System.out.println("""
                     ============== [출고 관리자 메뉴] ===============
                     1 출고 요청 승인 / 거절
-                    2 출고 리스트 조회
+                    2 출고 리스트 조회 (승인 대기)
                     3 출고 지시서 조회
-                    4 운송장 등록
+                    4 출고 현황 조회 (모든 출고 현황)
                     0 이전 메뉴
                     ===========================================
                     [번호를 입력하세요]: """);
 
             int menu = Integer.parseInt(br.readLine());
             switch (menu) {
-                case 1 -> updateShipmentStatus();
-                case 2 -> shippingListSearch();
-                case 3 -> shippingPrintSearch();
-                case 4 -> waybillRegistration();
+                case 1 -> updateShipment();
+                case 2 -> selectPendingShipment();
+                case 3 -> selectShipmentByID();
+                case 4 -> selectCurrentShipment();
                 case 0 -> {
                     return;
                 }
@@ -50,8 +51,17 @@ public class ShipmentAdminView {
         }
     }
 
+
+
+
+
+
+
+
+
+
     // 1. 출고 요청 승인 / 거절
-    public static void updateShipmentStatus() {
+    public static void updateShipment() {
         try {
             System.out.print("출고 ID 입력: ");
             int shipmentID = Integer.parseInt(br.readLine());
@@ -66,7 +76,7 @@ public class ShipmentAdminView {
 
             Shipment s = new Shipment();
             s.setShipmentID(shipmentID);
-            s.setShipStatus(status);
+            s.setShippingProcess(status);
             s.setWaybillNumber(waybill);
 
             int result = shipment_controller.updateShipment(s);
@@ -76,92 +86,109 @@ public class ShipmentAdminView {
         }
     }
 
-    // 2. 출고 리스트 조회
-    public static void shippingListSearch() {
-        try {
-            System.out.print("창고 ID 입력: ");
-            int warehouseID = Integer.parseInt(br.readLine());
-            List<Shipment> list = shipment_controller.selectCurrentShipment(warehouseID);
 
-            if (list.isEmpty()) System.out.println("조회된 출고 내역이 없습니다.");
-            else {
+
+
+
+    // 2. 출고 리스트 조회 (승인 대기 인것만)
+    public static void selectPendingShipment() {
+        try {
+            List<Shipment> list = shipment_controller.selectPendingShipment();
+
+            if (list.isEmpty()) {
+                System.out.println("조회된 출고 내역이 없습니다.");
+            } else {
                 System.out.printf("%-10s %-10s %-10s %-15s %-10s %-10s%n", "출고ID", "유저ID", "아이템ID", "상품명", "수량", "상태");
                 System.out.println("-------------------------------------------------------");
+
                 for (Shipment s : list) {
                     System.out.printf("%-10d %-10d %-10d %-15s %-10d %-10s%n",
-                            s.getShipmentID(), s.getUserID(), s.getItemID(),
-                            s.getShipItemName(), s.getShipItemCount(), s.getShipStatus());
+                            s.getShipmentID(),
+                            s.getUserID(),
+                            s.getItemID(),
+                            s.getShipItemName(),         // Item VO 대신 shipItemName 필드 사용
+                            s.getShipping_p_quantity(),
+                            s.getShippingProcess());
                 }
+            }
+        } catch (Exception e) {
+            System.err.println("조회 오류: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+    // 승인 된것만 출고 지시서 조회(지시서)
+    public static void selectShipmentByID() {
+        try {
+            System.out.print("출고 ID 입력: ");
+            int shipmentID = Integer.parseInt(br.readLine());
+            List<Shipment> list = shipment_controller.selectShipmentByID(shipmentID);
+
+            if (list != null && !list.isEmpty()) {
+                System.out.printf("%-10s %-10s %-10s %-15s %-10s %-10s %-10s%n",
+                        "ShipmentID", "UserID", "ItemID", "ItemName", "ItemCount", "Status", "Waybill");
+
+                for (Shipment s : list) {
+                    System.out.printf("%-10d %-10d %-10d %-15s %-10d %-10s %-10d%n",
+                            s.getShipmentID(), s.getUserID(), s.getItemID(),
+                            s.getShipItemName(), s.getShipping_p_quantity(), s.getShippingProcess(),
+                            s.getWaybillNumber());
+                }
+            } else {
+                System.out.println("출고 정보 없음");
             }
         } catch (Exception e) {
             System.err.println("조회 오류: " + e.getMessage());
         }
     }
 
-    // 3. 출고 지시서 조회
-    public static void shippingPrintSearch() {
+
+
+
+
+    // 관리자 출고 현황 조회 (모든 출고 현황)
+    public static void selectCurrentShipment() {
+        System.out.println("============== [관리자 출고 현황 조회] ===============");
+
         try {
-            System.out.print("출고 ID 입력: ");
-            int shipmentID = Integer.parseInt(br.readLine());
-            Shipment s = shipment_controller.selectShipmentByID(shipmentID);
-            if (s != null) {
-                System.out.printf("%-10d %-10d %-10d %-15s %-10d %-10s %-10d%n",
-                        s.getShipmentID(), s.getUserID(), s.getItemID(),
-                        s.getShipItemName(), s.getShipItemCount(), s.getShipStatus(),
+            // DAO 호출
+            List<Shipment> shipments = shipment_controller.selectCurrentShipment();
+
+            if (shipments.isEmpty()) {
+                System.out.println("등록된 출고 내역이 없습니다.");
+                return;
+            }
+
+            // 출력 헤더
+            System.out.printf("%-10s %-10s %-10s %-15s %-10s %-10s%n",
+                    "출고ID", "유저ID", "아이템ID", "수량", "상태", "운송장번호");
+            System.out.println("-------------------------------------------------------------");
+
+            // 데이터 출력
+            for (Shipment s : shipments) {
+                System.out.printf("%-10d %-10d %-10d %-15d %-10s %-10d%n",
+                        s.getShipmentID(),
+                        s.getUserID(),
+                        s.getItemID(),
+                        s.getShipping_p_quantity(),
+                        s.getShippingProcess(),
                         s.getWaybillNumber());
-            } else System.out.println("출고 정보 없음");
+            }
+
+            System.out.println("=============================================================");
+
         } catch (Exception e) {
-            System.err.println("조회 오류: " + e.getMessage());
+            System.err.println("출고 현황 조회 중 오류 발생: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    // 4. 운송장 등록
-    public static void waybillRegistration() {
-        try {
-            System.out.print("출고 ID 입력: ");
-            int shipmentID = Integer.parseInt(br.readLine());
-            System.out.print("운송장 번호 입력: ");
-            int waybill = Integer.parseInt(br.readLine());
 
-            Shipment s = new Shipment();
-            s.setShipmentID(shipmentID);
-            s.setWaybillNumber(waybill);
 
-            int result = shipment_controller.registerWaybill(s);
-            System.out.println(result > 0 ? "운송장 등록 완료" : "등록 실패");
-        } catch (Exception e) {
-            System.err.println("등록 오류: " + e.getMessage());
-        }
-    }
 
-    // 5. 운송장 수정
-    public static void waybillUpdate() {
-        try {
-            System.out.print("출고 ID 입력: ");
-            int shipmentID = Integer.parseInt(br.readLine());
-            System.out.print("새 운송장 번호 입력: ");
-            int waybill = Integer.parseInt(br.readLine());
 
-            Shipment s = new Shipment();
-            s.setShipmentID(shipmentID);
-            s.setWaybillNumber(waybill);
 
-            int result = shipment_controller.updateWaybill(s);
-            System.out.println(result > 0 ? "운송장 수정 완료" : "수정 실패");
-        } catch (Exception e) {
-            System.err.println("수정 오류: " + e.getMessage());
-        }
-    }
-
-    // 6. 운송장 조회
-    public static void waybillSearch() {
-        try {
-            System.out.print("출고 ID 입력: ");
-            int shipmentID = Integer.parseInt(br.readLine());
-            String waybill = shipment_controller.selectWaybillADMIN(shipmentID);
-            System.out.println("운송장 번호: " + (waybill != null ? waybill : "등록되지 않음"));
-        } catch (Exception e) {
-            System.err.println("조회 오류: " + e.getMessage());
-        }
-    }
 }

@@ -1,26 +1,39 @@
 package view.stock_view;
 
 import controller.stock_controller.Stock_Controller_Impl;
+import controller.stock_controller.Stock_User_Controller;
 import vo.Items.Item;
 import vo.Stocks.Stock;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 public class StockUserView {
     private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private static final Stock_Controller_Impl sc = new Stock_Controller_Impl(); // 컨트롤러
+    private static final Stock_User_Controller su = new Stock_User_Controller();
+
+
+    public static void main(String[] args) {
+        try{
+            stockUserMenu();
+        } catch (Exception e) {
+            System.out.println("입고 메뉴 실행중 오류 발생 " + e.getMessage());
+        }
+    }
+
 
     // 입고 메뉴
-    public void stockUserMenu() throws IOException {
+    public static void stockUserMenu() throws IOException {
         while (true) {
             System.out.println();
             System.out.print("""
                     ============== [입고 메뉴] ===============
                     
                     1. 입고 요청                2. 입고 고지서 출력
-                    3. 입고 요청 삭제            4. 입고 승인 현황 조회
+                    3. 입고 요청 삭제            4. 입고 현황 조회
                     0. 이전 메뉴로
                     
                     ===========================================
@@ -30,9 +43,9 @@ public class StockUserView {
 
             switch (menu) {
                 case 1 -> stockRequest();
-                case 2 -> selectStockNotice();
+                case 2 -> stockPrint();
                 case 3 -> deleteStock();
-                case 4 -> selectCurrentStock();
+                case 4 -> stockCurrentSearch();
                 case 0 -> {
                     System.out.println("이전 메뉴로 돌아갑니다.");
                     return;
@@ -89,7 +102,6 @@ public class StockUserView {
             int stock_p_quantity = Integer.parseInt(br.readLine());
 
             Item item = new Item();
-
             item.setItemName(itemName);
             item.setItemPrice(itemPrice);
             item.setWeight(weight);
@@ -106,7 +118,17 @@ public class StockUserView {
             Stock stock = new Stock();
             stock.setUID(userID);
             stock.setStock_p_quantity(stock_p_quantity);
-            stock.setStockingProcess("요청");  // 기본 상태
+            stock.setStockingProcess("승인대기");  // 기본 상태
+
+            Stock_User_Controller controller = new Stock_User_Controller(); // 실제 컨트롤러/DAO 객체
+            int result = controller.stockRequest(item, stock);
+
+            if (result > 0) {
+                System.out.println("입고 요청이 정상적으로 DB에 저장되었습니다.");
+            } else {
+                System.out.println("입고 요청에 실패했습니다.");
+            }
+
 
         } catch (IOException | NumberFormatException e) {
             System.err.println("입력 오류: 올바른 값을 입력해주세요.");
@@ -117,14 +139,15 @@ public class StockUserView {
     }
 
 
-    // 2. 입고 고지서 출력
-    public static void selectStockNotice() {
+
+    // 2. 입고 고지서 조회 (승인 된것만)
+    public static void stockPrint() {
         try {
             System.out.println("============== [입고 고지서 출력] ===============");
             System.out.print("출력할 입고 고지서 번호(stockID)를 입력하세요: ");
             int stockID = Integer.parseInt(br.readLine());
 
-            Stock stock = sc.selectStockNotice(stockID);
+            Stock stock = su.stockPrint(stockID); // DAO에서 VIEW 혹은 프로시저 호출
 
             if (stock != null) {
                 System.out.println("고지서를 성공적으로 조회했습니다.");
@@ -132,11 +155,9 @@ public class StockUserView {
                 System.out.println("  [입고 고지서]");
                 System.out.println("----------------------------------------------");
                 System.out.printf("  입고 번호: %d%n", stock.getStockID());
-                System.out.printf("  상품 이름: %s%n", stock.getItemName());
                 System.out.printf("  입고 수량: %d개%n", stock.getStock_p_quantity());
                 System.out.printf("  입고 상태: %s%n", stock.getStockingProcess());
-                System.out.printf("  입고 날짜: %s%n", stock.getStockDate());
-                System.out.printf("  창고 위치: %s%n", stock.getLocation());
+                System.out.printf("  입고 날짜: %s%n", stock.getStockingDate());
                 System.out.println("==============================================");
             } else {
                 System.out.println("해당 입고 번호에 대한 재고 정보가 없습니다.");
@@ -148,30 +169,32 @@ public class StockUserView {
     }
 
 
+
+
     // 4. 입고 현황 조회
-    public static void selectCurrentStock() {
+    public static void stockCurrentSearch() {
         System.out.println("============== [입고 현황 조회] ===============");
         try {
-            List<Stock> stocks = sc.selectCurrentStock();
+            System.out.print("유저번호를 입력해주세요 : ");
+            int uID = Integer.parseInt(br.readLine());
+            List<Stock> stocks = su.stockCurrentSearch(uID); // DAO 호출
 
             if (stocks.isEmpty()) {
                 System.out.println("창고에는 입고된 재고가 없습니다.");
                 return;
             }
 
-            System.out.printf("%-10s %-10s %-15s %-10s %-15s %-15s %-15s%n",
-                    "입고번호", "아이템ID", "상품이름", "수량", "상태", "입고일", "창고위치");
-            System.out.println("---------------------------------------------------------------------------------------------");
+            System.out.printf("%-10s %-10s %-10s %-15s %-15s%n",
+                    "입고번호", "아이템ID", "수량", "상태", "입고일");
+            System.out.println("------------------------------------------------------------");
 
             for (Stock stock : stocks) {
-                System.out.printf("%-10d %-10d %-15s %-10d %-15s %-15s %-15s%n",
+                System.out.printf("%-10d %-10d  %-10d %-15s %-15s%n",
                         stock.getStockID(),
                         stock.getItemID(),
-                        stock.getItemName(),
                         stock.getStock_p_quantity(),
                         stock.getStockingProcess(),
-                        stock.getStockDate(),
-                        stock.getWarehouseName());
+                        stock.getStockingDate()); // Stock 테이블 컬럼 사용
             }
 
             System.out.println("==========================================================");
@@ -183,14 +206,16 @@ public class StockUserView {
     }
 
 
+
+
     // 3. 입고 요청 삭제
-    public static void deleteStock() {
+    public static void deleteStock () {
         System.out.println("============== [입고 요청 삭제] ===============");
         try {
             System.out.print("삭제할 입고 번호(stockID) 입력: ");
             int stockID = Integer.parseInt(br.readLine());
 
-            int result = sc.deleteStock(stockID);
+            int result = su.deleteStock(stockID);
 
             if (result > 0) {
                 System.out.println("입고 요청이 성공적으로 삭제되었습니다.");
@@ -203,4 +228,5 @@ public class StockUserView {
         }
     }
 }
+
 

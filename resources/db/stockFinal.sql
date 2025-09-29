@@ -40,26 +40,13 @@ BEGIN
     INSERT INTO Stock (
         itemID, stock_p_quantity, warehouseID, sectionID, uID, stockingProcess, stockingDate
     ) VALUES (
-                 new_itemID, p_stock_p_quantity, null, null, p_uID, '승인대기', NOW()
+                 new_itemID, p_stock_p_quantity, p_warehouseID, p_sectionID, p_uID, '승인대기', NOW()
              );
 
     -- 트랜잭션 커밋
     COMMIT;
 END$$
 DELIMITER ;
-
-
-truncate Stock;
-CALL sp_StockRequest(
-        '테스트상품', 10000, 5, '조립A', '고객1', '철', 10, 20, 5, 'A구역', '카테고리1',
-        50, 1, 2, 1
-     );
-
--- Stock 테이블 확인
-SELECT * FROM Stock ORDER BY stockID DESC LIMIT 1;
-
--- Item 테이블 확인
-SELECT * FROM Item ORDER BY itemID DESC LIMIT 1;
 
 
 
@@ -140,8 +127,8 @@ DELIMITER ;
 
 
 
--- 관리자 입고조회 (승인 대기인것만)
--- 입고 요청 현황 조회 (승인 대기)
+-- 관리자 입고조회 (승인 전인것들만)
+-- 입고 요청 현황 조회 (승인 전)
 DROP PROCEDURE IF EXISTS sp_stockRequestInformation;
 
 DELIMITER $$
@@ -158,8 +145,6 @@ BEGIN
 END$$
 DELIMITER ;
 
-select * from Stock;
-truncate Stock;
 
 
 
