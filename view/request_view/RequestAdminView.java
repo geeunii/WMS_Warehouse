@@ -1,78 +1,57 @@
 package view.request_view;
 
+import util.input.AdaptersAndHandler.InputHandler;
+import util.input.AdaptersAndHandler.BufferedReaderAdapter;
 import vo.Requests.Request;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.time.format.DateTimeFormatter;
 
 public class RequestAdminView {
-    private final BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    private final InputHandler input;
     private final DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
+    public RequestAdminView() {
+        this.input = new InputHandler(
+                new BufferedReaderAdapter(new BufferedReader(new InputStreamReader(System.in)))
+        );
+    }
+
     // --- 메인 메뉴 ---
-    public int mainMenu() throws IOException {
-        while (true) {
-            System.out.println("\n--- 게시판 ---");
-            System.out.println("1. 문의관리 | 2. 공지사항 관리 | 3. 뒤로가기");
-            System.out.print("[메뉴 선택]: ");
-            try {
-                int choice = Integer.parseInt(input.readLine().trim());
-                if (choice >= 1 && choice <= 3) return choice;
-            } catch (NumberFormatException e) { System.out.println("숫자를 입력해주세요."); }
-            System.out.println("1~3 사이의 숫자를 입력해주세요.");
-        }
+    public int mainMenu() {
+        System.out.println("\n--- 게시판 ---");
+        System.out.println("1. 문의관리 | 2. 공지사항 관리 | 3. 뒤로가기");
+        return input.readInt("[메뉴 선택]: ", 1, 3);
     }
 
     // --- 문의 관리 메뉴 ---
-    public int requestMenu() throws IOException {
-        while (true) {
-            System.out.println("\n--- 문의 관리 ---");
-            System.out.println("1. 1:1 문의 관리");
-            System.out.println("2. 문의 게시판 관리");
-            System.out.println("3. 뒤로가기");
-            System.out.print("[메뉴 선택]: ");
-            try {
-                int choice = Integer.parseInt(input.readLine().trim());
-                if (choice >= 1 && choice <= 3) return choice;
-            } catch (NumberFormatException e) { System.out.println("숫자를 입력해주세요."); }
-            System.out.println("1~3 사이의 숫자를 입력해주세요.");
-        }
+    public int requestMenu() {
+        System.out.println("\n--- 문의 관리 ---");
+        System.out.println("1. 1:1 문의 관리");
+        System.out.println("2. 문의 게시판 관리");
+        System.out.println("3. 뒤로가기");
+        return input.readInt("[메뉴 선택]: ", 1, 3);
     }
 
     // --- 1:1 문의 관리 메뉴 ---
-    public int oneToOneMenu() throws IOException {
-        while (true) {
-            System.out.println("\n--- 1:1 문의 관리 ---");
-            System.out.println("1. 1:1 문의 조회");
-            System.out.println("2. 답변/답변 수정 등록");
-            System.out.println("3. 뒤로가기");
-            System.out.print("[메뉴 선택]: ");
-            try {
-                int choice = Integer.parseInt(input.readLine().trim());
-                if (choice >= 1 && choice <= 3) return choice;
-            } catch (NumberFormatException e) { System.out.println("숫자를 입력해주세요."); }
-            System.out.println("1~3 사이의 숫자를 입력해주세요.");
-        }
+    public int oneToOneMenu() {
+        System.out.println("\n--- 1:1 문의 관리 ---");
+        System.out.println("1. 1:1 문의 조회");
+        System.out.println("2. 답변/답변 수정 등록");
+        System.out.println("3. 뒤로가기");
+        return input.readInt("[메뉴 선택]: ", 1, 3);
     }
 
     // --- 문의 게시판 메뉴 ---
-    public int requestBoardMenu() throws IOException {
-        while (true) {
-            System.out.println("\n--- 문의 게시판 관리 ---");
-            System.out.println("1. 모든 문의 조회");
-            System.out.println("2. 답변/답변 수정 등록");
-            System.out.println("3. 특정 문의 삭제");
-            System.out.println("4. 뒤로가기");
-            System.out.print("[메뉴 선택]: ");
-            try {
-                int choice = Integer.parseInt(input.readLine().trim());
-                if (choice >= 1 && choice <= 4) return choice;
-            } catch (NumberFormatException e) { System.out.println("숫자를 입력해주세요."); }
-            System.out.println("1~4 사이의 숫자를 입력해주세요.");
-        }
+    public int requestBoardMenu() {
+        System.out.println("\n--- 문의 게시판 관리 ---");
+        System.out.println("1. 모든 문의 조회");
+        System.out.println("2. 답변/답변 수정 등록");
+        System.out.println("3. 특정 문의 삭제");
+        System.out.println("4. 뒤로가기");
+        return input.readInt("[메뉴 선택]: ", 1, 4);
     }
 
     // --- 전체 문의 조회 ---
@@ -93,20 +72,15 @@ public class RequestAdminView {
     }
 
     // --- 답변/수정 입력 ---
-    public Request updateResponse() throws IOException {
-        System.out.print("답변/수정할 문의 ID 입력: ");
-        int id;
-        try { id = Integer.parseInt(input.readLine().trim()); }
-        catch (NumberFormatException e) { System.out.println("ID는 숫자로 입력해주세요."); return null; }
+    public Request updateResponse() {
+        int id = input.readInt("답변/수정할 문의 ID 입력: ", 1, null);
+        boolean confirm = input.readYesNo("정말 답변/수정하시겠습니까?");
+        if (!confirm) {
+            System.out.println("수정이 취소되었습니다.");
+            return null;
+        }
 
-        System.out.print("답변 내용을 입력해주세요: ");
-        String content = input.readLine().trim();
-        if (content.isEmpty()) { System.out.println("답변은 비워둘 수 없습니다."); return null; }
-
-        System.out.print("정말 답변/수정하시겠습니까? (Y/N): ");
-        if (!input.readLine().equalsIgnoreCase("Y")) { System.out.println("수정이 취소되었습니다."); return null; }
-
-
+        String content = input.readString("답변 내용을 입력해주세요: ", false);
         Request req = new Request();
         req.setRequestID(id);
         req.setR_response(content);
@@ -114,14 +88,13 @@ public class RequestAdminView {
     }
 
     // --- 문의 삭제 ---
-    public int deleteRequest() throws IOException {
-        System.out.print("삭제할 문의 ID 입력: ");
-        int id;
-        try { id = Integer.parseInt(input.readLine().trim()); }
-        catch (NumberFormatException e) { System.out.println("ID는 숫자로 입력해주세요."); return -1; }
-
-        System.out.print("정말 삭제하시겠습니까? (Y/N): ");
-        if (!input.readLine().equalsIgnoreCase("Y")) { System.out.println("삭제가 취소되었습니다."); return -1; }
+    public int deleteRequest() {
+        int id = input.readInt("삭제할 문의 ID 입력: ", 1, null);
+        boolean confirm = input.readYesNo("정말 삭제하시겠습니까?");
+        if (!confirm) {
+            System.out.println("삭제가 취소되었습니다.");
+            return -1;
+        }
         return id;
     }
 }
