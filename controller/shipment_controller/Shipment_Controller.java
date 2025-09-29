@@ -22,8 +22,8 @@ public class Shipment_Controller implements Shipment_Controller_interface {
     }
 
     @Override
-    public List<Shipment> selectShipmentByID(int shipmentID) {
-        return ship.selectShipmentByID(shipmentID);
+    public List<Shipment> selectShipmentByID(int userID) {
+        return ship.selectShipmentByID(userID);
     }
 
 

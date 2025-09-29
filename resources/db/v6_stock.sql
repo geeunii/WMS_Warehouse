@@ -88,46 +88,82 @@ DROP PROCEDURE IF EXISTS sp_stockCurrentSearch;
 
 DELIMITER $$
 CREATE PROCEDURE sp_stockCurrentSearch(
-    IN p_uID INT
+    IN p_uID INT  -- 로그인한 사용자 ID
 )
 BEGIN
-    SELECT s.stockID, s.stockingDate, s.stockingProcess, s.stock_p_quantity,
-           s.itemID, s.warehouseID, s.sectionID, s.uID,
-           i.itemName, i.itemPrice, i.weight, i.assemble, i.customerName,
-           i.material, i.volume, i.width, i.height, i.levelHeight, i.spaceName, i.category
+    -- 조회: Stock 테이블에서 uID = 로그인한 사용자 ID인 데이터만 가져오기
+    SELECT
+        s.stockID,
+        s.stockingDate,
+        s.stockingProcess,
+        s.stock_p_quantity,
+        s.itemID,
+        s.sectionID,
+        s.uID,
+        s.warehouseID,
+        i.itemName,
+        i.itemPrice,
+        i.weight,
+        i.assemble,
+        i.customerName,
+        i.material,
+        i.volume,
+        i.width,
+        i.height,
+        i.levelHeight,
+        i.spaceName,
+        i.category
     FROM Stock s
              JOIN Item i ON s.itemID = i.itemID
-    WHERE s.uID = p_uID
-    ORDER BY s.stockingDate DESC;
+    WHERE s.uID = p_uID;
+
+
+    -- 조회 결과가 없으면 사용자 권한 없음/데이터 없음 처리
+    IF ROW_COUNT() = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = '잘못된 stockID이거나 권한이 없습니다.';
+    END IF;
 END$$
 DELIMITER ;
-
 
 
 
 -- 입고고지서 조회 (승인 된것만)
-DROP PROCEDURE IF EXISTS stockPrint;
-
-
+DROP PROCEDURE IF EXISTS sp_stockPrint;
 DELIMITER $$
+
 CREATE PROCEDURE sp_stockPrint(
-    IN p_stockID INT
+    IN p_stockID INT,
+    IN p_userID INT   -- 요청한 사용자 ID
 )
 BEGIN
-    SELECT
-        s.stockID, s.stockingDate, s.stockingProcess, s.stock_p_quantity,
-        s.itemID, s.sectionID, s.uID,
-        i.itemName, i.itemPrice, i.weight, i.assemble, i.customerName,
-        i.material, i.volume, i.width, i.height, i.levelHeight, i.spaceName, i.category,
-        w.warehouseName
-    FROM Stock s
-             JOIN Item i ON s.itemID = i.itemID
-             JOIN Warehouse w ON s.warehouseID = w.warehouseID
-    WHERE s.stockID = p_stockID
-      AND s.stockingProcess = '승인';
-END$$
-DELIMITER ;
+    DECLARE cnt INT;
 
+    -- stockID가 요청한 유저 소유인지 확인
+    SELECT COUNT(*) INTO cnt
+    FROM Stock
+    WHERE stockID = p_stockID
+      AND uID = p_userID
+      AND stockingProcess = '승인';
+
+    IF cnt = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = '잘못된 stockID입니다.';
+    ELSE
+        SELECT
+            s.stockID, s.stockingDate, s.stockingProcess, s.stock_p_quantity,
+            s.itemID, s.sectionID, s.uID,
+            i.itemName, i.itemPrice, i.weight, i.assemble, i.customerName,
+            i.material, i.volume, i.width, i.height, i.levelHeight, i.spaceName, i.category,
+            w.warehouseName, w.warehouseID
+        FROM Stock s
+                 JOIN Item i ON s.itemID = i.itemID
+                 JOIN Warehouse w ON s.warehouseID = w.warehouseID
+        WHERE s.stockID = p_stockID
+          AND s.uID = p_userID
+          AND s.stockingProcess = '승인';
+    END IF;
+END$$
+
+DELIMITER ;
 
 
 

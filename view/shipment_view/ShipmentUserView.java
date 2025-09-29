@@ -22,6 +22,8 @@ public class ShipmentUserView {
                     ============== [출고 메뉴] ===============
 
                     1 출고요청
+                    2 출고현황 조회
+                    3 출고 상품검색
                     0. 이전 메뉴로
 
                     ===========================================
@@ -31,6 +33,8 @@ public class ShipmentUserView {
 
                 switch (choice) {
                     case 1 -> shippingRequest();
+                    case 2 -> selectCurrentShipmentUser();
+                    case 3 -> shippingProductSearch();
                     case 0 -> {
                         return;
                     }
@@ -86,6 +90,98 @@ public class ShipmentUserView {
 
 
 
+
+    // 2 출고 현황 조회 (승인대기, 승인, 거절)
+    // 아이디 기준으로 검색
+// 유저 출고 현황 조회 화면
+    public void selectCurrentShipmentUser() {
+        System.out.println("========== [내 출고 현황 조회] ==========");
+
+        try {
+            // DAO 호출
+            // 유저 ID 입력
+            System.out.print("유저 ID 입력: ");
+            int userID = Integer.parseInt(br.readLine());
+            List<Shipment> list = user_controller.selectCurrentShipmentUser(userID);
+
+            if (list.isEmpty()) {
+                System.out.println("출고 내역이 없습니다.");
+                return;
+            }
+
+            // 출력 헤더
+            System.out.printf("%-10s %-10s %-10s %-20s %-10s %-10s %-15s %-15s%n",
+                    "출고ID", "유저ID", "아이템ID", "아이템이름", "수량", "상태", "운송장번호", "출고일");
+            System.out.println("---------------------------------------------------------------------------------------------");
+
+            // 데이터 출력
+            for (Shipment s : list) {
+                System.out.printf("%-10d %-10d %-10d %-20s %-10d %-10s %-15s %-15s%n",
+                        s.getShipmentID(),
+                        s.getUserID(),
+                        s.getItemID(),
+                        (s.getShipItemName() == null ? "-" : s.getShipItemName()),
+                        s.getShipping_p_quantity(),
+                        s.getShippingProcess(),
+                        (s.getWaybillNumber() == null || s.getWaybillNumber().isEmpty() ? "-" : s.getWaybillNumber()),
+                        (s.getShippingDate() == null ? "-" : s.getShippingDate())
+                );
+            }
+
+            System.out.println("============================================");
+        } catch (Exception e) {
+            System.err.println("출고 현황 조회 중 오류 발생: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //  출고 상품검색 (상품 아이디로 입력 받기)
+    public void shippingProductSearch() {
+        try {
+            System.out.print("조회할 상품 ID 입력: ");
+            int itemID = Integer.parseInt(br.readLine());
+
+            List<Shipment> list = user_controller.shippingProductSearch(itemID);
+
+            if (list.isEmpty()) {
+                System.out.println("조회된 출고 내역이 없습니다.");
+                return;
+            }
+
+            // 출력 헤더
+            System.out.printf("%-10s %-20s %-10s %-10s %-10s %-10s%n",
+                    "출고ID", "상품명", "출고수량", "승인여부", "운송장", "아이템ID");
+            System.out.println("-----------------------------------------------------------");
+
+            // 데이터 출력
+            for (Shipment s : list) {
+                System.out.printf("%-10d %-20s %-10d %-10s %-10s %-10d%n",
+                        s.getShipmentID(),
+                        (s.getShipItemName() == null ? "-" : s.getShipItemName()),
+                        s.getShipping_p_quantity(),
+                        s.getShippingProcess(),
+                        (s.getWaybillNumber() == null || s.getWaybillNumber().isEmpty() ? "-" : s.getWaybillNumber()),
+                        s.getItemID()
+                );
+            }
+
+        } catch (Exception e) {
+            System.err.println("상품별 출고 조회 중 오류 발생: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
 }
 

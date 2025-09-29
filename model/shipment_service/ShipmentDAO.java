@@ -4,6 +4,7 @@ import util.DBUtil;
 import vo.Items.Item;
 import vo.Shippments.Shipment;
 
+import java.rmi.server.UID;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -22,11 +23,12 @@ public class ShipmentDAO implements Shipment_DAO_Interface {
     @Override
     public int updateShipment(Shipment s) {
         int result = 0;
-        String sql = "{CALL sp_updateShipment(?, ?, ?)}";
+        String sql = "{CALL sp_updateShipment(?, ?, ?, ?)}";
         try (CallableStatement cal = conn.prepareCall(sql)) {
             cal.setInt(1, s.getShipmentID());
             cal.setString(2, s.getShippingProcess());
-            cal.setInt(3, s.getWaybillNumber());
+            cal.setString(3, s.getWaybillNumber());
+            cal.setInt(4, s.getWarehouseID());
             result = cal.executeUpdate();
         } catch (SQLException e) {
             System.err.println("출고 업데이트 실패: " + e.getMessage());
@@ -34,6 +36,8 @@ public class ShipmentDAO implements Shipment_DAO_Interface {
         return result;
     }
 
+    // 출고 창고 위치 지정 (출고 아이디로)
+    // 본인 것만 나오게
 
 
 
@@ -52,6 +56,7 @@ public class ShipmentDAO implements Shipment_DAO_Interface {
                     s.setShipmentID(rs.getInt("shipmentID"));
                     s.setUserID(rs.getInt("userID"));
                     s.setItemID(rs.getInt("itemID"));
+                    s.setShipItemName(rs.getString("shipItemName")); // 아이템 이름 매핑 추가
                     s.setShipping_p_quantity(rs.getInt("Shipping_p_quantity"));
                     s.setShippingProcess(rs.getString("shippingProcess"));
                     list.add(s);
@@ -69,23 +74,25 @@ public class ShipmentDAO implements Shipment_DAO_Interface {
 
 
 
-    // 승인 된것만 출고 지시서 조회(지시서)
+    // 사용자 출고 지시서
+    // 한 사용자의 모든 출고목록을 출력
     @Override
-    public List<Shipment> selectShipmentByID(int shipmentID) {
+    public List<Shipment> selectShipmentByID(int userID) {
         List<Shipment> list = new ArrayList<>();
         try (CallableStatement cal = conn.prepareCall("{CALL sp_selectShipmentByID(?)}")) {
-            cal.setInt(1, shipmentID);
+            cal.setInt(1,userID);
 
             try (ResultSet rs = cal.executeQuery()) {
                 while (rs.next()) {
                     Shipment s = new Shipment();
-                    ;
                     s.setShipmentID(rs.getInt("shipmentID"));
                     s.setUserID(rs.getInt("uid"));
                     s.setItemID(rs.getInt("itemID"));
+                    s.setShipItemName(rs.getString("shipItemName"));   // 추가
                     s.setShipping_p_quantity(rs.getInt("Shipping_p_quantity"));
                     s.setShippingProcess(rs.getString("shippingProcess"));
-                    s.setWaybillNumber(rs.getInt("waybill"));
+                    s.setWaybillNumber(rs.getString("waybill"));
+                    s.setWarehouseID(rs.getInt("warehouseID"));
                     list.add(s);
                 }
             }
@@ -117,7 +124,8 @@ public class ShipmentDAO implements Shipment_DAO_Interface {
                     s.setItemID(rs.getInt("itemID"));
                     s.setShipping_p_quantity(rs.getInt("Shipping_p_quantity"));
                     s.setShippingProcess(rs.getString("ShippingProcess"));
-                    s.setWaybillNumber(rs.getInt("waybill"));
+                    s.setWaybillNumber(rs.getString("waybill"));
+                    s.setWarehouseID(rs.getInt("warehouseID"));
                     shipments.add(s);
                 }
             }

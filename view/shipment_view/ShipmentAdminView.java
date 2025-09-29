@@ -23,7 +23,7 @@ public class ShipmentAdminView {
                     ============== [출고 관리자 메뉴] ===============
                     1 출고 요청 승인 / 거절
                     2 출고 리스트 조회 (승인 대기)
-                    3 출고 지시서 조회
+                    3 사용자 출고 지시서
                     4 출고 현황 조회 (모든 출고 현황)
                     0 이전 메뉴
                     ===========================================
@@ -63,18 +63,26 @@ public class ShipmentAdminView {
             System.out.print("승인 / 거절 입력: ");
             String status = br.readLine();
 
-            int waybill = 0;
+            String waybill = null;
+            int warehouseID = 0;
+
             if (status.equalsIgnoreCase("승인")) {
                 System.out.print("운송장 번호 입력: ");
-                waybill = Integer.parseInt(br.readLine());
+                waybill = br.readLine(); // 문자열 그대로 입력
+                System.out.print("창고 번호 입력 :");
+                warehouseID = Integer.parseInt(br.readLine());
+
+
             }
 
             Shipment s = new Shipment();
             s.setShipmentID(shipmentID);
             s.setShippingProcess(status);
             s.setWaybillNumber(waybill);
+            s.setWarehouseID(warehouseID);
 
             int result = shipment_controller.updateShipment(s);
+
             System.out.println(result > 0 ? (status.equalsIgnoreCase("승인") ? "출고 승인 완료" : "출고 거절 완료") : "처리 실패");
         } catch (Exception e) {
             System.err.println("처리 오류: " + e.getMessage());
@@ -115,28 +123,30 @@ public class ShipmentAdminView {
 
 
 
-    // 승인 된것만 출고 지시서 조회(지시서)
+    // 유저 아이디 기준으로 출고 지시서 조회
     public void selectShipmentByID() {
         try {
-            System.out.print("출고 ID 입력: ");
-            int shipmentID = Integer.parseInt(br.readLine());
-            List<Shipment> list = shipment_controller.selectShipmentByID(shipmentID);
+            System.out.print("유저 ID 입력: ");
+            int userID = Integer.parseInt(br.readLine());
+            List<Shipment> list = shipment_controller.selectShipmentByID(userID);
 
             if (list != null && !list.isEmpty()) {
-                System.out.printf("%-10s %-10s %-10s %-20s %-10s %-10s %-15s%n",
-                        "출고번호", "유저아이디", "아이템아이디", "아이템이름", "아이템수량", "승인현황", "운송장번호");
+                System.out.printf("%-10s %-10s %-10s %-20s %-10s %-10s %-15s %-10s%n",
+                        "출고번호", "유저아이디", "아이템아이디", "아이템이름", "아이템수량", "승인현황", "운송장번호", "창고번호");
 
                 System.out.println("------------------------------------------------------------------------------------------");
 
+
                 for (Shipment s : list) {
-                    System.out.printf("%-10d %-10d %-10d %-20s %-10d %-10s %-15s%n",
+                    System.out.printf("%-10d %-10d %-10d %-20s %-10d %-10s %-15s %-10s%n",
                             s.getShipmentID(),
                             s.getUserID(),
                             s.getItemID(),
-                            (s.getShipItemName() == null ? "-" : s.getShipItemName()), // null 방지
+                            (s.getShipItemName() == null ? "-" : s.getShipItemName()),
                             s.getShipping_p_quantity(),
                             s.getShippingProcess(),
-                            (s.getWaybillNumber() == 0 ? "-" : String.valueOf(s.getWaybillNumber())) // 0 대신 "-" 처리
+                            (s.getWaybillNumber() == null || s.getWaybillNumber().isEmpty() ? "-" : s.getWaybillNumber()),
+                            s.getWarehouseID() == 0 ? "-" : s.getWarehouseID()  // 창고번호 0이면 "-" 처리
                     );
                 }
             } else {
@@ -165,21 +175,22 @@ public class ShipmentAdminView {
             }
 
             // 출력 헤더
-            System.out.printf("%-10s %-10s %-10s %-15s %-10s %-10s%n",
-                    "출고ID", "유저ID", "아이템ID", "수량", "상태", "운송장번호");
-            System.out.println("-------------------------------------------------------------");
+            System.out.printf("%-10s %-10s %-10s %-10s %-10s %-15s %-10s%n",
+                    "출고ID", "유저ID", "아이템ID", "수량", "상태", "운송장번호", "창고번호");
+            System.out.println("----------------------------------------------------------------------");
 
             // 데이터 출력
             for (Shipment s : shipments) {
-                System.out.printf("%-10d %-10d %-10d %-15d %-10s %-10d%n",
+                System.out.printf("%-10d %-10d %-10d %-10d %-10s %-15s %-15s%n",
                         s.getShipmentID(),
                         s.getUserID(),
                         s.getItemID(),
                         s.getShipping_p_quantity(),
                         s.getShippingProcess(),
-                        s.getWaybillNumber());
+                        (s.getWaybillNumber() == null || s.getWaybillNumber().isEmpty() ? "-" : s.getWaybillNumber()),
+                        (s.getWarehouseID() == 0 ? "-" : s.getWarehouseID())
+                );
             }
-
             System.out.println("=============================================================");
 
         } catch (Exception e) {
