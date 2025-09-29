@@ -2,11 +2,17 @@ package controller.warehouse_controller;
 
 import model.warehouse_service.WarehouseDAO;
 import model.warehouse_service.WarehouseSectionDAO;
+import util.AppSession;
 import view.warehouse_view.WarehouseAdminView;
+import vo.Members.Admin;
+import vo.Members.Role;
 import vo.Warehouses.Warehouse;
 import vo.Warehouses.WarehouseSection;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * 창고 관리 기능의 전체적인 흐름 제어하는 컨트롤러 클래스
@@ -37,7 +43,7 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
 
 
     @Override
-    public void choiceWarehouseMenu(int choice) {
+    public void choiceWarehouseMenu(int choice) throws IOException {
         switch (choice) {
             case 1: // 창고 등록
                 insertWarehouse();
@@ -64,7 +70,7 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
      * 창고 조회 하위 메뉴
      * @param choice 사용자가 조회 메뉴에서 선택한 번호
      */
-    private void handleSearchMenu(int choice) {
+    private void handleSearchMenu(int choice) throws IOException {
         switch (choice) {
             case 1: // 전체 조회
                 selectAllWarehouse();
@@ -98,7 +104,14 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
 
     // 창고 등록
     @Override
-    public Warehouse insertWarehouse() {
+    public Warehouse insertWarehouse() throws IOException {
+        Optional<Admin> currentAdminOpt = AppSession.get().currentAdmin();
+
+        if (currentAdminOpt.isEmpty() || currentAdminOpt.get().getRole() != Role.Master) {
+            warehouseAdminView.displayError("총관리자(Master) 권한이 필요합니다.");
+            return null;
+        }
+
         Warehouse newWarehouse = warehouseAdminView.insertWarehouse(); // View 호출 -> 사용자로부터 등록할 창고 정보 받아옴
         Warehouse insertedWh = warehouseDAO.insertWarehouse(newWarehouse); // DAO 에 정보를 전달 -> DB 저장 요청 -> ID가 부여된 객체 받음
         if (insertedWh != null) {
@@ -181,7 +194,7 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
 
         // 창고 정보가 없거나, 구역이 하나도 등록되지 않은 경우
         if (sections == null || sections.isEmpty()) {
-            return "창고 또는 구역 정보 없음";
+            return "창고 또는 구역 정보 없음\n비어있음 (현재 사용량: 0.00%)";
         }
 
         // 창고의 총 용량과 현재 총 재고를 계산할 변수를 준비
@@ -210,17 +223,28 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
         } else if (occupancyRate > 0) {
             return String.format("여유 (현재 사용량: %.2f%%)", occupancyRate);
         } else { // totalCurrentStock 이 0인 경우
-            return "비어있음";
+            return "비어있음 (현재 사용량 : 0%)";
         }
     }
 
     // 창고 정보 수정
     @Override
-    public int updateWarehouse() {
-        Warehouse warehouseToUpdate = warehouseAdminView.updateWarehouse();
-        int result = warehouseDAO.updateWarehouse(warehouseToUpdate);
+    public int updateWarehouse() throws IOException {
+
+        Optional<Admin> currentAdminOpt = AppSession.get().currentAdmin();
+
+        if (currentAdminOpt.isEmpty() || currentAdminOpt.get().getRole() != Role.Master) {
+            warehouseAdminView.displayError("총관리자(Master) 권한이 필요합니다.");
+            return 0;
+        }
+
+        Warehouse warehouse = warehouseAdminView.updateWarehouse();
+
+        int result = warehouseDAO.updateWarehouse(warehouse);
+
         if (result > 0) {
-            warehouseAdminView.displaySuccess("창고 정보 수정 성공 ", warehouseToUpdate);
+            Warehouse updatedWarehouse = warehouseDAO.selectId(warehouse.getId());
+            warehouseAdminView.displaySuccess("창고 정보 수정 성공", updatedWarehouse);
         } else {
             warehouseAdminView.displayError("창고 정보 수정 실패 (ID 확인 필요)");
         }
@@ -229,7 +253,15 @@ public class Warehouse_Controller_Impl implements Warehouse_Controller {
 
     // 창고 삭제
     @Override
-    public int deleteWarehouse() {
+    public int deleteWarehouse() throws IOException {
+
+        Optional<Admin> currentAdminOpt = AppSession.get().currentAdmin();
+
+        if (currentAdminOpt.isEmpty() || currentAdminOpt.get().getRole() != Role.Master) {
+            warehouseAdminView.displayError("총관리자(Master) 권한이 필요합니다.");
+            return 0;
+        }
+
         int idToDelete = warehouseAdminView.deleteWarehouse();
         int result = warehouseDAO.deleteWarehouse(idToDelete);
         if (result > 0) {

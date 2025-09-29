@@ -27,4 +27,15 @@ public class WarehouseFee extends WarehouseChildVO {
     public WarehouseFee() {
 
     }
+
+    @Override
+    public String toString() {
+        return "============ [ 창고 요금 ] ============" + "\n" +
+                "요금 ID : " + getId() + "\n" +
+                "창고 ID : " + getWarehouseID() + "\n" +
+                "창고 요금 : " + price + "원\n" +
+                "창고 계약 시작일 : " + startDate + "\n" +
+                "창고 계약 종료일 : " + endDate + "\n" +
+                "====================================";
+    }
 }

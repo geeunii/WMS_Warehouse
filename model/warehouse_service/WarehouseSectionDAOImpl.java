@@ -3,6 +3,7 @@ package model.warehouse_service;
 import vo.Warehouses.WarehouseSection;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 창고 구역 데이터하기 위한 DAO 인터페이스
@@ -15,7 +16,11 @@ public interface WarehouseSectionDAOImpl {
      * @param ws warehouseID 와 등록 정보가 담긴 신규 WarehouseSection 객체
      * @return DB의 Primary Key : sectionID 가 설정된 WarehouseSection 객체
      */
-    WarehouseSection insertSection(WarehouseSection ws);
+    // WarehouseSection insertSection(WarehouseSection ws);
+
+    // 창고 구역 등록 V2
+    Map<String, Integer> insertSectionV2(WarehouseSection section);
+
 
     /**
      * 특정 창고에 소속된 모든 구역 정보 출력
@@ -36,8 +41,9 @@ public interface WarehouseSectionDAOImpl {
      * @param ws 수정할 정보가 담긴 WarehouseSection 객체
      * @return 성공적으로 수정된 row 의 수 [성공1, 실패0]
      */
-    int updateSection(WarehouseSection ws);
+    // int updateSection(WarehouseSection ws);
 
+    int updateSectionV2(WarehouseSection ws);
     /**
      * 구역 삭제
      * @param secID 삭제할 구역 정보의 ID
