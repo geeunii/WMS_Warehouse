@@ -38,6 +38,9 @@ public class StockUserView {
                 case 2 -> stockPrint();
                 case 3 -> deleteStock();
                 case 4 -> stockCurrentSearch();
+                //case 2 -> selectStockNotice();
+                //case 3 -> deleteStock();
+                //case 4 -> selectCurrentStock();
                 case 0 -> {
                     System.out.println("이전 메뉴로 돌아갑니다.");
                     return;
@@ -219,6 +222,7 @@ public class StockUserView {
             System.err.println("오류: 올바른 숫자를 입력해주세요.");
         }
     }
+    
 }
 
 
