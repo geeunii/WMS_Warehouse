@@ -27,13 +27,13 @@ public class WarehouseFeeAdminView {
         System.out.println("""
                 ===========[ 창고 요금 관리 ] ==========
                 ============ [ 메뉴 선택 ] ============
-                
+
                    1. 요금 등록
                    2. 요금 수정
                    3. 요금 삭제
                    4. 요금 조회
                    5. 뒤로 가기
-                
+
                 ======================================
                 ======================================
                 """);
@@ -110,11 +110,11 @@ public class WarehouseFeeAdminView {
     public int selectWarehouseFeeMenu() throws IOException {
         System.out.println("""
                 ===========[ 요금 조회 메뉴 ] ==========
-                
+
                    1. 요금 ID로 창고 요금 조회
                    2. 창고 ID로 창고 요금 조회
                    3. 뒤로 가기
-                
+
                 ======================================
                 """);
 

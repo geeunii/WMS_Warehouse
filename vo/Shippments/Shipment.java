@@ -1,8 +1,7 @@
 package vo.Shippments;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import vo.Items.Item;
 
 import java.util.Date;
 
@@ -10,6 +9,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Getter
+@Setter
 
 public class Shipment {
 
@@ -27,4 +28,7 @@ public class Shipment {
     // 운송장 관련
     private int waybillNumber;      // 운송장 번호
     private String waybillDate;     // 운송장 등록 날짜
+
+    // Item VO 포함 (조합)
+    private Item item;
 }

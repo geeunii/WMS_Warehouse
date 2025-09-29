@@ -86,25 +86,15 @@ DELIMITER ;
 
 
 
--- 관리자용 출고 현황 조회 (상품명 포함)
-DROP PROCEDURE IF EXISTS sp_selectCurrentShipment;
+-- 관리자용 출고 현황 조회
 DELIMITER $$
 CREATE PROCEDURE sp_selectCurrentShipment()
 BEGIN
-    SELECT s.shipmentID,
-           s.uid AS userID,
-           s.itemID,
-           i.itemName AS shipItemName,
-           s.Shipping_p_quantity,
-           s.shippingProcess,
-           s.waybill,
-           s.shippingDate
-    FROM shipment s
-             JOIN Item i ON s.itemID = i.itemID
-    ORDER BY s.shippingDate DESC;
+    SELECT shipmentID, uid, itemID, Shipping_p_quantity,
+           shippingProcess, waybill, shippingDate
+    FROM shipment;
 END$$
 DELIMITER ;
-
 
 
 
@@ -119,31 +109,6 @@ BEGIN
            shippingProcess, waybill, shippingDate
     FROM shipment
     WHERE shipmentID = p_shipmentID and shippingProcess = '승인';
-END$$
-DELIMITER ;
-
-
-
-
-
--- 출고리스트 조회 (승인 대기 인것만)
-
-DROP PROCEDURE IF EXISTS sp_selectPendingShipment;
-DELIMITER $$
-
-CREATE PROCEDURE sp_selectPendingShipment(
-
-)
-BEGIN
-    SELECT s.shipmentID,
-           s.uid AS userID,
-           s.itemID,
-           i.itemName AS shipItemName,
-           s.Shipping_p_quantity,
-           s.shippingProcess
-    FROM shipment s
-             JOIN Item i ON s.itemID = i.itemID
-    WHERE s.shippingProcess = '승인대기';
 END$$
 DELIMITER ;
 

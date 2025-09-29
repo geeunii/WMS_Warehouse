@@ -1,14 +1,15 @@
 package vo.Stocks;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import vo.Items.Item;
 
 import java.util.Date;
 
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Data
 
 public class Stock {
@@ -20,4 +21,7 @@ public class Stock {
     private int warehouseID;
     private int sectionID;
     private int uID;
+
+    // Item VO 포함 (조합)
+    private Item item;
 }
