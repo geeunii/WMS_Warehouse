@@ -17,7 +17,7 @@ public class NoticeUserView {
             System.out.println("1. 전체 공지 조회");
             System.out.println("2. 공지 상세 보기");
             System.out.println("3. 뒤로가기");
-            System.out.print("메뉴 선택: ");
+            System.out.print("[메뉴 선택]: ");
 
             try {
                 int choice = Integer.parseInt(input.readLine().trim());

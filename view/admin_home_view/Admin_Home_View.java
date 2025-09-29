@@ -48,20 +48,8 @@ public class Admin_Home_View {
             case 1 -> adminView.adminMenu();
 
 
-            case 2 -> {
-                boolean runMenu = true;
-                while (runMenu) {
-                    int menuChoice = requestAdminView.mainMenu();
-                    switch (menuChoice) {
-                        case 1 -> new Request_Controller(0, true).run();
-                        case 2 -> new NoticeControllerImpl(true).run();
-                        case 3 -> {
-                            System.out.println("뒤로갑니다.");
-                            runMenu = false; // while 종료
-                        }
-                    }
-                }
-            }
+            case 2 -> new Request_Controller(0, true).run();
+
 
 
             // case 2 -> requestAdminView

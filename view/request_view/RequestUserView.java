@@ -16,7 +16,7 @@ public class RequestUserView {
         while (true) {
             System.out.println("\n--- 게시판 ---");
             System.out.println("1. 문의하기 | 2. 공지사항 | 3. 뒤로가기");
-            System.out.print("메뉴 선택: ");
+            System.out.print("[메뉴 선택]: ");
             try {
                 int choice = Integer.parseInt(input.readLine().trim());
                 if (choice >= 1 && choice <= 3) return choice;
@@ -29,7 +29,7 @@ public class RequestUserView {
         while (true) {
             System.out.println("\n--- 문의하기 ---");
             System.out.println("1. 문의 게시판 | 2. 1:1 문의 | 3. 뒤로가기");
-            System.out.print("메뉴 선택: ");
+            System.out.print("[메뉴 선택]: ");
             try {
                 int choice = Integer.parseInt(input.readLine().trim());
                 if (choice >= 1 && choice <= 3) return choice;
@@ -42,7 +42,7 @@ public class RequestUserView {
         while (true) {
             System.out.println("\n--- 문의 게시판 메뉴 ---");
             System.out.println("1. 글쓰기 | 2. 내 글 수정 | 3. 전체 문의 조회 | 4. 내 문의 조회 | 5. 글 삭제 | 6. 뒤로가기");
-            System.out.print("메뉴 선택: ");
+            System.out.print("[메뉴 선택]: ");
             try {
                 int choice = Integer.parseInt(input.readLine().trim());
                 if (choice >= 1 && choice <= 6) return choice;
@@ -55,7 +55,7 @@ public class RequestUserView {
         while (true) {
             System.out.println("\n--- 1:1 문의 메뉴 ---");
             System.out.println("1. 글쓰기 | 2. 내 글 수정 | 3. 내 문의 조회 | 4. 글 삭제 | 5. 뒤로가기");
-            System.out.print("메뉴 선택: ");
+            System.out.print("[메뉴 선택]: ");
             try {
                 int choice = Integer.parseInt(input.readLine().trim());
                 if (choice >= 1 && choice <= 5) return choice;

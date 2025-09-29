@@ -22,7 +22,7 @@ public class NoticeAdminView {
             System.out.println("4. 전체 공지 조회");
             System.out.println("5. 공지 상세 보기");
             System.out.println("6. 뒤로가기");
-            System.out.print("메뉴 선택: ");
+            System.out.print("[메뉴 선택]: ");
             try {
                 int choice = Integer.parseInt(input.readLine().trim());
                 if (choice >= 1 && choice <= 6) return choice;

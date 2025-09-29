@@ -17,7 +17,7 @@ public class RequestAdminView {
         while (true) {
             System.out.println("\n--- 게시판 ---");
             System.out.println("1. 문의관리 | 2. 공지사항 관리 | 3. 뒤로가기");
-            System.out.print("메뉴 선택: ");
+            System.out.print("[메뉴 선택]: ");
             try {
                 int choice = Integer.parseInt(input.readLine().trim());
                 if (choice >= 1 && choice <= 3) return choice;
@@ -33,7 +33,7 @@ public class RequestAdminView {
             System.out.println("1. 1:1 문의 관리");
             System.out.println("2. 문의 게시판 관리");
             System.out.println("3. 뒤로가기");
-            System.out.print("메뉴 선택: ");
+            System.out.print("[메뉴 선택]: ");
             try {
                 int choice = Integer.parseInt(input.readLine().trim());
                 if (choice >= 1 && choice <= 3) return choice;
@@ -49,7 +49,7 @@ public class RequestAdminView {
             System.out.println("1. 1:1 문의 조회");
             System.out.println("2. 답변/답변 수정 등록");
             System.out.println("3. 뒤로가기");
-            System.out.print("메뉴 선택: ");
+            System.out.print("[메뉴 선택]: ");
             try {
                 int choice = Integer.parseInt(input.readLine().trim());
                 if (choice >= 1 && choice <= 3) return choice;
@@ -66,7 +66,7 @@ public class RequestAdminView {
             System.out.println("2. 답변/답변 수정 등록");
             System.out.println("3. 특정 문의 삭제");
             System.out.println("4. 뒤로가기");
-            System.out.print("메뉴 선택: ");
+            System.out.print("[메뉴 선택]: ");
             try {
                 int choice = Integer.parseInt(input.readLine().trim());
                 if (choice >= 1 && choice <= 4) return choice;
@@ -99,12 +99,13 @@ public class RequestAdminView {
         try { id = Integer.parseInt(input.readLine().trim()); }
         catch (NumberFormatException e) { System.out.println("ID는 숫자로 입력해주세요."); return null; }
 
-        System.out.print("정말 답변/수정하시겠습니까? (Y/N): ");
-        if (!input.readLine().equalsIgnoreCase("Y")) { System.out.println("수정이 취소되었습니다."); return null; }
-
         System.out.print("답변 내용을 입력해주세요: ");
         String content = input.readLine().trim();
         if (content.isEmpty()) { System.out.println("답변은 비워둘 수 없습니다."); return null; }
+
+        System.out.print("정말 답변/수정하시겠습니까? (Y/N): ");
+        if (!input.readLine().equalsIgnoreCase("Y")) { System.out.println("수정이 취소되었습니다."); return null; }
+
 
         Request req = new Request();
         req.setRequestID(id);
