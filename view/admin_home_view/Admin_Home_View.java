@@ -47,25 +47,20 @@ public class Admin_Home_View {
 
         switch (choice) {
             case 1 -> adminView.adminMenu();
-
-
-
             case 2 -> {
-                boolean runMenu = true;
-                while (runMenu) {
-                    int menuChoice = requestAdminView.mainMenu();
-                    switch (menuChoice) {
-                        case 1 -> new Request_Controller(0, true).run();
-                        case 2 -> new NoticeControllerImpl(true).run();
-                        case 3 -> {
-                            System.out.println("뒤로갑니다.");
-                            runMenu = false; // while 종료
-                        }
-                    }
-                }
+                int adminId = AppSession.get().currentAdmin()
+                        .map(a -> {
+                            try {
+                                return Integer.parseInt(a.getAdminID());
+                            } catch (NumberFormatException e) {
+                                return 0;
+                            }
+                        })
+                        .orElse(0);
+                Request_Controller requestController = new Request_Controller(adminId, true);
+                requestController.run();
             }
 
-            // case 2 -> requestAdminView
             case 3 -> inventoryAdminView.Inventory_Management_Menu();
             case 4 -> stockAdminView.stockAdminMenu();
             case 5 -> shipmentAdminView.shipmentAdminMenu();
