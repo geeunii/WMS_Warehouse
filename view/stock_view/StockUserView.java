@@ -46,6 +46,9 @@ public class StockUserView {
                 case 2 -> stockPrint();
                 case 3 -> deleteStock();
                 case 4 -> stockCurrentSearch();
+                //case 2 -> selectStockNotice();
+                //case 3 -> deleteStock();
+                //case 4 -> selectCurrentStock();
                 case 0 -> {
                     System.out.println("이전 메뉴로 돌아갑니다.");
                     return;
@@ -138,10 +141,9 @@ public class StockUserView {
         }
     }
 
+    // 2. 입고 고지서 출력
+    public static void selectStockNotice() {
 
-
-    // 2. 입고 고지서 조회 (승인 된것만)
-    public static void stockPrint() {
         try {
             System.out.println("============== [입고 고지서 출력] ===============");
             System.out.print("출력할 입고 고지서 번호(stockID)를 입력하세요: ");
@@ -227,6 +229,7 @@ public class StockUserView {
             System.err.println("오류: 올바른 숫자를 입력해주세요.");
         }
     }
+    
 }
 
 
