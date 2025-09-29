@@ -27,7 +27,7 @@ public class Admin_Home_View {
     ShipmentAdminView shipmentAdminView = new ShipmentAdminView();
     WarehouseMainView warehouseMainView = new WarehouseMainView();
 
-    public void adminHome() throws IOException {
+    public void adminHome() throws Exception {
         System.out.print("""
                 ===========[ 관리자 홈 화면 ] ==========
                 ============== [ 메뉴 ] ==============
@@ -64,8 +64,8 @@ public class Admin_Home_View {
 
             // case 2 -> requestAdminView
             case 3 -> inventoryAdminView.Inventory_Management_Menu();
-            // case 4 -> stockAdminView
-            //case 5 -> shipmentAdminView
+            case 4 -> stockAdminView.stockAdminMenu();
+            case 5 -> shipmentAdminView.shipmentAdminMenu();
             case 6 -> WarehouseMain_Controller_Impl.getInstance().start();
             case 7 -> {
                 break;

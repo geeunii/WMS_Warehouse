@@ -13,15 +13,10 @@ public class ShipmentAdminView {
    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
    static Shipment_Controller shipment_controller = new Shipment_Controller();
 
-    public static void main(String[] args) {
-        shipmentAdminMenu();
-    }
 
 
 
-
-
-    public static void shipmentAdminMenu()  {
+    public void shipmentAdminMenu()  {
         try {
         while (true) {
             System.out.println("""
@@ -61,7 +56,7 @@ public class ShipmentAdminView {
 
 
     // 1. 출고 요청 승인 / 거절
-    public static void updateShipment() {
+    public void updateShipment() {
         try {
             System.out.print("출고 ID 입력: ");
             int shipmentID = Integer.parseInt(br.readLine());
@@ -91,7 +86,7 @@ public class ShipmentAdminView {
 
 
     // 2. 출고 리스트 조회 (승인 대기 인것만)
-    public static void selectPendingShipment() {
+    public void selectPendingShipment() {
         try {
             List<Shipment> list = shipment_controller.selectPendingShipment();
 
@@ -121,21 +116,28 @@ public class ShipmentAdminView {
 
 
     // 승인 된것만 출고 지시서 조회(지시서)
-    public static void selectShipmentByID() {
+    public void selectShipmentByID() {
         try {
             System.out.print("출고 ID 입력: ");
             int shipmentID = Integer.parseInt(br.readLine());
             List<Shipment> list = shipment_controller.selectShipmentByID(shipmentID);
 
             if (list != null && !list.isEmpty()) {
-                System.out.printf("%-10s %-10s %-10s %-15s %-10s %-10s %-10s%n",
-                        "ShipmentID", "UserID", "ItemID", "ItemName", "ItemCount", "Status", "Waybill");
+                System.out.printf("%-10s %-10s %-10s %-20s %-10s %-10s %-15s%n",
+                        "출고번호", "유저아이디", "아이템아이디", "아이템이름", "아이템수량", "승인현황", "운송장번호");
+
+                System.out.println("------------------------------------------------------------------------------------------");
 
                 for (Shipment s : list) {
-                    System.out.printf("%-10d %-10d %-10d %-15s %-10d %-10s %-10d%n",
-                            s.getShipmentID(), s.getUserID(), s.getItemID(),
-                            s.getShipItemName(), s.getShipping_p_quantity(), s.getShippingProcess(),
-                            s.getWaybillNumber());
+                    System.out.printf("%-10d %-10d %-10d %-20s %-10d %-10s %-15s%n",
+                            s.getShipmentID(),
+                            s.getUserID(),
+                            s.getItemID(),
+                            (s.getShipItemName() == null ? "-" : s.getShipItemName()), // null 방지
+                            s.getShipping_p_quantity(),
+                            s.getShippingProcess(),
+                            (s.getWaybillNumber() == 0 ? "-" : String.valueOf(s.getWaybillNumber())) // 0 대신 "-" 처리
+                    );
                 }
             } else {
                 System.out.println("출고 정보 없음");
@@ -150,7 +152,7 @@ public class ShipmentAdminView {
 
 
     // 관리자 출고 현황 조회 (모든 출고 현황)
-    public static void selectCurrentShipment() {
+    public void selectCurrentShipment() {
         System.out.println("============== [관리자 출고 현황 조회] ===============");
 
         try {

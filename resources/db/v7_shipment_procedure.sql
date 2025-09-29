@@ -43,27 +43,27 @@ delimiter ;
 
 
 
-
+drop procedure sp_updateShipment;
 -- 출고 승인 / 거절
-delimiter $$
-create procedure sp_updateShipment (
-    IN p_shipmentID int,
-    IN p_shippingProcess varchar(20),
-    IN p_waybill int
+DELIMITER $$
+CREATE PROCEDURE sp_updateShipment (
+    IN p_shipmentID INT,
+    IN p_shippingProcess VARCHAR(20),
+    IN p_waybill INT
 )
-begin
-
+BEGIN
     UPDATE shipment
     SET shippingProcess = p_shippingProcess,
-        waybill = p_waybill,
+        waybill = CASE
+                      WHEN p_shippingProcess = '승인' THEN p_waybill
+                      ELSE NULL
+            END,
         shippingDate = NOW()
-    where shipmentID = p_shipmentID;
+    WHERE shipmentID = p_shipmentID;
+END $$
+DELIMITER ;
 
-
-end $$
-delimiter ;
-
-
+SELECT * FROM shipment WHERE shipmentID;
 
 
 drop procedure sp_selectCurrentShipmentUser;
