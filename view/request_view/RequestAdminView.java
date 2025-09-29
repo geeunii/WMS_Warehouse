@@ -21,36 +21,40 @@ public class RequestAdminView {
 
     // --- 메인 메뉴 ---
     public int mainMenu() {
-        System.out.println("\n--- 게시판 ---");
+        System.out.println("\n================= 게시판 =================");
         System.out.println("1. 문의관리 | 2. 공지사항 관리 | 3. 뒤로가기");
+        System.out.println("\n========================================");
         return input.readInt("[메뉴 선택]: ", 1, 3);
     }
 
     // --- 문의 관리 메뉴 ---
     public int requestMenu() {
-        System.out.println("\n--- 문의 관리 ---");
+        System.out.println("\n================= 문의 관리 =================");
         System.out.println("1. 1:1 문의 관리");
         System.out.println("2. 문의 게시판 관리");
         System.out.println("3. 뒤로가기");
+        System.out.println("\n===========================================");
         return input.readInt("[메뉴 선택]: ", 1, 3);
     }
 
     // --- 1:1 문의 관리 메뉴 ---
     public int oneToOneMenu() {
-        System.out.println("\n--- 1:1 문의 관리 ---");
+        System.out.println("\n================= 1:1 문의 관리 =================");
         System.out.println("1. 1:1 문의 조회");
         System.out.println("2. 답변/답변 수정 등록");
         System.out.println("3. 뒤로가기");
+        System.out.println("\n===============================================");
         return input.readInt("[메뉴 선택]: ", 1, 3);
     }
 
     // --- 문의 게시판 메뉴 ---
     public int requestBoardMenu() {
-        System.out.println("\n--- 문의 게시판 관리 ---");
+        System.out.println("\n================= 문의 게시판 관리 ================");
         System.out.println("1. 모든 문의 조회");
         System.out.println("2. 답변/답변 수정 등록");
         System.out.println("3. 특정 문의 삭제");
         System.out.println("4. 뒤로가기");
+        System.out.println("\n===============================================");
         return input.readInt("[메뉴 선택]: ", 1, 4);
     }
 
@@ -60,14 +64,14 @@ public class RequestAdminView {
             System.out.println("등록된 문의가 없습니다.");
             return;
         }
-        System.out.println("\n--- 문의 목록 ---");
-        System.out.printf("%-5s %-30s %-10s %-16s %-10s %-10s\n", "ID", "제목", "유형", "작성일", "상태", "답변");
+        System.out.println("\n================================ 문의 목록 ================================");
+        System.out.printf("%-5s %-20s %-10s %-20s %-16s %-10s %-10s\n", "ID", "제목", "유형", "내용", "작성일", "상태", "답변");
         for (Request req : requests) {
             String type = req.getR_type() != null ? req.getR_type().name() : "없음";
             String date = req.getR_createAt() != null ? req.getR_createAt().format(fmt) : "없음";
             String response = req.getR_response() != null ? req.getR_response() : "-";
-            System.out.printf("%-5d %-30s %-10s %-16s %-10s %-10s\n",
-                    req.getRequestID(), req.getR_title(), type, date, req.getR_status(), response);
+            System.out.printf("%-5d %-20s %-10s %-20s %-16s %-10s %-10s\n",
+                    req.getRequestID(), req.getR_title(), type, req.getR_content(), date, req.getR_status(), response);
         }
     }
 

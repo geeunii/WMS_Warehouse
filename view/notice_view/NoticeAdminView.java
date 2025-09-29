@@ -19,10 +19,11 @@ public class NoticeAdminView {
 
     public int noticeAdminMenu() {
         return input.readInt(
-                "\n--- 관리자 공지 메뉴 ---\n" +
+                "\n================================ 관리자 공지 메뉴 ================================\n" +
                         "1. 공지 작성\n2. 공지 수정\n3. 공지 삭제\n4. 전체 공지 조회\n5. 공지 상세 보기\n6. 뒤로가기\n[메뉴 선택]: ",
                 1, 6
         );
+
     }
 
     public Notice createNotice() {
@@ -54,7 +55,7 @@ public class NoticeAdminView {
             System.out.println("공지사항이 존재하지 않습니다.");
             return;
         }
-        System.out.println("\n--- 공지 상세 ---");
+        System.out.println("\n====================== 공지 상세 ======================");
         System.out.println("ID: " + n.getNoticeID());
         System.out.println("제목: " + n.getN_title());
         System.out.println("내용: " + n.getN_content());

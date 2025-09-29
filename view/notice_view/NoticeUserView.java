@@ -19,10 +19,9 @@ public class NoticeUserView {
 
     public int noticeUserMenu() {
         return input.readInt(
-                "\n--- 공지사항 메뉴 ---\n" +
+                "\n====================== 공지사항 메뉴 ======================\n" +
                         "1. 전체 공지 조회\n2. 공지 상세 보기\n3. 뒤로가기\n[메뉴 선택]: ",
-                1, 3
-        );
+                1, 3);
     }
 
     public void selectAll(List<Notice> notices) {
@@ -43,7 +42,7 @@ public class NoticeUserView {
             System.out.println("공지사항이 존재하지 않습니다.");
             return;
         }
-        System.out.println("\n--- 공지 상세 ---");
+        System.out.println("\n=================== 공지 상세 ===================");
         System.out.println("ID: " + n.getNoticeID());
         System.out.println("제목: " + n.getN_title());
         System.out.println("내용: " + n.getN_content());

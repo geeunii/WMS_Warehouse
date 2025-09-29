@@ -40,7 +40,7 @@ public class Request_Controller {
             if (mainChoice == 3) break;
 
             if (mainChoice == 1) {
-                inquiryMenuLoop();
+                requestMenuLoop();
             }
             else if (mainChoice == 2) {
                 NoticeControllerImpl noticeController = new NoticeControllerImpl(true);
@@ -50,7 +50,7 @@ public class Request_Controller {
         }
     }
 
-    private void inquiryMenuLoop() throws IOException {
+    private void requestMenuLoop() throws IOException {
         while (true) {
             int choice = adminView.requestMenu();
             if (choice == 3) break;
