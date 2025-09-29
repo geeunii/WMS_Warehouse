@@ -5,7 +5,9 @@ import vo.Warehouses.WarehouseSection;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WarehouseSectionDAO implements WarehouseSectionDAOImpl {
 
@@ -35,36 +37,67 @@ public class WarehouseSectionDAO implements WarehouseSectionDAOImpl {
     }
 
     // 구역(섹션) 등록
-    @Override
-    public WarehouseSection insertSection(WarehouseSection ws) {
+//    @Override
+//    public WarehouseSection insertSection(WarehouseSection ws) {
+//
+//        String sql = "{CALL sp_InsertSection(?, ?, ?, ?, ?)}";
+//
+//        try (Connection connection = DBUtil.getConnection();
+//             CallableStatement callableStatement = connection.prepareCall(sql)) {
+//
+//            callableStatement.setString(1, ws.getSectionName());
+//            callableStatement.setInt(2, ws.getMaxVol());
+//            callableStatement.setInt(3, ws.getCurrentVol());
+//            callableStatement.setInt(4, ws.getWarehouseID());
+//
+//            callableStatement.registerOutParameter(5, Types.INTEGER);
+//
+//            callableStatement.executeUpdate();
+//
+//            int sectionID = callableStatement.getInt(5);
+//
+//            ws.setId(sectionID);
+//            return ws;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return null;
+//    }
 
-        String sql = "{CALL sp_InsertSection(?, ?, ?, ?, ?)}";
+    /**
+     * [추가] 1개의 구역을 등록하며 용량을 확인하는 새로운 메서드
+     */
+    public Map<String, Integer> insertSectionV2(WarehouseSection section) {
+        Map<String, Integer> result = new HashMap<>();
+        String sql = "{CALL sp_InsertSectionV2(?, ?, ?, ?, ?, ?)}";
 
         try (Connection connection = DBUtil.getConnection();
-             CallableStatement callableStatement = connection.prepareCall(sql)) {
+             CallableStatement cstmt = connection.prepareCall(sql)) {
 
-            callableStatement.setString(1, ws.getSectionName());
-            callableStatement.setInt(2, ws.getMaxVol());
-            callableStatement.setInt(3, ws.getCurrentVol());
-            callableStatement.setInt(4, ws.getWarehouseID());
+            cstmt.setInt(1, section.getWarehouseID());
+            cstmt.setString(2, section.getSectionName());
+            cstmt.setInt(3, section.getMaxVol());
+            cstmt.registerOutParameter(4, Types.INTEGER); // out_resultCode
+            cstmt.registerOutParameter(5, Types.INTEGER); // out_remainingCapacity
+            cstmt.registerOutParameter(6, Types.INTEGER); // out_newSectionID
 
-            callableStatement.registerOutParameter(5, Types.INTEGER);
+            cstmt.executeUpdate();
 
-            callableStatement.executeUpdate();
+            result.put("resultCode", cstmt.getInt(4));
+            result.put("remainingCapacity", cstmt.getInt(5));
+            result.put("newSectionId", cstmt.getInt(6));
 
-            int sectionID = callableStatement.getInt(5);
-
-            ws.setId(sectionID);
-            return ws;
         } catch (SQLException e) {
             e.printStackTrace();
+            result.put("resultCode", -99); // DB 자체 오류 코드
         }
-
-        return null;
+        return result;
     }
 
     /**
      * 특정 창고 ID 소속된 모든 구역 정보 조회
+     *
      * @param warehouseID 구역 정보를 조회할 창고의 ID
      * @return 해당 창고의 모든 구역 정보 리스트
      */
@@ -93,6 +126,7 @@ public class WarehouseSectionDAO implements WarehouseSectionDAOImpl {
 
     /**
      * 구역 ID를 이용하여 특정 창고 구역 정보 하나를 조회합
+     *
      * @param sectionId 조회할 구역의 ID
      * @return 조회된 WarehouseSection 객체. 결과가 없으면 null
      */
@@ -120,38 +154,70 @@ public class WarehouseSectionDAO implements WarehouseSectionDAOImpl {
 
     /**
      * 기존 구역 정보 수정
+     *
      * @param ws 수정할 정보가 담긴 WarehouseSection 객체 (id 포함)
      * @return 수정 된 행의 수. 성공 1, 실패 0
      */
+//    @Override
+//    public int updateSection(WarehouseSection ws) {
+//
+//        String sql = "{CALL sp_UpdateSection(? ,? ,? ,?, ?)}";
+//
+//        int affectedRows = 0;
+//
+//        try (Connection connection = DBUtil.getConnection();
+//             CallableStatement callableStatement = connection.prepareCall(sql)) {
+//
+//            callableStatement.setInt(1, ws.getId()); // 1. sectionID
+//            callableStatement.setString(2, ws.getSectionName()); // 2. sectionName
+//            callableStatement.setInt(3, ws.getMaxVol()); // 3. maxVol
+//            callableStatement.setInt(4, ws.getCurrentVol()); // 4. currentVol
+//            callableStatement.setInt(5, ws.getWarehouseID()); // 5. warehouseID
+//
+//
+//            affectedRows = callableStatement.executeUpdate();
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return affectedRows;
+//    }
+
+    // 구역 정보 수정 V2
     @Override
-    public int updateSection(WarehouseSection ws) {
-
-        String sql = "{CALL sp_UpdateSection(? ,? ,? ,?, ?)}";
-
+    public int updateSectionV2(WarehouseSection ws) {
+        String sql = "{CALL sp_UpdateSectionV2(?, ?, ?, ?, ?)}";
         int affectedRows = 0;
 
         try (Connection connection = DBUtil.getConnection();
-             CallableStatement callableStatement = connection.prepareCall(sql)) {
+             CallableStatement cstmt = connection.prepareCall(sql)) {
 
-            callableStatement.setInt(1, ws.getId()); // 1. sectionID
-            callableStatement.setString(2, ws.getSectionName()); // 2. sectionName
-            callableStatement.setInt(3, ws.getMaxVol()); // 3. maxVol
-            callableStatement.setInt(4, ws.getCurrentVol()); // 4. currentVol
-            callableStatement.setInt(5, ws.getWarehouseID()); // 5. warehouseID
+            cstmt.setInt(1, ws.getId());
+            cstmt.setString(2, ws.getSectionName());
+            cstmt.setInt(3, ws.getMaxVol());
+            // currentVol 삭제
+            cstmt.registerOutParameter(4, Types.INTEGER); // out_resultCode
+            cstmt.registerOutParameter(5, Types.VARCHAR); // out_message
 
+            cstmt.executeUpdate();
 
-            affectedRows = callableStatement.executeUpdate();
+            affectedRows = cstmt.getInt(4);
+
+            if (affectedRows != 1) {
+                System.out.println("알림 : " + cstmt.getString(5));
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
+            return 0;
         }
-
         return affectedRows;
     }
 
-
     /**
      * secID 구역 삭제
+     *
      * @param secID 삭제할 구역 정보의 ID
      * @return 삭제된 행의 수. 성공 1, 실패 0
      */

@@ -46,11 +46,11 @@ public class User_Home_View {
             System.out.println("""
                     ===========[ 사용자 홈 화면 ] ==========
                     ============ [ 메뉴 선택 ] ============
-                    
+
                     1. 내 정보 관리          4. 입고 관리
                     2. 게시판               5. 출고 관리
                     3. 내 재고 관리          6. 로그아웃
-                    
+
                     ======================================
                     """);
 
@@ -69,6 +69,13 @@ public class User_Home_View {
                     new Request_Controller(userId, isAdmin).run();
                 }
 
+                case 4 -> stockUserView.stockUserMenu();
+
+             case 5 -> {shipmentUserView.shipmentUserMenu();}
+
+                case 6 -> {
+                    return;
+                }
             }
 
 

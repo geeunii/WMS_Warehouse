@@ -60,4 +60,11 @@ public interface WarehouseDAOImpl {
      * @return 삭제된 행
      */
     int deleteWarehouse(int warehouseID);
+
+    /**
+     * 창고 ID 단일 조회 기능
+     * @param warehouseId 창고 ID
+     * @return 창고 ID를 등록된 창고 가져옴.
+     */
+    Warehouse selectId(int warehouseId);
 }
