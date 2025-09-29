@@ -18,7 +18,7 @@ public interface StockDAO_User_Interface {
      * 4.5 입고고지서 출력
      * 특정 입고 내역 출력
      */
-    public Stock stockPrint(int stockID);
+    public Stock stockPrint(int stockID, int userID);
 
     /**
      * 4.1 입고 요청

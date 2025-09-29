@@ -34,29 +34,63 @@ public class ShipmentUser_DAO implements ShipmentUser_DAO_Interface{
 
 
 
-    // 출고번호 기준으로 사용자가 출고현황 조회
+    // 사용자가 출고현황 조회
     @Override
-    public List<Shipment> selectCurrentShipmentUser(int shipmentId) {
+    public List<Shipment> selectCurrentShipmentUser(int userID) {
         List<Shipment> list = new ArrayList<>();
         String sql = "{CALL sp_selectCurrentShipmentUser(?)}";
 
         try (CallableStatement cal = conn.prepareCall(sql)) {
-            cal.setInt(1, shipment.getShipmentID());
+            cal.setInt(1, userID);  // userID를 파라미터로 넘김
 
             try (ResultSet rs = cal.executeQuery()) {
                 while (rs.next()) {
                     Shipment s = new Shipment();
                     s.setShipmentID(rs.getInt("shipmentID"));
-                    s.setUserID(rs.getInt("uid"));  // DB 컬럼 이름과 맞춤
+                    s.setUserID(rs.getInt("userID"));
                     s.setItemID(rs.getInt("itemID"));
+                    s.setShipItemName(rs.getString("shipItemName"));  // 아이템 이름
                     s.setShipping_p_quantity(rs.getInt("Shipping_p_quantity"));
                     s.setShippingProcess(rs.getString("shippingProcess"));
-                    s.setWaybillNumber(rs.getInt("waybill"));
+                    s.setWaybillNumber(rs.getString("waybill"));
+                    s.setShippingDate(rs.getString("shippingDate"));
                     list.add(s);
                 }
             }
         } catch (SQLException e) {
             System.err.println("유저 출고 현황 조회 실패: " + e.getMessage());
+        }
+
+        return list;
+    }
+
+
+
+
+
+    @Override
+    public List<Shipment> shippingProductSearch(int itemID) {
+        List<Shipment> list = new ArrayList<>();
+        String sql = "{CALL sp_shippingProductSearch(?)}";
+
+        try (CallableStatement cal = conn.prepareCall(sql)) {
+            cal.setInt(1, itemID);
+
+            try (ResultSet rs = cal.executeQuery()) {
+                while (rs.next()) {
+                    Shipment s = new Shipment();
+                    s.setShipmentID(rs.getInt("shipmentID"));
+                    s.setShippingDate(rs.getString("shippingDate"));
+                    s.setShipping_p_quantity(rs.getInt("Shipping_p_quantity"));
+                    s.setShippingProcess(rs.getString("shippingProcess"));
+                    s.setWaybillNumber(rs.getString("waybill"));
+                    s.setItemID(rs.getInt("itemID"));
+                    s.setShipItemName(rs.getString("shipItemName"));
+                    list.add(s);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("상품별 출고 조회 실패: " + e.getMessage());
         }
 
         return list;

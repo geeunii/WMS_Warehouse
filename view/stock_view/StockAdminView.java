@@ -17,6 +17,8 @@ public class StockAdminView {
     private static final Stock_User_Controller su = new Stock_User_Controller();
 
 
+
+
     // 입고 메뉴
     public void stockAdminMenu() throws Exception {
         while (true) {
