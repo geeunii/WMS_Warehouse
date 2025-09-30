@@ -13,7 +13,17 @@ public class Shipment_Controller implements Shipment_Controller_interface {
 
     @Override
     public int updateShipment(Shipment shipment) {
+<<<<<<< HEAD
+        int result=ship.updateShipment(shipment);
+
+        if (result > 0 && shipment.getShippingProcess().equalsIgnoreCase("승인")) {
+            System.out.println("출고 승인 확인. 재고 처리 프로시저 호출");
+            ship.processShipmentInventory(shipment.getShipmentID());
+        }
+        return result;
+=======
         return ship.updateShipment(shipment);
+>>>>>>> develop
     }
 
     @Override
