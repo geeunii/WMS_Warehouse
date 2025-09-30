@@ -47,6 +47,7 @@ WMS_Project
     └── ...(DBConnection)
 
 
+
 ## 💾 데이터베이스 주요 테이블
 - **Users**: 사용자 정보 및 권한(Role)  
 - **Admin**: 관리자 계정  
