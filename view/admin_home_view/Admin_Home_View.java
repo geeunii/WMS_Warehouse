@@ -23,11 +23,9 @@ import java.io.InputStreamReader;
 public class Admin_Home_View {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     AdminView adminView = new AdminView();
-    RequestAdminView requestAdminView = new RequestAdminView();
     InventoryAdminView inventoryAdminView = new InventoryAdminView();
     StockAdminView stockAdminView = new StockAdminView();
     ShipmentAdminView shipmentAdminView = new ShipmentAdminView();
-    WarehouseMainView warehouseMainView = new WarehouseMainView();
 
     public void adminHome() throws Exception {
         System.out.print("""
