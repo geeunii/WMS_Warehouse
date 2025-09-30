@@ -57,10 +57,10 @@ public class InventoryUserVIew {
     }
     private void User_InvenSerarch(int uid){
 
-        String format = "| %-12s | %-8s | %-15s | %10s | %8s | %12s | %-10s | %-7s |%n";
+        String format = "| %-12s | %-8s | %-15s | %10s |%n";
         System.out.println("=========================================================================================================");
-        System.out.printf("| %-12s | %-8s | %-15s | %10s | %8s | %12s | %-10s | %-7s |%n",
-                "입고 날짜", "등록자 이름", "가구 이름", "수량", "단가", "금액 합계", "창고명", "창고 상태");
+        System.out.printf("| %-12s | %-8s | %-15s | %10s |%n",
+                "가구 이름", "가구 수량", "금액 합계", "창고 이름");
         System.out.println("=========================================================================================================");
 
         List<User_searchVo> usvo = new ArrayList<>();
@@ -85,9 +85,9 @@ public class InventoryUserVIew {
     }
 
     private void User_InvenSearch_Space(int uid) throws IOException {
-        String categoryName = CategorySpace_Choice_Menu.selectCategory();
-        if (categoryName != null && !categoryName.isEmpty()) {
-            List<User_searchVo_sp> usvosp = inventoryController.User_inven_search_sp(uid, categoryName);
+        String spaceName = CategorySpace_Choice_Menu.selectSpace();
+        if (spaceName != null && !spaceName.isEmpty()) {
+            List<User_searchVo_sp> usvosp = inventoryController.User_inven_search_sp(uid, spaceName);
             CategorySpace_Choice_Menu.printSpaceSearchResult_User(usvosp);
         }
 
