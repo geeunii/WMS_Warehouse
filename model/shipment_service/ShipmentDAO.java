@@ -36,6 +36,29 @@ public class ShipmentDAO implements Shipment_DAO_Interface {
         return result;
     }
 
+    public int processShipmentInventory(int shipmentID) {
+        int result = 0;
+        // 재고 처리를 위해 만들어둔 프로시저를 호출하는 SQL문입니다.
+        String sql = "{CALL sp_process_shipment_by_warehouse(?)}";
+
+        // 데이터베이스 연결 및 CallableStatement 준비
+        try (CallableStatement cal = conn.prepareCall(sql)) {
+
+            // SQL문의 첫 번째 물음표(?)에 파라미터로 받은 shipmentID 값을 설정합니다.
+            cal.setInt(1, shipmentID);
+
+            // 프로시저를 실행하고, 영향을 받은 행의 수를 결과로 받습니다.
+            result = cal.executeUpdate();
+
+        } catch (SQLException e) {
+            // 프로시저 내부에서 재고 부족 등으로 에러가 발생하면 여기서 잡힙니다.
+            // e.getMessage()에 '재고가 부족하여 출고할 수 없습니다.'와 같은 메시지가 담겨있습니다.
+            System.err.println("재고 처리 프로시저 실행 실패: " + e.getMessage());
+        }
+
+        return result;
+    }
+
     // 출고 창고 위치 지정 (출고 아이디로)
     // 본인 것만 나오게
 

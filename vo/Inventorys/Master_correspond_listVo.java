@@ -4,19 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 
-
-public class Inventory {
-    private int eID;
-    private int quantity;
+public class Master_correspond_listVo {
     private int warehouseID;
-    private int sectionID;
+    private String warehouseName;
+    private String customerName;
     private int itemID;
-    private Date stockDate;
-    private Date shipDate;
+    private int quantity;
+    private int totalprice;
+//    private int 점유율;
+
 }
