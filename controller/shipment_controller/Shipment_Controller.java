@@ -13,6 +13,7 @@ public class Shipment_Controller implements Shipment_Controller_interface {
 
     @Override
     public int updateShipment(Shipment shipment) {
+<<<<<<< HEAD
         int result=ship.updateShipment(shipment);
 
         if (result > 0 && shipment.getShippingProcess().equalsIgnoreCase("승인")) {
@@ -20,6 +21,9 @@ public class Shipment_Controller implements Shipment_Controller_interface {
             ship.processShipmentInventory(shipment.getShipmentID());
         }
         return result;
+=======
+        return ship.updateShipment(shipment);
+>>>>>>> develop
     }
 
     @Override

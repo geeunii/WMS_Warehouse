@@ -14,16 +14,24 @@ public class RequestAdminView {
     private final DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public RequestAdminView() {
+<<<<<<< HEAD
         this.input = new InputHandler(
                 new BufferedReaderAdapter(new BufferedReader(new InputStreamReader(System.in)))
         );
+=======
+        input = new InputHandler(new BufferedReaderAdapter(new BufferedReader(new InputStreamReader(System.in))));
+>>>>>>> develop
     }
 
     // --- 메인 메뉴 ---
     public int mainMenu() {
         System.out.println("\n================= 게시판 =================");
         System.out.println("1. 문의관리 | 2. 공지사항 관리 | 3. 뒤로가기");
+<<<<<<< HEAD
         System.out.println("\n========================================");
+=======
+        System.out.println("==========================================");
+>>>>>>> develop
         return input.readInt("[메뉴 선택]: ", 1, 3);
     }
 
@@ -33,7 +41,11 @@ public class RequestAdminView {
         System.out.println("1. 1:1 문의 관리");
         System.out.println("2. 문의 게시판 관리");
         System.out.println("3. 뒤로가기");
+<<<<<<< HEAD
         System.out.println("\n===========================================");
+=======
+        System.out.println("=============================================");
+>>>>>>> develop
         return input.readInt("[메뉴 선택]: ", 1, 3);
     }
 
@@ -43,7 +55,11 @@ public class RequestAdminView {
         System.out.println("1. 1:1 문의 조회");
         System.out.println("2. 답변/답변 수정 등록");
         System.out.println("3. 뒤로가기");
+<<<<<<< HEAD
         System.out.println("\n===============================================");
+=======
+        System.out.println("=================================================");
+>>>>>>> develop
         return input.readInt("[메뉴 선택]: ", 1, 3);
     }
 
@@ -54,7 +70,11 @@ public class RequestAdminView {
         System.out.println("2. 답변/답변 수정 등록");
         System.out.println("3. 특정 문의 삭제");
         System.out.println("4. 뒤로가기");
+<<<<<<< HEAD
         System.out.println("\n===============================================");
+=======
+        System.out.println("=================================================");
+>>>>>>> develop
         return input.readInt("[메뉴 선택]: ", 1, 4);
     }
 
