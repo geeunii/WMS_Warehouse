@@ -20,9 +20,7 @@ public interface Inventory_Controller {
     public List<Admin_searchVo_sp> Admin_inven_search_sp(int mid, String spaceName);
 
     public List<User_searchVo> User_inven_search(int uid);
-    // 창고 관리자의 카테고리별 재고 조회
     public List<User_searchVo_ca> User_inven_search_ca(int uid, String categoryName);
-    // 창고 관리자의 공간별 재고 조회
     public List<User_searchVo_sp> User_inven_search_sp(int uid, String spaceName);
 
     public List<Master_warehouse_listVo> Master_warehouse_list();
