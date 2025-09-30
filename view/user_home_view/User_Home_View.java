@@ -24,21 +24,10 @@ public class User_Home_View {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     UserView userView = new UserView();
-    AdminView adminView = new AdminView();
-
-    RequestUserView requestUserView = new RequestUserView();
-    RequestAdminView requestAdminView = new RequestAdminView();
-
-    InventoryAdminView inventoryAdminView = new InventoryAdminView();
     InventoryUserVIew inventoryUserVIew = new InventoryUserVIew();
-
     StockUserView stockUserView = new StockUserView();
-    StockAdminView stockAdminView = new StockAdminView();
-
     ShipmentUserView shipmentUserView = new ShipmentUserView();
-    ShipmentAdminView shipmentAdminView = new ShipmentAdminView();
 
-    WarehouseAdminView warehouseAdminView = new WarehouseAdminView();
 
 
     public void userHome() throws IOException {
@@ -68,6 +57,7 @@ public class User_Home_View {
 
                     new Request_Controller(userId, isAdmin).run();
                 }
+                case 3 -> inventoryUserVIew.Inventory_User_Menu();
 
                 case 4 -> stockUserView.stockUserMenu();
 
