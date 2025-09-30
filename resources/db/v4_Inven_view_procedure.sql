@@ -12,17 +12,17 @@ JOIN
 JOIN
     Item i ON inv.itemID = i.itemID
 JOIN
-	warehousesection ws on ws.warehouseID = w.warehouseID and ws.sectionID = inv.sectionid;
+	WarehouseSection ws on ws.warehouseID = w.warehouseID and ws.sectionID = inv.sectionid;
 
 
 -- 관리자가 입고 승인하면 재고 테이블에 데이터가 들어가는 트리거
 delimiter ##
 create trigger insert_inventory
-after update on stock
+after update on Stock
 for each row
 begin
 	if new.stockingProcess = '승인' then
-    insert into inventory (quantity,warehouseid,sectionid,itemid,stockdate) values ( NEW.stock_p_quantity, NEW.warehouseid, NEW.sectionid,  NEW.itemid, NEW.stockingDate );     
+    insert into Inventory (quantity,warehouseid,sectionid,itemid,stockdate) values ( NEW.stock_p_quantity, NEW.warehouseid, NEW.sectionid,  NEW.itemid, NEW.stockingDate );
     end if;
 end ##
 delimiter ;
@@ -57,9 +57,9 @@ BEGIN
     END;
     START TRANSACTION;
     -- 4. 출고 요청 정보 조회
-    SELECT itemID, shipping_p_quantity, shipppingProcess, shippingDate
+    SELECT itemID, shipping_p_quantity, shippingProcess, shippingDate
     INTO v_item_id, v_requested_qty, v_current_status, v_ship_date -- << 2. 수정된 부분: shippingDate 조회
-    FROM Shippment
+    FROM shipment
     WHERE shipmentID = p_shipmentID;
     IF v_current_status != '승인' THEN
         ROLLBACK;
@@ -97,10 +97,36 @@ BEGIN
         ROLLBACK;
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = '재고가 부족하여 출고할 수 없습니다.';
     ELSE
-        UPDATE Shippment
-        SET shipppingProcess = '출고완료' -- 성공 시 출고 상태 변경, 날짜는 이미 있으므로 변경 안 함
+        UPDATE shipment
+        SET shippingProcess = '출고완료' -- 성공 시 출고 상태 변경, 날짜는 이미 있으므로 변경 안 함
         WHERE shipmentID = p_shipmentID;
         COMMIT;
     END IF;
+END$$
+DELIMITER ;
+
+-- 재고 실사 프로시저
+DELIMITER $$
+CREATE PROCEDURE log_inventory_insert()
+BEGIN
+    -- Inventory, Stock, shipment 테이블을 조인하여 InvenLog 테이블에 데이터를 삽입합니다.
+    INSERT INTO InvenLog (eID, log_quantity, warehouseID, itemID, stockingQuantity, stockingDate, shippingQuantity, shippingDate, logTime)
+    SELECT
+        i.eID,
+        i.quantity AS log_quantity,
+        i.warehouseID,
+        i.itemID,
+        COALESCE(s.stock_p_quantity, 0) AS stockingQuantity,
+        s.stockingDate,
+        COALESCE(sh.Shipping_p_quantity, 0) AS shippingQuantity,
+        sh.shippingDate,
+        NOW() AS logTime -- 로그 기록 시점의 날짜와 시간
+    FROM
+        Inventory i
+            LEFT JOIN
+        Stock s ON i.itemID = s.itemID AND i.stockDate = s.stockingDate AND i.warehouseID = s.warehouseID
+            LEFT JOIN
+        shipment sh ON i.itemID = sh.itemID AND i.shipDate = sh.shippingDate;
+
 END$$
 DELIMITER ;

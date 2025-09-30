@@ -172,7 +172,7 @@ CREATE TABLE `Inventory`
 -- 재고 실사 Table
 CREATE TABLE `InvenLog`
 (
-    `logID`            INT  NOT NULL,
+    `logID`            INT auto_increment NOT NULL,
     `eID`              INT  NOT NULL,
     `log_quantity`     INT  NOT NULL,
     `warehouseID`      INT  NOT NULL,

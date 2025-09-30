@@ -68,6 +68,7 @@ public class User_Home_View {
 
                     new Request_Controller(userId, isAdmin).run();
                 }
+                case 3-> inventoryUserVIew.Inventory_User_Menu();
 
                 case 4 -> stockUserView.stockUserMenu();
 
