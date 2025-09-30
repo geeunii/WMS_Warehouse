@@ -102,13 +102,17 @@ public class ShipmentDAO implements Shipment_DAO_Interface {
         return list;
     }
 
-
-
-
-
-
-
-
+    public int processShipmentInventory(int shipmentID) {
+        int result = 0;
+        String sql = "{CALL sp_process_shipment_by_warehouse(?)}";
+        try (CallableStatement cal = conn.prepareCall(sql)) {
+            cal.setInt(1, shipmentID);
+            result = cal.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("재고 처리 프로시저 실행 실패: " + e.getMessage());
+        }
+        return result;
+    }
 
     // 관리자 출고 현황 조회 (모든 출고 현황)
     @Override
