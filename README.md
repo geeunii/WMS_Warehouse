@@ -23,7 +23,30 @@ Java와 MySQL을 기반으로 개발되며, 관리자(Admin), 창고 관리자(S
 
 ---
 
-## 🗂️ 데이터베이스 주요 테이블
+## 🗂️ 프로젝트 구조
+WMS_Project
+  ├── .gitignore
+  ├── README.md
+  └── controller/
+      └── ... (기능별 Controller 인터페이스/구현)
+  └── model/
+      └── ... (DAO 인터페이스/구현)
+  └── view/
+      └── ... (View 구현)
+  └── vo/
+      └── ... (Entity)
+  └── lib/
+      └── ... (롬복 및 필요 Library 저장)
+  └── resources/
+      └── db/
+          └── ...(DataBase 테이블 및 프로시저 SQL문)
+      └── seed/
+          └── ...(샘플 Data)
+  └── util/
+      ├── AppSession.java
+      └── ...(DBConnection)
+
+## 💾 데이터베이스 주요 테이블
 - **Users**: 사용자 정보 및 권한(Role)  
 - **Admin**: 관리자 계정  
 - **Warehouse**: 창고 정보 (소/중/대 규모, 섹션 구조 포함)  
@@ -48,14 +71,12 @@ Java와 MySQL을 기반으로 개발되며, 관리자(Admin), 창고 관리자(S
 
 ## 🔗 Git 브랜치 전략
 - `main`: 운영 브랜치 (배포용)  
-- `develop`: 통합 브랜치 (테스트/머지)  
-- `feature/{기능명}`: 기능 단위 개발 브랜치  
+- `develop`: 통합 브랜치 (테스트/머지)   
 - `dev/{이니셜}`: 개인 개발 브랜치 (예: `dev/LKM`)  
 
 ### 협업 규칙
 1. 각자 **개인 브랜치(dev/이니셜)** 에서 작업  
-2. 기능 개발 후 **feature 브랜치**에 merge  
-3. **develop 브랜치**에 PR 생성 → 코드 리뷰 후 merge  
+2. 기능 개발 후 **develop 브랜치**에 PR 생성 → 코드 리뷰 후 merge  
 4. 최종적으로 `main`에 반영  
 
 ---
