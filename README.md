@@ -21,8 +21,7 @@ Java와 MySQL을 기반으로 개발되며, 관리자(Admin), 창고 관리자(S
 - **Version Control**: Git, GitHub (Branch Protection & PR Rule 적용)  
 - **Tools**: Maven, ERD(DBML), GitHub Projects  
 
----
-
+```
 ## 🗂️ 프로젝트 구조
 WMS_Project
 ├── .gitignore
@@ -45,7 +44,7 @@ WMS_Project
 └── util/
     ├── AppSession.java
     └── ...(DBConnection)
-
+```
 
 
 ## 💾 데이터베이스 주요 테이블
