@@ -34,47 +34,6 @@ public class Request_Controller {
         else userMenuLoop();
     }
 
-<<<<<<< HEAD
-    private void adminMenuLoop() throws IOException {
-        while (true) {
-            int mainChoice = adminView.mainMenu();
-            if (mainChoice == 3) break;
-
-            if (mainChoice == 1) {
-                requestMenuLoop();
-            }
-            else if (mainChoice == 2) {
-                NoticeControllerImpl noticeController = new NoticeControllerImpl(true);
-                noticeController.run();
-            }
-            else System.out.println("잘못된 입력입니다.");
-        }
-    }
-
-    private void requestMenuLoop() throws IOException {
-        while (true) {
-            int choice = adminView.requestMenu();
-            if (choice == 3) break;
-            if (choice == 1) oneToOneAdminLoop();
-            else if (choice == 2) boardAdminLoop();
-            else System.out.println("잘못된 입력입니다.");
-        }
-    }
-
-    private void oneToOneAdminLoop() throws IOException {
-        while (true) {
-            int choice = adminView.oneToOneMenu();
-            if (choice == 3) break;
-            if (choice == 1) {
-                List<Request> list = dao.selectAllRequests(RequestType.onetoone);
-                adminView.selectAllRequests(list);
-            } else if (choice == 2) {
-                Request req = adminView.updateResponse();
-                if (req != null) {
-                    if (dao.updateResponse(req.getRequestID(), req.getR_response()) > 0)
-                        System.out.println("답변 등록/수정 완료");
-                    else System.out.println("답변 등록/수정 실패");
-=======
     // --- 관리자 메인 메뉴 루프 ---
     private void adminMenuLoop() throws IOException {
         while (true) {
@@ -85,7 +44,6 @@ public class Request_Controller {
                     // 공지사항 메뉴로 이동
                     NoticeControllerImpl noticeController = new NoticeControllerImpl(true); // 관리자 모드
                     noticeController.run(); // 뒤로가기 선택 시 돌아옴
->>>>>>> develop
                 }
                 case 3 -> {
                     System.out.println("뒤로갑니다.");
@@ -96,42 +54,6 @@ public class Request_Controller {
         }
     }
 
-<<<<<<< HEAD
-    private void boardAdminLoop() throws IOException {
-        while (true) {
-            int choice = adminView.requestBoardMenu();
-            if (choice == 4) break;
-            if (choice == 1) {
-                List<Request> list = dao.selectAllRequests(RequestType.board);
-                adminView.selectAllRequests(list);
-            } else if (choice == 2) {
-                Request req = adminView.updateResponse();
-                if (req != null) {
-                    if (dao.updateResponse(req.getRequestID(), req.getR_response()) > 0)
-                        System.out.println("답변 등록/수정 완료");
-                    else System.out.println("답변 등록/수정 실패");
-                }
-            } else if (choice == 3) {
-                int id = adminView.deleteRequest();
-                if (id > 0) {
-                    if (dao.deleteRequest(0, id) > 0)
-                        System.out.println("삭제 완료");
-                    else System.out.println("삭제 실패");
-                }
-            }
-        }
-    }
-
-    private void userMenuLoop() throws IOException {
-        while (true) {
-            int mainChoice = userView.mainMenu();
-            if (mainChoice == 3) break;
-            if (mainChoice == 1) userRequestLoop();
-            else if (mainChoice == 2) {
-                NoticeControllerImpl noticeController = new NoticeControllerImpl(false);
-                noticeController.run();
-            } else System.out.println("잘못된 입력입니다.");
-=======
     // --- 사용자 메인 메뉴 루프 ---
     private void userMenuLoop() throws IOException {
         while (true) {
@@ -149,7 +71,6 @@ public class Request_Controller {
                 }
                 default -> System.out.println("잘못된 입력입니다.");
             }
->>>>>>> develop
         }
     }
 
