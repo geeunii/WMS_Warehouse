@@ -47,12 +47,6 @@ public class Admin_Home_View {
 
         switch (choice) {
             case 1 -> adminView.adminMenu();
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> develop
             case 2 -> {
                 int adminId = AppSession.get().currentAdmin()
                         .map(a -> {
