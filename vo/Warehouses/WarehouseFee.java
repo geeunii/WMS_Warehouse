@@ -3,12 +3,14 @@ package vo.Warehouses;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 public class WarehouseFee extends WarehouseChildVO {
@@ -24,9 +26,9 @@ public class WarehouseFee extends WarehouseChildVO {
     private Date endDate;
     private int price;
 
-    public WarehouseFee() {
-
-    }
+//    public WarehouseFee() {
+//
+//    }
 
     @Override
     public String toString() {

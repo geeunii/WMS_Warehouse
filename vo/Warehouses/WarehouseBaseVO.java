@@ -1,5 +1,6 @@
 package vo.Warehouses;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -13,11 +14,12 @@ import lombok.experimental.SuperBuilder;
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @SuperBuilder
 public abstract class WarehouseBaseVO {
     private int id; // 각 테이블의 기본 키(PK)와 매칭되는 고유 식별 번호
 
-    public WarehouseBaseVO(int id) {
-        this.id = id;
-    }
+//    public WarehouseBaseVO(int id) {
+//        this.id = id;
+//    }
 }

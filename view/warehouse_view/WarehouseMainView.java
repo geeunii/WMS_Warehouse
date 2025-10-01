@@ -32,13 +32,18 @@ public class WarehouseMainView {
         return getIntInput("메뉴를 선택하세요: ");
     }
 
-
-    private int getIntInput(String prompt) throws IOException {
+    /**
+     * 헬퍼 메서드
+     * @param prompt 화면에 보여 줄 안내 메시지
+     * @return 사용자가 입력한 정수 값
+     * @throws IOException 입력을 받는 도중 오류가 발생한 경우
+     */
+    private int getIntInput(String prompt) throws IOException { // 나를 호출한 상위 메서드에게 처리를 위임
         while (true) {
             try {
                 System.out.print("> " + prompt);
                 return Integer.parseInt(br.readLine());
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException e) { // 내 메서드가 처리할 수 있는 예외
                 System.out.println("숫자로만 입력해주세요.");
             }
         }

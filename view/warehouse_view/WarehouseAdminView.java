@@ -75,7 +75,7 @@ public class WarehouseAdminView {
 
     /**
      * 2. 창고 수정
-     * 수정에 필요한 정보를 관리자로부터 순서대로 입력 받음
+     * 부분 수정을 하며 입력하지 않은 필드는 변경되지 않음
      * @return 수정할 창고의 ID 와 새로운 정보가 모두 담긴 Warehouse 객체
      */
     public Warehouse updateWarehouse() throws IOException {
@@ -183,6 +183,7 @@ public class WarehouseAdminView {
         }
     }
 
+    // 메서드 오버로딩(메서드 이름은 똑같지만 매개변수 종류(자료형)나 개수가 다른 여러 메서드
     /**
      * 처리 성공 메시지와 함께 Warehouse 객체 리스트 화면에 출력
      * @param message 성공 메시지
@@ -201,15 +202,6 @@ public class WarehouseAdminView {
     }
 
     /**
-     * 일반 정보 메시지 출력
-     * @param message 출력 메시지
-     */
-    public void displayMessage(String message) {
-        System.out.println(message);
-    }
-
-
-    /**
      * 처리 성공 메시지와 함께 Warehouse 객체를 화면에 출력
      * @param message 성공 메시지
      * @param warehouse 출력할 Warehouse 객체
@@ -219,6 +211,14 @@ public class WarehouseAdminView {
         if (warehouse != null) {
             System.out.println("> " + warehouse);
         }
+    }
+
+    /**
+     * 일반 정보 메시지 출력
+     * @param message 출력 메시지
+     */
+    public void displayMessage(String message) {
+        System.out.println(message);
     }
 
     /**

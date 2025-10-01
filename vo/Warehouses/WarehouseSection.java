@@ -3,10 +3,12 @@ package vo.Warehouses;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 // 창고 내부 구역
@@ -23,9 +25,9 @@ public class WarehouseSection extends WarehouseChildVO {
     private int maxVol; // 최대 허용 부피
     private int currentVol; // 현재 적재 부피
 
-    public WarehouseSection() {
-
-    }
+//    public WarehouseSection() {
+//
+//    }
 
     @Override
     public String toString() {

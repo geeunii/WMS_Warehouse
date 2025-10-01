@@ -48,7 +48,7 @@ public class Warehouse_Section_Controller_Impl implements Warehouse_Section_Cont
                 break;
             case 4: // 구역 조회
                 // selectSectionById();
-                int warehouseID = sectionAdminView.getWarehouseIdInput();
+                int warehouseID = sectionAdminView.searchWarehouseSection();
                 selectSectionWarehouseID(warehouseID);
                 break;
             case 5:
@@ -100,7 +100,7 @@ public class Warehouse_Section_Controller_Impl implements Warehouse_Section_Cont
         System.out.println("\n[창고 구역 등록]");
 
         // 어느 창고에 등록할지 ID를 먼저 받음
-        int warehouseId = sectionAdminView.getWarehouseIdInput();
+        int warehouseId = sectionAdminView.getWarehouseIdForRegistration();
 
         // 관리자가 'n'을 누를 때까지 구역 추가를 반복
         while (true) {

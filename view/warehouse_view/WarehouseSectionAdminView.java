@@ -17,19 +17,20 @@ public class WarehouseSectionAdminView {
 
     /**
      * 창고 구역 관리 메인 메뉴
+     *
      * @return 관리자가 선택한 메뉴 번호
      */
     public int warehouseSectionMainMenu() throws IOException {
         System.out.println("""
                 ===========[ 창고 구역 관리 ] ==========
                 ============ [ 메뉴 선택 ] ============
-
+                
                    1. 구역 등록
                    2. 구역 수정
                    3. 구역 삭제
                    4. 구역 조회
                    5. 뒤로 가기
-
+                
                 ======================================
                 ======================================
                 """);
@@ -64,8 +65,9 @@ public class WarehouseSectionAdminView {
 //    }
 
     // 창고 등록 V2
+
     /**
-     * [추가] 사용자로부터 1개의 구역 정보를 입력받는 메서드
+     * 사용자로부터 1개의 구역 정보를 입력받는 메서드
      */
     public WarehouseSection insertWarehouseSectionV2() throws IOException {
         System.out.println("\n============ [ 구역 등록 ] ============");
@@ -78,7 +80,7 @@ public class WarehouseSectionAdminView {
     }
 
     /**
-     * [추가] 구역을 계속 추가할지 사용자에게 물어보는 메서드
+     * 구역을 계속 추가할지 사용자에게 물어보는 메서드
      */
     public boolean askToAddAnother() throws IOException {
         String answer = getInput("구역을 계속 추가하시겠습니까? (y/n): ");
@@ -86,17 +88,20 @@ public class WarehouseSectionAdminView {
     }
 
     /**
-     * [추가] 컨트롤러가 사용할 창고 ID 입력 메서드
+     * 구역을 등록할 창고의 ID를 입력받는 전용 메서드
+     *
+     * @return 사용자가 입력한 창고 ID
      */
-    public int getWarehouseIdInput() throws IOException {
-        return getIntInput("구역을 조회할 창고 ID를 입력하세요: ");
+    public int getWarehouseIdForRegistration() throws IOException {
+        System.out.println("\n============ [ 구역 등록 ] ============");
+        return getIntInput("구역을 등록할 창고의 ID: ");
     }
-
 
 
     /**
      * 2. 창고 구역 수정
      * 수정에 필요한 정보를 관리자로부터 순서대로 입력 받음
+     *
      * @return 수정할 창고 구역의 ID 와 창고 ID, 새로운 정보가 담긴 WarehouseSection 객체
      */
 //    public WarehouseSection updateWarehouseSection() throws IOException {
@@ -114,7 +119,6 @@ public class WarehouseSectionAdminView {
 //                .currentVol(currentVol)
 //                .build();
 //    }
-
     public WarehouseSection updateWarehouseSection() throws IOException {
         System.out.println("\n============ [ 구역 수정 ] ============");
         int sectionID = getIntInput("수정할 구역 ID: ");
@@ -138,6 +142,7 @@ public class WarehouseSectionAdminView {
     /**
      * 3. 창고 구역 삭제
      * 창고 구역 ID 관리자로부터 입력 받아 삭제
+     *
      * @return 관리자가 입력한 삭제 창고 구역 ID
      */
     public int deleteWarehouseSection() throws IOException {
@@ -149,6 +154,7 @@ public class WarehouseSectionAdminView {
     /**
      * 4. 창고 구역 조회
      * 창고 구역 ID 관리자로부터 입력 받아 조회
+     *
      * @return 관리자가 입력한 조회 창고 구역 ID
      */
     public int searchWarehouseSection() throws IOException {
@@ -156,16 +162,17 @@ public class WarehouseSectionAdminView {
         return getIntInput("조회할 창고 ID: ");
     }
 
-    public int searchWarehouseIDSection() throws IOException {
-        System.out.println("\n============ [ 구역 조회 ] ============");
-        return getIntInput("조회할 창고 ID: ");
-    }
+//    public int searchWarehouseIDSection() throws IOException {
+//        System.out.println("\n============ [ 구역 조회 ] ============");
+//        return getIntInput("조회할 창고 ID: ");
+//    }
 
 
     // --- 창고 구역 관리 입출력 유틸 메서드 ---
 
     /**
      * 관리자에게 메시지를 보여주고 문자열 한 줄을 입력받아 반환
+     *
      * @param prompt 관리자에게 보여줄 메시지
      * @return 관리자가 입력한 문자열
      */
@@ -177,6 +184,7 @@ public class WarehouseSectionAdminView {
     /**
      * 관리자에게 메시지를 보여주고 정수를 입력받아 반환
      * 숫자가 아닌 값이 입력(NumberFormatException)되면 메시지 보여주고 재입력 요청
+     *
      * @param prompt 관리자에게 보여줄 메시지
      * @return 관리자가 입력한 정수
      */
@@ -193,7 +201,8 @@ public class WarehouseSectionAdminView {
 
     /**
      * 처리 성공 메시지와 함께 WarehouseSection 객체 리스트 화면에 출력
-     * @param message 성공 메시지
+     *
+     * @param message     성공 메시지
      * @param sectionList 출력할 WarehouseSection 객체 리스트
      */
     public void displaySuccess(String message, List<WarehouseSection> sectionList) {
@@ -210,6 +219,7 @@ public class WarehouseSectionAdminView {
 
     /**
      * 처리 성공 메시지와 함께 WarehouseSection 객체를 화면에 출력
+     *
      * @param message 성공 메시지
      * @param section 출력할 WarehouseSection 객체
      */
@@ -222,6 +232,7 @@ public class WarehouseSectionAdminView {
 
     /**
      * 일반 정보 메시지 출력
+     *
      * @param message 출력 메시지
      */
     public void displayMessage(String message) {
@@ -230,6 +241,7 @@ public class WarehouseSectionAdminView {
 
     /**
      * 처리 실패 메시지
+     *
      * @param message 실패 메시지
      */
     public void displayError(String message) {
